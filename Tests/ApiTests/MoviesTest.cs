@@ -27,7 +27,7 @@ namespace Tests.ApiTests
         {
             var api = new KinoApi(ApiConfig.ApiKey, ApiConfig.Url);
 
-            var result = await api.Movies.GetMovieByYearAsync(1940, 1);
+            var result = await api.Movies.GetMovieByYearAsync(1940, KinoTypes.Order.NUM_VOTE, 1);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(20, result.Length);
@@ -38,7 +38,7 @@ namespace Tests.ApiTests
         {
             var api = new KinoApi(ApiConfig.ApiKey, ApiConfig.Url);
 
-            var result = await api.Movies.GetMovieByGenreAsync(new KinoTypes.Genre() { Id = 15 }, 1);
+            var result = await api.Movies.GetMovieByGenreAsync(new KinoTypes.Genre() { Id = 15 },KinoTypes.Order.NUM_VOTE ,1);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(20, result.Length);

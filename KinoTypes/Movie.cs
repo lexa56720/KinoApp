@@ -15,6 +15,13 @@ namespace KinoTypes
         MINI_SERIES, 
         TV_SHOW,
     }
+
+    public enum Order
+    {
+        RATING,
+        NUM_VOTE, 
+        YEAR
+    }
     public class Movie
     {
         public int KinopoiskId { get; set; }

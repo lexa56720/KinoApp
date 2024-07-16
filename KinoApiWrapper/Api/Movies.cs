@@ -30,24 +30,26 @@ namespace KinoApiWrapper.Api
             return converter.ConvertMovie(result);
         }
 
-        public async Task<Movie[]> GetMovieByYearAsync(int year,int page)
+        public async Task<Movie[]> GetMovieByYearAsync(int year, Order order = Order.RATING, int page = 1)
         {
             var result = await requester.Request(@"/api/v2.2/films", new Dictionary<string, string>()
             {
                 { "yearFrom",$"{year}" },
                 { "yearTo",$"{year}" },
+                { "order",$"{order.ToString()}" },
                 { "page",$"{page}" },
-            }); 
+            });
             if (string.IsNullOrEmpty(result))
                 return null;
             return converter.ConvertSearchResult(result);
         }
 
-        public async Task<Movie[]> GetMovieByGenreAsync(Genre genre, int page)
+        public async Task<Movie[]> GetMovieByGenreAsync(Genre genre, Order order = Order.RATING, int page = 1)
         {
             var result = await requester.Request(@"/api/v2.2/films", new Dictionary<string, string>()
             {
                 { "genres",$"{genre.Id}" },
+                { "order",$"{order.ToString()}" },
                 { "page",$"{page}" },
             });
             if (string.IsNullOrEmpty(result))
@@ -55,7 +57,7 @@ namespace KinoApiWrapper.Api
             return converter.ConvertSearchResult(result);
         }
 
-        public async Task<Movie[]> GetMoviesByKeywordAsync(string keyword, int page)
+        public async Task<Movie[]> GetMoviesByKeywordAsync(string keyword, int page = 1)
         {
             var result = await requester.Request(@"/api/v2.1/films/search-by-keyword", new Dictionary<string, string>()
             {
