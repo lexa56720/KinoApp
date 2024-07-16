@@ -14,6 +14,8 @@ namespace KinoTypes
 
         public int? RatingKinopoiskVoteCount { get; set; }
 
+        public double? RatingImdb {get; set; }
+
         public int? RatingImdbVoteCount { get; set; }
 
         public double? RatingFilmCritics { get; set; }

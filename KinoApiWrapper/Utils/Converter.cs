@@ -1,4 +1,7 @@
 ﻿using KinoApiWrapper.ResponseTypes;
+using KinoApiWrapper.ResponseTypes.MoviesTypes;
+using KinoApiWrapper.ResponseTypes.MoviesTypes.Keyword;
+using KinoApiWrapper.ResponseTypes.MoviesTypes.Search;
 using KinoApiWrapper.Utils;
 using KinoApiWrapper.Utils.Abstract;
 using KinoTypes;
@@ -36,6 +39,10 @@ namespace KinoApiWrapper.Api
             var searchResult = JsonSerializer.Deserialize<MovieSearchResponse>(json);
             return searchResult.Items.Select(mapper.Map).ToArray();
         }
-
+        public Movie[] ConvertSearchByKeywordResult(string json)
+        {
+            var searchResult = JsonSerializer.Deserialize<MovieSearchByKeywordResponse>(json);
+            return searchResult.Films.Select(mapper.Map).ToArray();
+        }
     }
 }

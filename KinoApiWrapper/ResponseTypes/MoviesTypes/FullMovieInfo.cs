@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace KinoApiWrapper.ResponseTypes
+namespace KinoApiWrapper.ResponseTypes.MoviesTypes
 {
     internal class FullMovieInfo
     {

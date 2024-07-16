@@ -6,9 +6,9 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace KinoApiWrapper.ResponseTypes
+namespace KinoApiWrapper.ResponseTypes.MoviesTypes.Search
 {
-    internal class BriefMovieInfo
+    internal class MovieSearch
     {
         [JsonPropertyName("kinopoiskId")]
         public int KinopoiskId { get; set; }

@@ -1,4 +1,7 @@
 ﻿using KinoApiWrapper.ResponseTypes;
+using KinoApiWrapper.ResponseTypes.MoviesTypes;
+using KinoApiWrapper.ResponseTypes.MoviesTypes.Keyword;
+using KinoApiWrapper.ResponseTypes.MoviesTypes.Search;
 using KinoApiWrapper.Utils.Abstract;
 using KinoTypes;
 using System;
@@ -11,17 +14,15 @@ namespace KinoApiWrapper.Utils
 {
     internal class Mapper : IMapper
     {
-        public Movie Map(BriefMovieInfo response)
+        public Movie Map(MovieSearch response)
         {
             var movie = new Movie()
             {
                 KinopoiskId = response.KinopoiskId,
-                NameRu = response.NameRu,
-                NameOriginal = response.NameOriginal,
+                Name = GetName(response.NameRu, response.NameOriginal, response.NameEn),
                 PosterUrl = response.PosterUrl,
                 PosterUrlPreview = response.PosterUrlPreview,
                 RatingKinopoisk = response.RatingKinopoisk,
-                RatingImdb = response.RatingImdb,
                 Year = response.Year,
                 Type = ParseType(response.Type),
                 Countries = response.Countries?.Select(c => new Country { Id = c.Id, Name = c.Name }).ToArray(),
@@ -37,8 +38,7 @@ namespace KinoApiWrapper.Utils
             {
                 KinopoiskId = response.KinopoiskId,
                 KinopoiskHDId = response.KinopoiskHDId,
-                NameRu = response.NameRu,
-                NameOriginal = response.NameOriginal,
+                Name = GetName(response.NameRu, response.NameOriginal, response.NameEn),
                 PosterUrl = response.PosterUrl,
                 PosterUrlPreview = response.PosterUrlPreview,
                 CoverUrl = response.CoverUrl,
@@ -76,6 +76,30 @@ namespace KinoApiWrapper.Utils
             };
         }
 
+        public Movie Map(MovieKeyword response)
+        {
+            var movie = new Movie()
+            {
+                KinopoiskId = response.FilmId,
+                Name = GetName(response.NameRu, response.NameEn),
+                PosterUrl = response.PosterUrl,
+                PosterUrlPreview = response.PosterUrlPreview,
+                RatingKinopoisk = TryParseRating(response.Rating),
+                Year = int.Parse(response.Year),
+                Type = ParseType(response.Type),
+                Countries = response.Countries?.Select(c => new Country { Id = c.Id, Name = c.Name }).ToArray(),
+                Genres = response.Genres?.Select(g => new Genre { Id = g.Id, Name = g.Name }).ToArray(),
+            };
+            return movie;
+        }
+
+        private double? TryParseRating(string value)
+        {
+            if (double.TryParse(value, out var res))
+                return res;
+            return null;
+        }
+
         private MovieType ParseType(string type)
         {
             switch (type)
@@ -87,6 +111,14 @@ namespace KinoApiWrapper.Utils
                 case "TV_SHOW": return MovieType.TV_SHOW;
             }
             return default;
+        }
+
+        private string GetName(params string[] names)
+        {
+            foreach (var name in names)
+                if (!string.IsNullOrEmpty(name))
+                    return name;
+            return string.Empty;
         }
     }
 }

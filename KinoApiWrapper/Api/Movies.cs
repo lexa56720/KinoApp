@@ -42,6 +42,7 @@ namespace KinoApiWrapper.Api
                 return null;
             return converter.ConvertSearchResult(result);
         }
+
         public async Task<Movie[]> GetMovieByGenreAsync(Genre genre, int page)
         {
             var result = await requester.Request(@"/api/v2.2/films", new Dictionary<string, string>()
@@ -52,6 +53,18 @@ namespace KinoApiWrapper.Api
             if (string.IsNullOrEmpty(result))
                 return Array.Empty<Movie>();
             return converter.ConvertSearchResult(result);
+        }
+
+        public async Task<Movie[]> GetMoviesByKeywordAsync(string keyword, int page)
+        {
+            var result = await requester.Request(@"/api/v2.1/films/search-by-keyword", new Dictionary<string, string>()
+            {
+                { "keyword",$"{keyword}" },
+                { "page",$"{page}" },
+            });
+            if (string.IsNullOrEmpty(result))
+                return Array.Empty<Movie>();
+            return converter.ConvertSearchByKeywordResult(result);
         }
     }
 }

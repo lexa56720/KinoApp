@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace KinoApiWrapper.ResponseTypes
+namespace KinoApiWrapper.ResponseTypes.MoviesTypes.Search
 {
     internal class MovieSearchResponse
     {
@@ -16,6 +16,6 @@ namespace KinoApiWrapper.ResponseTypes
         public int? TotalPages { get; set; }
 
         [JsonPropertyName("items")]
-        public BriefMovieInfo[] Items { get; set; }
+        public MovieSearch[] Items { get; set; }
     }
 }

@@ -17,5 +17,7 @@ namespace KinoApiWrapper.Utils.Abstract
         Movie[] ConvertSearchResult(string json);
 
         Genre[] ConvertGenres(string json);
+
+        Movie[] ConvertSearchByKeywordResult(string json);
     }
 }

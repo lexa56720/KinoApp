@@ -32,5 +32,17 @@ namespace Tests.ApiTests
             Assert.IsNotNull(result);
             Assert.AreEqual(20, result.Length);
         }
+
+
+        [TestMethod]
+        public async Task TestGetMovieByKeywordAsync()
+        {
+            var api = new KinoApi(ApiConfig.ApiKey, ApiConfig.Url);
+
+            var result = await api.Movies.GetMoviesByKeywordAsync("мстители",1);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(20, result.Length);
+        }
     }
 }
