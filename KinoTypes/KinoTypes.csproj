@@ -120,6 +120,9 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DataProvider\IDataProvider.cs" />
+    <Compile Include="DataProvider\IGenres.cs" />
+    <Compile Include="DataProvider\IMovies.cs" />
     <Compile Include="Country.cs" />
     <Compile Include="Genre.cs" />
     <Compile Include="Movie.cs" />

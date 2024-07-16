@@ -1,6 +1,7 @@
 ﻿using KinoApiWrapper.Api.RequestSender;
 using KinoApiWrapper.Utils.Abstract;
 using KinoTypes;
+using KinoTypes.DataProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace KinoApiWrapper.Api
 {
-    internal class Genres
+    internal class Genres:IGenres
     {
         private readonly IRequester requester;
         private readonly IConverter converter;
