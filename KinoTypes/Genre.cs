@@ -9,9 +9,7 @@ namespace KinoTypes
 {
     public class Genre
     {
-        public int Id { get; set; }
-
-        [JsonPropertyName("genre")]
+        public int? Id { get; set; }
         public string Name { get; set; }
     }
 }

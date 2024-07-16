@@ -1,4 +1,5 @@
 ﻿using KinoApiWrapper.ResponseTypes;
+using KinoApiWrapper.Utils;
 using KinoTypes;
 using System;
 using System.Collections.Generic;
@@ -11,28 +12,24 @@ namespace KinoApiWrapper.Api
 {
     internal class Converter
     {
-        public Converter()
+        private readonly Mapper mapper;
+
+        public Converter(Mapper mapper)
         {
+            this.mapper = mapper;
         }
 
-        public Movie ConvertMovie(string json)
+        public MovieInfo ConvertMovie(string json)
         {
             var movieInfo = JsonSerializer.Deserialize<FullMovieInfo>(json);
-            return Map(movieInfo);
+            return mapper.Map(movieInfo);
         }
         public Movie[] ConvertSearchResult(string json)
         {
             var searchResult = JsonSerializer.Deserialize<MovieSearchResponse>(json);
-            return searchResult.Items.Select(Map).ToArray();
+            return searchResult.Items.Select(mapper.Map).ToArray();
         }
 
-        private Movie Map(BriefMovieInfo response)
-        {
-            throw new NotImplementedException();
-        }
-        private Movie Map(FullMovieInfo response)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

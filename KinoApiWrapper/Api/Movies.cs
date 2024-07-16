@@ -20,17 +20,7 @@ namespace KinoApiWrapper.Api
             this.converter = converter;
         }
 
-        public async Task<Movie[]> GetMovieByIdAsync(int[] ids)
-        {
-            var funcs = new Func<Task<Movie>>[ids.Length];
-            for (int i = 0; i < ids.Length; i++)
-            {
-                funcs[i] = () => GetMovieByIdAsync(ids[i]);
-            }
-            var movies = await RequestLimiter.Call(funcs, 20);
-            return movies;
-        }
-        public async Task<Movie> GetMovieByIdAsync(int id)
+        public async Task<MovieInfo> GetMovieByIdAsync(int id)
         {
             var result = await requester.Request($@"/api/v2.2/films/{id}");
             if (string.IsNullOrEmpty(result))
@@ -53,7 +43,7 @@ namespace KinoApiWrapper.Api
         {
             var result = await requester.Request(@"/api/v2.2/films", new Dictionary<string, string>()
             {
-                { "genres",$"{genre}" },
+                { "genres",$"{genre.Id}" },
             });
             if (string.IsNullOrEmpty(result))
                 return Array.Empty<Movie>();

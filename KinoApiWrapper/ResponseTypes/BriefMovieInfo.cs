@@ -11,7 +11,7 @@ namespace KinoApiWrapper.ResponseTypes
     internal class BriefMovieInfo
     {
         [JsonPropertyName("kinopoiskId")]
-        public int? KinopoiskId { get; set; }
+        public int KinopoiskId { get; set; }
 
         [JsonPropertyName("imdbId")]
         public string ImdbId { get; set; }

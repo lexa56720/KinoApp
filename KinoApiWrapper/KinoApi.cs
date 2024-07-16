@@ -1,4 +1,5 @@
 ﻿using KinoApiWrapper.Api;
+using KinoApiWrapper.Utils;
 using KinoTypes;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace KinoApiWrapper
         public KinoApi(string apiKey,string url)
         {
             requester = new Requester(apiKey,url);
-            converter=new Converter();
+            converter=new Converter(new Mapper());
 
             Movies = new Movies(requester,converter);
         }
