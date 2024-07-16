@@ -5,11 +5,14 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace KinoTypes
+namespace KinoApiWrapper.ResponseTypes
 {
-    public class Country
+    internal class ApiGenre
     {
+        [JsonPropertyName("id")]
         public int? Id { get; set; }
+
+        [JsonPropertyName("genre")]
         public string Name { get; set; }
     }
 }
