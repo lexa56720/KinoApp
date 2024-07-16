@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KinoTypes.DataProvider
 {
-    public interface IDataProvider
+    public interface IDataProvider:IDisposable
     {
         IGenres Genres { get; }
         IMovies Movies { get; }

@@ -120,7 +120,9 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="DataProvider.cs" />
+    <Compile Include="GenreProvider.cs" />
+    <Compile Include="MovieProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\KinoDataProvider.rd.xml" />
   </ItemGroup>

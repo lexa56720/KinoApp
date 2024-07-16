@@ -120,11 +120,20 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="CacheProvider\CacheApi.cs" />
+    <Compile Include="CacheProvider\CachedGenres.cs" />
+    <Compile Include="CacheProvider\CachedMovies.cs" />
+    <Compile Include="DataBase\CacheDbContext.cs" />
+    <Compile Include="DataBase\DbContextFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\IMapper.cs" />
+    <Compile Include="Utils\Mapper.cs" />
     <EmbeddedResource Include="Properties\KinoApiCache.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
+      <Version>3.1.32</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
     </PackageReference>
@@ -134,6 +143,9 @@
       <Project>{36b2e971-7c1d-49f3-a25e-16af5d5916d7}</Project>
       <Name>KinoTypes</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataBase\Tables\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

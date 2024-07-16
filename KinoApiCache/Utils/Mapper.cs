@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KinoDataProvider
+namespace KinoApiCache.Utils
 {
-    public class Class1
+    internal class Mapper:IMapper
     {
     }
 }

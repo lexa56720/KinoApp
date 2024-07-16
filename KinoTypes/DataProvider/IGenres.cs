@@ -9,6 +9,6 @@ namespace KinoTypes.DataProvider
 {
     public interface IGenres
     {
-        public async Task<Genre[]> GetGenresAsync();
+        Task<Genre[]> GetGenresAsync();
     }
 }
