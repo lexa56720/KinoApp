@@ -30,7 +30,7 @@ namespace Tests.ApiTests
         {
             var api = new KinoApi(apiKey, url);
 
-            var result = await api.Movies.GetMovieByYearAsync(1940);
+            var result = await api.Movies.GetMovieByYearAsync(1940,0);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(20, result.Length);

@@ -28,22 +28,24 @@ namespace KinoApiWrapper.Api
             return converter.ConvertMovie(result);
         }
 
-        public async Task<Movie[]> GetMovieByYearAsync(int year)
+        public async Task<Movie[]> GetMovieByYearAsync(int year,int page)
         {
             var result = await requester.Request(@"/api/v2.2/films", new Dictionary<string, string>()
             {
                 { "yearFrom",$"{year}" },
                 { "yearTo",$"{year}" },
+                { "page",$"{page}" },
             }); 
             if (string.IsNullOrEmpty(result))
                 return null;
             return converter.ConvertSearchResult(result);
         }
-        public async Task<Movie[]> GetMovieByGenreAsync(Genre genre)
+        public async Task<Movie[]> GetMovieByGenreAsync(Genre genre, int page)
         {
             var result = await requester.Request(@"/api/v2.2/films", new Dictionary<string, string>()
             {
                 { "genres",$"{genre.Id}" },
+                { "page",$"{page}" },
             });
             if (string.IsNullOrEmpty(result))
                 return Array.Empty<Movie>();
