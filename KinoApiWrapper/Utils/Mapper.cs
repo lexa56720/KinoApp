@@ -1,4 +1,5 @@
 ﻿using KinoApiWrapper.ResponseTypes;
+using KinoApiWrapper.Utils.Abstract;
 using KinoTypes;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace KinoApiWrapper.Utils
 {
-    internal class Mapper
+    internal class Mapper:IMapper
     {
         public Movie Map(BriefMovieInfo response)
         {

@@ -1,5 +1,7 @@
-﻿using KinoApiWrapper.ResponseTypes;
+﻿using KinoApiWrapper.Api.RequestSender;
+using KinoApiWrapper.ResponseTypes;
 using KinoApiWrapper.Utils;
+using KinoApiWrapper.Utils.Abstract;
 using KinoTypes;
 using System;
 using System.Collections.Generic;
@@ -11,10 +13,10 @@ namespace KinoApiWrapper.Api
 {
     public class Movies
     {
-        private readonly Requester requester;
-        private readonly Converter converter;
+        private readonly IRequester requester;
+        private readonly IConverter converter;
 
-        internal Movies(Requester requester, Converter converter)
+        internal Movies(IRequester requester, IConverter converter)
         {
             this.requester = requester;
             this.converter = converter;

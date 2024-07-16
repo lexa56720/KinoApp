@@ -1,5 +1,7 @@
 ﻿using KinoApiWrapper.Api;
+using KinoApiWrapper.Api.RequestSender;
 using KinoApiWrapper.Utils;
+using KinoApiWrapper.Utils.Abstract;
 using KinoTypes;
 using System;
 using System.Collections.Generic;
@@ -13,8 +15,8 @@ namespace KinoApiWrapper
     {
         public Movies Movies { get; }
 
-        private readonly Requester requester;
-        private readonly Converter converter;
+        private readonly IRequester requester;
+        private readonly IConverter converter;
 
         public KinoApi(string apiKey,string url)
         {

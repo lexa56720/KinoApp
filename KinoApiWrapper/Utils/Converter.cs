@@ -1,5 +1,6 @@
 ﻿using KinoApiWrapper.ResponseTypes;
 using KinoApiWrapper.Utils;
+using KinoApiWrapper.Utils.Abstract;
 using KinoTypes;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace KinoApiWrapper.Api
 {
-    internal class Converter
+    internal class Converter: IConverter
     {
-        private readonly Mapper mapper;
+        private readonly IMapper mapper;
 
-        public Converter(Mapper mapper)
+        public Converter(IMapper mapper)
         {
             this.mapper = mapper;
         }

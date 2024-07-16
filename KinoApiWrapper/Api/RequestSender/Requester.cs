@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace KinoApiWrapper.Api
+namespace KinoApiWrapper.Api.RequestSender
 {
-    internal class Requester : IDisposable
+    internal class Requester : IRequester, IDisposable
     {
         private readonly HttpClient client;
         private readonly string url;
