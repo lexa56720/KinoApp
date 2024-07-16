@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace KinoApiWrapper.Utils
 {
-    internal class Mapper:IMapper
+    internal class Mapper : IMapper
     {
         public Movie Map(BriefMovieInfo response)
         {
             var movie = new Movie()
             {
-                KinopoiskId = response.KinopoiskId, 
+                KinopoiskId = response.KinopoiskId,
                 NameRu = response.NameRu,
                 NameOriginal = response.NameOriginal,
                 PosterUrl = response.PosterUrl,
@@ -36,7 +36,7 @@ namespace KinoApiWrapper.Utils
             var movie = new MovieInfo()
             {
                 KinopoiskId = response.KinopoiskId,
-                KinopoiskHDId = response.KinopoiskHDId, 
+                KinopoiskHDId = response.KinopoiskHDId,
                 NameRu = response.NameRu,
                 NameOriginal = response.NameOriginal,
                 PosterUrl = response.PosterUrl,
@@ -65,6 +65,15 @@ namespace KinoApiWrapper.Utils
             };
 
             return movie;
+        }
+
+        public Genre Map(ApiGenre response)
+        {
+            return new Genre
+            {
+                Id = response.Id,
+                Name = response.Name
+            };
         }
 
         private MovieType ParseType(string type)

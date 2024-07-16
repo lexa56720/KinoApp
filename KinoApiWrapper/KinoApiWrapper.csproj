@@ -120,10 +120,12 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Api\Genres.cs" />
     <Compile Include="Api\RequestSender\IRequester.cs" />
     <Compile Include="ResponseTypes\BriefMovieInfo.cs" />
     <Compile Include="ResponseTypes\ApiCountry.cs" />
     <Compile Include="ResponseTypes\ApiGenre.cs" />
+    <Compile Include="ResponseTypes\FilterResponse.cs" />
     <Compile Include="ResponseTypes\FullMovieInfo.cs" />
     <Compile Include="ResponseTypes\MovieSearchResponse.cs" />
     <Compile Include="Utils\Converter.cs" />

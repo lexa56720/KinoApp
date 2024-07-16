@@ -1,4 +1,5 @@
-﻿using KinoApiWrapper.ResponseTypes;
+﻿using KinoApiWrapper.Api;
+using KinoApiWrapper.ResponseTypes;
 using KinoTypes;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,7 @@ namespace KinoApiWrapper.Utils.Abstract
         Movie Map(BriefMovieInfo response);
 
         MovieInfo Map(FullMovieInfo response);
+
+        Genre Map(ApiGenre response);
     }
 }

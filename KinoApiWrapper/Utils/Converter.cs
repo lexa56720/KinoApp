@@ -20,6 +20,12 @@ namespace KinoApiWrapper.Api
             this.mapper = mapper;
         }
 
+        public Genre[] ConvertGenres(string json)
+        {
+            var filters = JsonSerializer.Deserialize<FilterResponse>(json);
+            return filters.Genres.Select(mapper.Map).ToArray();
+        }
+
         public MovieInfo ConvertMovie(string json)
         {
             var movieInfo = JsonSerializer.Deserialize<FullMovieInfo>(json);
@@ -30,7 +36,6 @@ namespace KinoApiWrapper.Api
             var searchResult = JsonSerializer.Deserialize<MovieSearchResponse>(json);
             return searchResult.Items.Select(mapper.Map).ToArray();
         }
-
 
     }
 }

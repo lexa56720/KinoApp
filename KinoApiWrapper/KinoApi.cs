@@ -11,19 +11,21 @@ using System.Threading.Tasks;
 
 namespace KinoApiWrapper
 {
-    internal class KinoApi:IDisposable
+    internal class KinoApi : IDisposable
     {
         public Movies Movies { get; }
+        public Genres Genres { get; }
 
         private readonly IRequester requester;
         private readonly IConverter converter;
 
-        public KinoApi(string apiKey,string url)
+        public KinoApi(string apiKey, string url)
         {
-            requester = new Requester(apiKey,url);
-            converter=new Converter(new Mapper());
+            requester = new Requester(apiKey, url);
+            converter = new Converter(new Mapper());
 
-            Movies = new Movies(requester,converter);
+            Movies = new Movies(requester, converter);
+            Genres = new Genres(requester, converter);
         }
 
         public void Dispose()

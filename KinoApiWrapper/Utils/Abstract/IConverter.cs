@@ -1,4 +1,5 @@
-﻿using KinoApiWrapper.ResponseTypes;
+﻿using KinoApiWrapper.Api;
+using KinoApiWrapper.ResponseTypes;
 using KinoTypes;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,10 @@ namespace KinoApiWrapper.Utils.Abstract
 {
     internal interface IConverter
     {
-       MovieInfo ConvertMovie(string json);
+        MovieInfo ConvertMovie(string json);
 
-       Movie[] ConvertSearchResult(string json);
+        Movie[] ConvertSearchResult(string json);
+
+        Genre[] ConvertGenres(string json);
     }
 }

@@ -119,6 +119,8 @@
     <SDKReference Include="TestPlatform.Universal, Version=$(UnitTestPlatformVersion)" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiTests\ApiConfig.cs" />
+    <Compile Include="ApiTests\GenresTest.cs" />
     <Compile Include="ApiTests\MoviesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTestApp.xaml.cs">
