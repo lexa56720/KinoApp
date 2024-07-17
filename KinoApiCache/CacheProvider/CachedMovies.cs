@@ -12,12 +12,14 @@ namespace KinoApiCache.CacheProvider
 {
     internal class CachedMovies : IMovies
     {
+        private readonly IMovies movies;
         private readonly int itemsPerPage;
         private readonly DbContextFactory factory;
         private readonly IMapper mapper;
 
-        public CachedMovies(int itemsPerPage,DbContextFactory factory,IMapper mapper)
+        public CachedMovies(IMovies movies,DbContextFactory factory,IMapper mapper, int itemsPerPage)
         {
+            this.movies = movies;
             this.itemsPerPage = itemsPerPage;
             this.factory = factory;
             this.mapper = mapper;

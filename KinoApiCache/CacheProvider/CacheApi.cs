@@ -15,12 +15,12 @@ namespace KinoApiCache.CacheProvider
 
         public IMovies Movies { get; }
 
-        public CacheApi(string connectionString,int itemsPerPage)
+        public CacheApi(IGenres genresProvider, IMovies moviesProvider, string connectionString, int itemsPerPage)
         {
             var contextFactory = new DbContextFactory(connectionString);
             var mapper = new Mapper();
-            Genres = new CachedGenres(contextFactory,mapper);
-            Movies = new CachedMovies(itemsPerPage,contextFactory, mapper);
+            Genres = new CachedGenres(genresProvider, contextFactory, mapper);
+            Movies = new CachedMovies(moviesProvider, contextFactory, mapper, itemsPerPage);
         }
         public void Dispose()
         {

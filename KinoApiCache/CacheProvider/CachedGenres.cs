@@ -12,11 +12,13 @@ namespace KinoApiCache.CacheProvider
 {
     internal class CachedGenres : IGenres
     {
+        private readonly IGenres genres;
         private readonly DbContextFactory factory;
         private readonly IMapper mapper;
 
-        public CachedGenres(DbContextFactory factory,IMapper mapper)
+        public CachedGenres(IGenres genres,DbContextFactory factory,IMapper mapper)
         {
+            this.genres = genres;
             this.factory = factory;
             this.mapper = mapper;
         }

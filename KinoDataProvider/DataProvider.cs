@@ -1,4 +1,6 @@
-﻿using KinoTypes.DataProvider;
+﻿using KinoApiCache.CacheProvider;
+using KinoApiWrapper;
+using KinoTypes.DataProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,17 +12,27 @@ namespace KinoDataProvider
     public class DataProvider : IDataProvider
     {
         public IGenres Genres { get; }
-
         public IMovies Movies { get; }
+
+        private KinoApi actualDataProvider;
+        private CacheApi cachedDataProvider;
 
         public DataProvider(string apiKey, string url, string connectionString, int itemsPerPage)
         {
-            Genres = new GenreProvider();
-            Movies = new MovieProvider();
+            actualDataProvider = new KinoApi(apiKey, url);
+
+            cachedDataProvider = new CacheApi(actualDataProvider.Genres,
+                                              actualDataProvider.Movies,
+                                              connectionString,
+                                              itemsPerPage);
+
+            Genres = cachedDataProvider.Genres;
+            Movies = cachedDataProvider.Movies;
         }
         public void Dispose()
         {
-            throw new NotImplementedException();
+            cachedDataProvider.Dispose();
+            actualDataProvider.Dispose();
         }
     }
 }

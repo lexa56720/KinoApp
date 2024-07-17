@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace KinoApiWrapper
 {
-    internal class KinoApi : IDataProvider, IDisposable
+    public class KinoApi : IDataProvider, IDisposable
     {
         public IMovies Movies { get; }
         public IGenres Genres { get; }
