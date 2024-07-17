@@ -1,0 +1,41 @@
+﻿using KinoApiCache.DataBase.Tables.CachedType;
+using KinoTypes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace KinoApiCache.DataBase.Tables
+{
+    public enum CachedMovieType
+    {
+        FILM,
+        VIDEO,
+        TV_SERIES,
+        MINI_SERIES,
+        TV_SHOW,
+    }
+
+    internal class MovieDB : ICachedEntity
+    {
+        public int Id { get; set; }
+
+        public int KinopoiskId { get; set; }
+        public string Name { get; set; }
+
+        public string Countries { get; set; }
+
+        public string Genres { get; set; }
+
+        public double? RatingKinopoisk { get; set; }
+
+        public int? Year { get; set; }
+
+        public CachedMovieType Type { get; set; }
+
+        public string PosterUrl { get; set; }
+
+        public string PosterUrlPreview { get; set; }
+    }
+}

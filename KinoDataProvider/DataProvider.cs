@@ -17,14 +17,14 @@ namespace KinoDataProvider
         private KinoApi actualDataProvider;
         private CacheApi cachedDataProvider;
 
-        public DataProvider(string apiKey, string url, string connectionString, int itemsPerPage)
+        public DataProvider(string apiKey, string url, string connectionString, TimeSpan cacheLife)
         {
             actualDataProvider = new KinoApi(apiKey, url);
 
             cachedDataProvider = new CacheApi(actualDataProvider.Genres,
                                               actualDataProvider.Movies,
                                               connectionString,
-                                              itemsPerPage);
+                                              cacheLife);
 
             Genres = cachedDataProvider.Genres;
             Movies = cachedDataProvider.Movies;

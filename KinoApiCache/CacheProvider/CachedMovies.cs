@@ -1,4 +1,6 @@
 ﻿using KinoApiCache.DataBase;
+using KinoApiCache.DataBase.Interaction;
+using KinoApiCache.DataBase.Tables;
 using KinoApiCache.Utils;
 using KinoTypes;
 using KinoTypes.DataProvider;
@@ -13,35 +15,70 @@ namespace KinoApiCache.CacheProvider
     internal class CachedMovies : IMovies
     {
         private readonly IMovies movies;
-        private readonly int itemsPerPage;
-        private readonly DbContextFactory factory;
-        private readonly IMapper mapper;
+        private readonly CachedCalls interactor;
 
-        public CachedMovies(IMovies movies,DbContextFactory factory,IMapper mapper, int itemsPerPage)
+        public CachedMovies(IMovies movies, CachedCalls interactor)
         {
             this.movies = movies;
-            this.itemsPerPage = itemsPerPage;
-            this.factory = factory;
-            this.mapper = mapper;
-        }
-        public Task<Movie[]> GetMovieByGenreAsync(Genre genre, Order order = Order.RATING, int page = 1)
-        {
-            throw new NotImplementedException();
+            this.interactor = interactor;
         }
 
-        public Task<MovieInfo> GetMovieByIdAsync(int id)
+
+        public async Task<MovieInfo> GetMovieByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var cached = await interactor.GetResult<MovieInfo, MovieInfoDB>(nameof(GetMovieByIdAsync), id.ToString());
+            if (cached != null)
+                return cached.FirstOrDefault();
+
+            var result = await movies.GetMovieByIdAsync(id);
+            await interactor.AddCall<MovieInfo, MovieInfoDB>(new[] { result }, nameof(GetMovieByIdAsync), id.ToString());
+            return result;
         }
 
-        public Task<Movie[]> GetMovieByYearAsync(int year, Order order = Order.RATING, int page = 1)
+        public async Task<Movie[]> GetMoviesByKeywordAsync(string keyword, int page = 1)
         {
-            throw new NotImplementedException();
+            var cached = await interactor.GetResult<Movie, MovieDB>(nameof(GetMoviesByKeywordAsync), keyword, page.ToString());
+            if (cached != null)
+                return cached;
+
+            var result = await movies.GetMoviesByKeywordAsync(keyword, page);
+            await interactor.AddCall<Movie, MovieDB>(result, nameof(GetMoviesByKeywordAsync), keyword, page.ToString());
+            return result;
+        }
+        public async Task<Movie[]> GetMovieByYearAsync(int year, Order order = Order.RATING, int page = 1)
+        {
+            var cached = await interactor.GetResult<Movie, MovieDB>(nameof(GetMovieByYearAsync),
+                                                                     year.ToString(),
+                                                                     order.ToString(),
+                                                                     page.ToString());
+            if (cached != null)
+                return cached;
+
+            var result = await movies.GetMovieByYearAsync(year, order, page);
+            await interactor.AddCall<Movie, MovieDB>(result,
+                                                     nameof(GetMovieByYearAsync),
+                                                     year.ToString(),
+                                                     order.ToString(),
+                                                     page.ToString());
+            return result;
         }
 
-        public Task<Movie[]> GetMoviesByKeywordAsync(string keyword, int page = 1)
+        public async Task<Movie[]> GetMovieByGenreAsync(Genre genre, Order order = Order.RATING, int page = 1)
         {
-            throw new NotImplementedException();
+            var cached = await interactor.GetResult<Movie, MovieDB>(nameof(GetMovieByGenreAsync),
+                                                         genre.Id.ToString(),
+                                                         order.ToString(),
+                                                         page.ToString());
+            if (cached != null)
+                return cached;
+
+            var result = await movies.GetMovieByGenreAsync(genre, order, page);
+            await interactor.AddCall<Movie, MovieDB>(result,
+                                                     nameof(GetMovieByGenreAsync),
+                                                     genre.Id.ToString(),
+                                                     order.ToString(),
+                                                     page.ToString());
+            return result;
         }
     }
 }

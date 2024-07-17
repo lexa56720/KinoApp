@@ -32,10 +32,10 @@ namespace KinoApiWrapper.ResponseTypes.MoviesTypes.Keyword
         public string FilmLength { get; set; }
 
         [JsonPropertyName("countries")]
-        public List<Country> Countries { get; } = new List<Country>();
+        public ApiCountry[] Countries { get; set; }
 
         [JsonPropertyName("genres")]
-        public List<Genre> Genres { get; } = new List<Genre>();
+        public ApiGenre[] Genres { get; set; }
 
         [JsonPropertyName("rating")]
         public string Rating { get; set; }
