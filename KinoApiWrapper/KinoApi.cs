@@ -3,6 +3,7 @@ using KinoApiWrapper.Api.RequestSender;
 using KinoApiWrapper.Utils;
 using KinoApiWrapper.Utils.Abstract;
 using KinoTypes;
+using KinoTypes.DataProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace KinoApiWrapper
 {
-    internal class KinoApi : IDisposable
+    public class KinoApi : IDataProvider, IDisposable
     {
-        public Movies Movies { get; }
-        public Genres Genres { get; }
+        public IMovies Movies { get; }
+        public IGenres Genres { get; }
 
         private readonly IRequester requester;
         private readonly IConverter converter;

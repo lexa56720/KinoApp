@@ -120,7 +120,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="DataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\KinoDataProvider.rd.xml" />
   </ItemGroup>
@@ -137,6 +137,10 @@
     <ProjectReference Include="..\KinoApiWrapper\KinoApiWrapper.csproj">
       <Project>{d8df4d5f-7310-4abb-9c85-c2c2833c0fc3}</Project>
       <Name>KinoApiWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KinoTypes\KinoTypes.csproj">
+      <Project>{36B2E971-7C1D-49F3-A25E-16AF5D5916D7}</Project>
+      <Name>KinoTypes</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
