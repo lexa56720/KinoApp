@@ -1,4 +1,6 @@
 ﻿using KinoApiCache.DataBase;
+using KinoApiCache.DataBase.Interaction;
+using KinoApiCache.DataBase.Tables;
 using KinoApiCache.Utils;
 using KinoTypes;
 using KinoTypes.DataProvider;
@@ -13,18 +15,23 @@ namespace KinoApiCache.CacheProvider
     internal class CachedGenres : IGenres
     {
         private readonly IGenres genres;
-        private readonly DbContextFactory factory;
-        private readonly IMapper mapper;
+        private readonly CachedCalls interactor;
 
-        public CachedGenres(IGenres genres,DbContextFactory factory,IMapper mapper)
+
+        public CachedGenres(IGenres genres, CachedCalls interactor)
         {
             this.genres = genres;
-            this.factory = factory;
-            this.mapper = mapper;
+            this.interactor = interactor;
         }
-        public Task<Genre[]> GetGenresAsync()
+        public async Task<Genre[]> GetGenresAsync()
         {
-            throw new NotImplementedException();
+            var cached = await interactor.GetResult<Genre,GenreDB>(nameof(GetGenresAsync));
+            if (cached != null)
+                return cached;
+
+            var result = await genres.GetGenresAsync();
+            await interactor.AddCall<Genre, GenreDB>(result, nameof(GetGenresAsync));
+            return result;
         }
     }
 }
