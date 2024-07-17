@@ -17,7 +17,7 @@ namespace KinoApiCache
 
         public DbSet<MovieDB> Movies { get; set; } = null;
         public DbSet<MovieInfoDB> MovieInfos { get; set; } = null;
-        public DbSet<Genre> Genres { get; set; } = null;
+        public DbSet<GenreDB> Genres { get; set; } = null;
 
 
         private readonly string connectionString;
@@ -81,6 +81,9 @@ namespace KinoApiCache
 
                 entity.Property(e => e.ValueId)
                       .HasColumnName("value_id");
+
+                entity.Property(e => e.IndexId)
+                      .HasColumnName("index_id");
             });
 
 

@@ -10,7 +10,9 @@ namespace KinoApiCache.DataBase.Tables
     {
         public int Id { get; set; }
         public int CallId { get; set; }
+
+        public int IndexId { get; set; }
         public int ValueId { get; set; }
-        public virtual CallDB Call { get; set; } = null;
+        public CallDB Call { get; set; }
     }
 }

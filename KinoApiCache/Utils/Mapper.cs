@@ -151,7 +151,7 @@ namespace KinoApiCache.Utils
             for (int i = 0; i < countries.Length; i++)
             {
                 sb.Append(countries[i].Id);
-                sb.Append(" ");
+                sb.Append("_");
                 sb.Append(countries[i].Name);
                 sb.Append("|");
             }
@@ -159,12 +159,12 @@ namespace KinoApiCache.Utils
         }
         private Country[] MapCounries(string countries)
         {
-            var pairs = countries.Split("|");
+            var pairs = countries.Split("|",StringSplitOptions.RemoveEmptyEntries);
             var result = new Country[pairs.Length];
 
             for (int i = 0; i < pairs.Length; i++)
             {
-                var values = pairs[i].Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                var values = pairs[i].Split("_", StringSplitOptions.RemoveEmptyEntries);
                 result[i] = new Country()
                 {
                     Id = int.Parse(values[0]),
@@ -180,7 +180,7 @@ namespace KinoApiCache.Utils
             for (int i = 0; i < genres.Length; i++)
             {
                 sb.Append(genres[i].Id);
-                sb.Append(" ");
+                sb.Append("_");
                 sb.Append(genres[i].Name);
                 sb.Append("|");
             }
@@ -188,12 +188,12 @@ namespace KinoApiCache.Utils
         }
         private Genre[] MapGenres(string genres)
         {
-            var pairs = genres.Split("|");
+            var pairs = genres.Split("|", StringSplitOptions.RemoveEmptyEntries);
             var result = new Genre[pairs.Length];
 
             for (int i = 0; i < pairs.Length; i++)
             {
-                var values = pairs[i].Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                var values = pairs[i].Split("_", StringSplitOptions.RemoveEmptyEntries);
                 result[i] = new Genre()
                 {
                     Id = int.Parse(values[0]),

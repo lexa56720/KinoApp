@@ -25,8 +25,8 @@ namespace KinoApiWrapper.Utils
                 RatingKinopoisk = response.RatingKinopoisk,
                 Year = response.Year,
                 Type = ParseType(response.Type),
-                Countries = response.Countries?.Select(c => new Country { Id = c.Id, Name = c.Name }).ToArray(),
-                Genres = response.Genres?.Select(g => new Genre { Id = g.Id, Name = g.Name }).ToArray(),
+                Countries = response.Countries?.Select(c => new Country { Id = c.Id.GetValueOrDefault(), Name = c.Name }).ToArray(),
+                Genres = response.Genres?.Select(g => new Genre { Id = g.Id.GetValueOrDefault(), Name = g.Name }).ToArray(),
             };
 
             return movie;
@@ -55,8 +55,8 @@ namespace KinoApiWrapper.Utils
                 ShortDescription = response.ShortDescription,
                 ProductionStatus = response.ProductionStatus,
                 Type = ParseType(response.Type),
-                Countries = response.Countries?.Select(c => new Country { Id = c.Id, Name = c.Name }).ToArray(),
-                Genres = response.Genres?.Select(g => new Genre { Id = g.Id, Name = g.Name }).ToArray(),
+                Countries = response.Countries?.Select(c => new Country { Id = c.Id.GetValueOrDefault(), Name = c.Name }).ToArray(),
+                Genres = response.Genres?.Select(g => new Genre { Id = g.Id.GetValueOrDefault(), Name = g.Name }).ToArray(),
                 StartYear = response.StartYear,
                 EndYear = response.EndYear,
                 Serial = response.Serial,
@@ -71,7 +71,7 @@ namespace KinoApiWrapper.Utils
         {
             return new Genre
             {
-                Id = response.Id,
+                Id = response.Id.GetValueOrDefault(),
                 Name = response.Name
             };
         }
@@ -87,8 +87,8 @@ namespace KinoApiWrapper.Utils
                 RatingKinopoisk = TryParseRating(response.Rating),
                 Year = int.Parse(response.Year),
                 Type = ParseType(response.Type),
-                Countries = response.Countries?.Select(c => new Country { Id = c.Id, Name = c.Name }).ToArray(),
-                Genres = response.Genres?.Select(g => new Genre { Id = g.Id, Name = g.Name }).ToArray(),
+                Countries = response.Countries?.Select(c => new Country { Id = c.Id.GetValueOrDefault(), Name = c.Name }).ToArray(),
+                Genres = response.Genres?.Select(g => new Genre { Id = g.Id.GetValueOrDefault(), Name = g.Name }).ToArray(),
             };
             return movie;
         }

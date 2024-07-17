@@ -15,6 +15,6 @@ namespace KinoApiCache.DataBase.Tables
 
         public string Value { get; set; }
 
-        public virtual CallDB Call { get; set; }
+        public CallDB Call { get; set; }
     }
 }

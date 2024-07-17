@@ -38,7 +38,8 @@ namespace KinoApiCache.DataBase.Interaction
                 return default;
             }
 
-            return await GetResultsFromDB<TKino, TDb>(call.Results.Select(r => r.Id));
+            return await GetResultsFromDB<TKino, TDb>(call.Results.OrderBy(r => r.IndexId)
+                                                                  .Select(r => r.ValueId));
         }
 
         private async Task<TKino[]> GetResultsFromDB<TKino, TDb>(IEnumerable<int> ids)
@@ -52,7 +53,8 @@ namespace KinoApiCache.DataBase.Interaction
                 if (!result.Any())
                     return Array.Empty<TKino>();
 
-                return result.Select(mapper.Map<TKino, TDb>).ToArray();
+                return ids.Select(id => mapper.Map<TKino, TDb>(result.Single(e => e.Id == id)))
+                          .ToArray();
             }
         }
 
@@ -63,14 +65,14 @@ namespace KinoApiCache.DataBase.Interaction
                 return null;
             using (var db = factory.Create())
             {
-                var call = await db.Calls
-                    .Include(c => c.Arguments)
-                    .Include(c => c.Results)
-                    .SingleOrDefaultAsync(c => c.FuncId == funcId &&
-                                               c.Arguments.OrderBy(a => a.Index)
-                                                          .Select(a => a.Value)
-                                                          .SequenceEqual(args));
-                return call;
+                var calls = await db.Calls.Include(c => c.Arguments)
+                                          .Include(c => c.Results)
+                                          .Where(c => c.FuncId == funcId)
+                                          .ToArrayAsync();
+
+                return calls.SingleOrDefault(c => c.Arguments.OrderBy(a => a.Index)
+                                                             .Select(a => a.Value)
+                                                             .SequenceEqual(args));
             }
         }
 
@@ -84,7 +86,8 @@ namespace KinoApiCache.DataBase.Interaction
 
 
                 var set = db.Set<TDb>();
-                set.RemoveRange(set.Where(a => call.Results.Select(r => r.ValueId).Contains(a.Id)));
+                set.RemoveRange(set.Where(a => call.Results.Select(r => r.ValueId)
+                                                           .Contains(a.Id)));
                 db.Arguments.RemoveRange(call.Arguments);
                 db.Results.RemoveRange(call.Results);
                 db.Calls.Remove(call);
@@ -120,7 +123,8 @@ namespace KinoApiCache.DataBase.Interaction
                 for (int i = 0; i < result.Length; i++)
                     call.Results.Add(new ResultDB()
                     {
-                        ValueId = resultIds[i]
+                        ValueId = resultIds[i],
+                        IndexId = i,
                     });
                 return await db.SaveChangesAsync() > 0;
             }
@@ -137,6 +141,7 @@ namespace KinoApiCache.DataBase.Interaction
                 for (int i = 0; i < result.Length; i++)
                 {
                     dbItems[i] = mapper.ReverseMap<TKino, TDb>(result[i]);
+
                     await set.AddAsync(dbItems[i]);
                 }
                 await db.SaveChangesAsync();
