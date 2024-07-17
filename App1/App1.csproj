@@ -4,20 +4,20 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{AA1B78FA-086F-4A5B-AEE2-AF848DD437BC}</ProjectGuid>
+    <ProjectGuid>{7189B5FA-8AB0-46FF-913D-25C8B84CAF54}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KinoApp</RootNamespace>
-    <AssemblyName>KinoApp</AssemblyName>
-    <DefaultLanguage>en_US</DefaultLanguage>
+    <RootNamespace>App1</RootNamespace>
+    <AssemblyName>App1</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22621.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.19041.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
-    <PackageCertificateKeyFile>KinoApp_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>App1_TemporaryKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -116,20 +116,17 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm">
-      <Version>8.2.2</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.14</Version>
+      <Version>6.2.12</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Mvvm">
+      <Version>7.0.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.8.6</Version>
+      <Version>2.5.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
       <Version>2.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="System.Text.Json">
-      <Version>8.0.4</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -137,11 +134,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activation\ActivationHandler.cs" />
-    <Compile Include="Api\DataProvider.cs" />
     <Compile Include="Behaviors\NavigationViewHeaderBehavior.cs" />
     <Compile Include="Behaviors\NavigationViewHeaderMode.cs" />
     <Compile Include="Helpers\EnumToBooleanConverter.cs" />
-    <Compile Include="Helpers\Json.cs" />
     <Compile Include="Helpers\NavHelper.cs" />
     <Compile Include="Helpers\SettingsStorageExtensions.cs" />
     <Compile Include="Services\ActivationService.cs" />
@@ -221,7 +216,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
-    <None Include="KinoApp_TemporaryKey.pfx" />
+    <None Include="App1_TemporaryKey.pfx" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
@@ -231,20 +226,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\KinoApiCache\KinoApiCache.csproj">
-      <Project>{0abf3310-05cb-497a-a2d7-0b7b2d11530d}</Project>
-      <Name>KinoApiCache</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KinoApiWrapper\KinoApiWrapper.csproj">
-      <Project>{d8df4d5f-7310-4abb-9c85-c2c2833c0fc3}</Project>
-      <Name>KinoApiWrapper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KinoTypes\KinoTypes.csproj">
-      <Project>{36b2e971-7c1d-49f3-a25e-16af5d5916d7}</Project>
-      <Name>KinoTypes</Name>
+    <ProjectReference Include="..\App1.Core\App1.Core.csproj">
+      <Project>{049A0B28-69B3-4D4D-AB02-E1F01998F89C}</Project>
+      <Name>App1.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

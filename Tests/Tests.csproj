@@ -169,7 +169,7 @@
       <Name>KinoApiWrapper</Name>
     </ProjectReference>
     <ProjectReference Include="..\KinoApp\KinoApp.csproj">
-      <Project>{41170cda-c29b-4859-be50-5b31aa9acb8e}</Project>
+      <Project>{aa1b78fa-086f-4a5b-aee2-af848dd437bc}</Project>
       <Name>KinoApp</Name>
     </ProjectReference>
     <ProjectReference Include="..\KinoTypes\KinoTypes.csproj">

@@ -1,35 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+
+using KinoApp.ViewModels;
 using Windows.ApplicationModel.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.ViewManagement;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using KinoApp.ViewModel;
 
-// Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x419
-
-namespace KinoApp
+namespace KinoApp.Views
 {
-    /// <summary>
-    /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
-    /// </summary>
-    public sealed partial class MainPage : Page
+    // TODO: Change the icons and titles for all NavigationViewItems in ShellPage.xaml.
+    public sealed partial class ShellPage : Page
     {
-        public MainPage()
+        public ShellViewModel ViewModel { get; } = new ShellViewModel();
+
+        public ShellPage()
         {
-            this.InitializeComponent();
-            DataContext = new MainViewModel();
+            InitializeComponent();
+            DataContext = ViewModel;
+            ViewModel.Initialize(shellFrame, NavigationViewControl, KeyboardAccelerators);
 
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
 

@@ -8,14 +8,14 @@
   IgnorableNamespaces="uap mp genTemplate">
 
   <Identity
-    Name="90c109dd-2f7b-4f05-a9bb-a55871195334"
+    Name="3969aa4e-edf9-4f7c-b21a-1601e90b9214"
     Publisher="CN=lexa0"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="90c109dd-2f7b-4f05-a9bb-a55871195334" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="3969aa4e-edf9-4f7c-b21a-1601e90b9214" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>KinoApp</DisplayName>
+    <DisplayName>App1</DisplayName>
     <PublisherDisplayName>lexa0</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -31,7 +31,7 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="KinoApp.App">
+      EntryPoint="App1.App">
       <uap:VisualElements
         DisplayName="ms-resource:AppDisplayName"
         Square150x150Logo="Assets\Square150x150Logo.png"

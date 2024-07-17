@@ -1,11 +1,11 @@
 ﻿using System;
 
-using KinoApp.Services;
+using App1.Services;
 
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 
-namespace KinoApp
+namespace App1
 {
     public sealed partial class App : Application
     {
