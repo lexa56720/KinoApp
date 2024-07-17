@@ -138,7 +138,6 @@
     <Compile Include="Utils\Abstract\IConverter.cs" />
     <Compile Include="Utils\Abstract\IMapper.cs" />
     <Compile Include="Utils\Mapper.cs" />
-    <Compile Include="Utils\RequestLimiter.cs" />
     <EmbeddedResource Include="Properties\KinoApiWrapper.rd.xml" />
   </ItemGroup>
   <ItemGroup>

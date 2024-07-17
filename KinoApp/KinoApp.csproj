@@ -116,6 +116,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Api\DataProvider.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -158,9 +159,17 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KinoApiCache\KinoApiCache.csproj">
+      <Project>{0abf3310-05cb-497a-a2d7-0b7b2d11530d}</Project>
+      <Name>KinoApiCache</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KinoApiWrapper\KinoApiWrapper.csproj">
       <Project>{d8df4d5f-7310-4abb-9c85-c2c2833c0fc3}</Project>
       <Name>KinoApiWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KinoTypes\KinoTypes.csproj">
+      <Project>{36b2e971-7c1d-49f3-a25e-16af5d5916d7}</Project>
+      <Name>KinoTypes</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
