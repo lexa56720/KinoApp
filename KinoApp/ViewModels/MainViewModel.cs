@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using KinoApp.Models;
 using KinoApp.Services;
+using KinoApp.Views;
 using KinoTypes;
 using System;
 using System.Collections.ObjectModel;
@@ -56,7 +57,7 @@ namespace KinoApp.ViewModels
 
         private void OpenMovie(MovieViewModel movie)
         {
-            throw new NotImplementedException();
+           NavigationService.Navigate(typeof(MovieDetailPage), movie);
         }
     }
 }
