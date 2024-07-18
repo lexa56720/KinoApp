@@ -20,17 +20,17 @@ namespace KinoApp.ViewModels
     {
         public bool IsBackEnabled
         {
-            get { return _isBackEnabled; }
-            set { SetProperty(ref _isBackEnabled, value); }
+            get { return isBackEnabled; }
+            set { SetProperty(ref isBackEnabled, value); }
         }
-        private bool _isBackEnabled;
+        private bool isBackEnabled;
 
         public WinUI.NavigationViewItem Selected
         {
-            get { return _selected; }
-            set { SetProperty(ref _selected, value); }
+            get { return selected; }
+            set { SetProperty(ref selected, value); }
         }
-        private WinUI.NavigationViewItem _selected;
+        private WinUI.NavigationViewItem selected;
 
         public ICommand ItemInvokedCommand
         {

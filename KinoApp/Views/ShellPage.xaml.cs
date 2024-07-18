@@ -20,7 +20,6 @@ namespace KinoApp.Views
             InitializeComponent();
             DataContext = ViewModel;
             ViewModel.Initialize(shellFrame, NavigationViewControl);
-
             SetCustomTitleBar();
         }
 
