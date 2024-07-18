@@ -6,10 +6,68 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="Transparent">
 
-    <Grid>
-        <Image MaxHeight="500"  Source="{x:Bind ViewModel.briefMovie.Movie.PosterUrl}"/>
+    <StackPanel>
+        <Border Margin="5" CornerRadius="10" Background="White">
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" VerticalAlignment="Center" Grid.Column="0" CornerRadius="10">
+                    <Image   Source="{x:Bind ViewModel.briefMovie.Movie.PosterUrl}"/>
+                </Border>
 
-    </Grid>
+                <StackPanel Grid.Row="0" Grid.Column="1"  Margin="10">
+                    <TextBlock FontWeight="Bold" Style="{StaticResource HeaderTextBlockStyle}" Text="{x:Bind ViewModel.Name ,Mode=OneWay}" />
+                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.Description,Mode=OneWay}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Margin="5" CornerRadius="10" Background="White">
+            <StackPanel Margin="5">
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" FontWeight="Bold" >
+                    <Run Text="О"/>
+                    <Run Text="{x:Bind ViewModel.Type,Converter={StaticResource TypeToStringConverter},Mode=OneWay}"/>
+                </TextBlock>
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource BodyTextBlockStyle}"  Text="Год производства"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource BodyTextBlockStyle}"  Text="{x:Bind ViewModel.Year,Mode=OneWay}"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource BodyTextBlockStyle}"  Text="Страна" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource BodyTextBlockStyle}"  Text="{x:Bind ViewModel.Countries,Mode=OneWay, Converter={StaticResource CountriesToStringConverter}}"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource BodyTextBlockStyle}"  Text="Жанр" />
+                    <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource BodyTextBlockStyle}"  Text="{x:Bind ViewModel.Genres,Mode=OneWay, Converter={StaticResource GenresToStringConverter}}"/>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource BodyTextBlockStyle}"  Text="Длительность"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1"  Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.FilmLength,Mode=OneWay,Converter={StaticResource MinutesToTimeConverter}}"/>
+
+                </Grid>
+            </StackPanel>
+        </Border>
+
+    </StackPanel>
+
+
+
 </Page>

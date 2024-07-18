@@ -136,9 +136,13 @@
     <Compile Include="Controls\MovieList.xaml.cs">
       <DependentUpon>MovieList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CountriesToStringConverter.cs" />
     <Compile Include="Helpers\EnumToBooleanConverter.cs" />
+    <Compile Include="Helpers\GenresToStringConverter.cs" />
+    <Compile Include="Helpers\MinutesToTimeConverter.cs" />
     <Compile Include="Helpers\NavHelper.cs" />
     <Compile Include="Helpers\SettingsStorageExtensions.cs" />
+    <Compile Include="Helpers\TypeToStringConverter.cs" />
     <Compile Include="Models\MainModel.cs" />
     <Compile Include="Models\MovieDetailModel.cs" />
     <Compile Include="Services\ApiService.cs" />

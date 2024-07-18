@@ -26,6 +26,7 @@ namespace KinoApp.Views
         public MovieDetailViewModel ViewModel { get; } = new MovieDetailViewModel();
         public MovieDetailPage()
         {
+          
             this.InitializeComponent();
         }
 
