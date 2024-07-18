@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
-
-using KinoApp.Core.Helpers;
-
 using Windows.Storage;
 using Windows.Storage.Streams;
 
@@ -23,7 +21,7 @@ namespace KinoApp.Helpers
         public static async Task SaveAsync<T>(this StorageFolder folder, string name, T content)
         {
             var file = await folder.CreateFileAsync(GetFileName(name), CreationCollisionOption.ReplaceExisting);
-            var fileContent = await Json.StringifyAsync(content);
+            var fileContent = JsonSerializer.Serialize(content);
 
             await FileIO.WriteTextAsync(file, fileContent);
         }
@@ -38,12 +36,12 @@ namespace KinoApp.Helpers
             var file = await folder.GetFileAsync($"{name}.json");
             var fileContent = await FileIO.ReadTextAsync(file);
 
-            return await Json.ToObjectAsync<T>(fileContent);
+            return JsonSerializer.Deserialize<T>(fileContent);
         }
 
-        public static async Task SaveAsync<T>(this ApplicationDataContainer settings, string key, T value)
+        public static void Save<T>(this ApplicationDataContainer settings, string key, T value)
         {
-            settings.SaveString(key, await Json.StringifyAsync(value));
+            settings.SaveString(key, JsonSerializer.Serialize(value));
         }
 
         public static void SaveString(this ApplicationDataContainer settings, string key, string value)
@@ -51,10 +49,10 @@ namespace KinoApp.Helpers
             settings.Values[key] = value;
         }
 
-        public static async Task<T> ReadAsync<T>(this ApplicationDataContainer settings, string key)
+        public static T Read<T>(this ApplicationDataContainer settings, string key)
         {
             if (settings.Values.TryGetValue(key, out object obj))
-                return await Json.ToObjectAsync<T>((string)obj);
+                return JsonSerializer.Deserialize<T>((string)obj);
 
             return default;
         }
@@ -80,33 +78,29 @@ namespace KinoApp.Helpers
         {
             var item = await folder.TryGetItemAsync(fileName).AsTask().ConfigureAwait(false);
 
-            if ((item != null) && item.IsOfType(StorageItemTypes.File))
-            {
-                var storageFile = await folder.GetFileAsync(fileName);
-                byte[] content = await storageFile.ReadBytesAsync();
-                return content;
-            }
+            if (item == null || !item.IsOfType(StorageItemTypes.File))
+                return null;
 
-            return null;
+            var storageFile = await folder.GetFileAsync(fileName);
+            byte[] content = await storageFile.ReadBytesAsync();
+            return content;
         }
 
         public static async Task<byte[]> ReadBytesAsync(this StorageFile file)
         {
-            if (file != null)
+            if (file == null)
+                return null;
+
+            using (IRandomAccessStream stream = await file.OpenReadAsync())
             {
-                using (IRandomAccessStream stream = await file.OpenReadAsync())
+                using (var reader = new DataReader(stream.GetInputStreamAt(0)))
                 {
-                    using (var reader = new DataReader(stream.GetInputStreamAt(0)))
-                    {
-                        await reader.LoadAsync((uint)stream.Size);
-                        var bytes = new byte[stream.Size];
-                        reader.ReadBytes(bytes);
-                        return bytes;
-                    }
+                    await reader.LoadAsync((uint)stream.Size);
+                    var bytes = new byte[stream.Size];
+                    reader.ReadBytes(bytes);
+                    return bytes;
                 }
             }
-
-            return null;
         }
 
         private static string GetFileName(string name)

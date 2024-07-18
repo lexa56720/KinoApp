@@ -1,4 +1,6 @@
-﻿using KinoApp.Api;
+﻿using KinoApiCache.CacheProvider;
+using KinoApiWrapper;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -17,13 +19,17 @@ namespace Tests.DbTests
         [TestMethod]
         public async Task TestGetMovieByIdCache()
         {
-            var path = Windows.Storage.ApplicationData.Current.LocalCacheFolder.Path+ "\\test.db";
+            var path = Windows.Storage.ApplicationData.Current.LocalCacheFolder.Path + "\\test.db";
             var cachePath = $"Data Source={path}";
-            var dataProvider = new DataProvider(ApiConfig.ApiKey, ApiConfig.Url, cachePath, TimeSpan.FromHours(24));
+            var actualDataProvider = new KinoApi(ApiConfig.ApiKey, ApiConfig.Url);
+            var cachedDataProvider = new CacheApi(actualDataProvider.Genres,
+                                               actualDataProvider.Movies,
+                                               cachePath, TimeSpan.FromHours(24));
+
 
             File.Delete(path);
-            var ApiMovie = await dataProvider.Movies.GetMovieByIdAsync(1001);
-            var CacheMovie = await dataProvider.Movies.GetMovieByIdAsync(1001);
+            var ApiMovie = await cachedDataProvider.Movies.GetMovieByIdAsync(1001);
+            var CacheMovie = await cachedDataProvider.Movies.GetMovieByIdAsync(1001);
 
             Assert.IsNotNull(ApiMovie);
             Assert.IsNotNull(CacheMovie);
@@ -35,11 +41,13 @@ namespace Tests.DbTests
         {
             var path = Windows.Storage.ApplicationData.Current.LocalCacheFolder.Path + "\\test.db";
             var cachePath = $"Data Source={path}";
-            var dataProvider = new DataProvider(ApiConfig.ApiKey, ApiConfig.Url, cachePath, TimeSpan.FromHours(24));
-
+            var actualDataProvider = new KinoApi(ApiConfig.ApiKey, ApiConfig.Url);
+            var cachedDataProvider = new CacheApi(actualDataProvider.Genres,
+                                               actualDataProvider.Movies,
+                                               cachePath, TimeSpan.FromHours(24));
             File.Delete(path);
-            var ApiMovie = await dataProvider.Movies.GetMovieByYearAsync(1944,KinoTypes.Order.NUM_VOTE,2);
-            var CacheMovie = await dataProvider.Movies.GetMovieByYearAsync(1944, KinoTypes.Order.NUM_VOTE, 2);
+            var ApiMovie = await cachedDataProvider.Movies.GetMovieByYearAsync(1944, KinoTypes.Order.NUM_VOTE, 2);
+            var CacheMovie = await cachedDataProvider.Movies.GetMovieByYearAsync(1944, KinoTypes.Order.NUM_VOTE, 2);
 
             Assert.IsNotNull(ApiMovie);
             Assert.IsNotNull(CacheMovie);
