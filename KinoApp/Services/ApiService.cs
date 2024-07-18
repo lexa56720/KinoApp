@@ -33,7 +33,7 @@ namespace KinoApp.Services
 
         public static string GetConnectionString()
         {
-            var path = Windows.Storage.ApplicationData.Current.LocalCacheFolder.Path + "\\test.db";
+            var path = Windows.Storage.ApplicationData.Current.LocalCacheFolder.Path + "\\cache.db";
             return $"Data Source={path}";
         }
 

@@ -3,9 +3,11 @@ using KinoApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -35,31 +37,54 @@ namespace KinoApp.Controls
             set => SetValue(MoviesProperty, value);
         }
 
+        public static readonly DependencyProperty TitleProperty =
+    DependencyProperty.Register(nameof(Title),
+                                typeof(string),
+                                typeof(MovieList),
+                                new PropertyMetadata(null));
 
-
-        public ICommand FavoriteClick
+        public string Title
         {
-            get
-            {
-                if (favoriteClick == null)
-                    favoriteClick = new RelayCommand<MovieViewModel>(FavoriteSwitch);
-                return favoriteClick;
-            }
+            get => (string)GetValue(TitleProperty);
+            set => SetValue(TitleProperty, value);
         }
 
-        private void FavoriteSwitch(MovieViewModel model)
+
+        public static readonly DependencyProperty OpenMovieCommandProperty =
+         DependencyProperty.Register(nameof(OpenMovieCommand),
+                                typeof(ICommand),
+                                typeof(MovieList),
+                                new PropertyMetadata(null));
+
+        public ICommand OpenMovieCommand
         {
-            model.IsFavorite = !model.IsFavorite;
+            get => (ICommand)GetValue(OpenMovieCommandProperty);
+            set => SetValue(OpenMovieCommandProperty, value);
         }
 
-        private ICommand favoriteClick;
 
+        public static readonly DependencyProperty LoadMoreCommandProperty =
+        DependencyProperty.Register(nameof(LoadMoreCommand),
+                                typeof(IAsyncRelayCommand),
+                                typeof(MovieList),
+                                new PropertyMetadata(null));
+
+        public IAsyncRelayCommand LoadMoreCommand
+        {
+            get => (IAsyncRelayCommand)GetValue(LoadMoreCommandProperty);
+            set => SetValue(LoadMoreCommandProperty, value);
+        }
+
+        private bool IsLoading = false;
         public MovieList()
         {
             this.InitializeComponent();
             DataContext = this;
         }
-
+        private void FavoriteSwitch(MovieViewModel model)
+        {
+            model.IsFavorite = !model.IsFavorite;
+        }
         private void Grid_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
             Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Hand, 1);
@@ -68,6 +93,39 @@ namespace KinoApp.Controls
         private void Grid_PointerExited(object sender, PointerRoutedEventArgs e)
         {
             Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 1);
+        }
+
+        private void Grid_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            if (sender is Grid grid && grid.DataContext is MovieViewModel movie)
+            {
+                OpenMovieCommand.Execute(movie);
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is MovieViewModel movie)
+            {
+                FavoriteSwitch(movie);
+            }
+        }
+
+        private async void ScrollViewer_ViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
+        {
+            if (sender is ScrollViewer sv && IsLoading == false &&
+                IsBottomReached(sv.ExtentHeight, e.NextView.VerticalOffset, sv.ViewportHeight))
+            {
+                IsLoading = true;
+                await LoadMoreCommand.ExecuteAsync(null);
+                IsLoading = false;
+            }
+        }
+
+        private bool IsBottomReached(double extentHeight, double verticalOffset, double viewportHeight)
+        {
+            var diff = extentHeight - (verticalOffset + viewportHeight);
+            return Math.Abs(diff) < viewportHeight / 2;
         }
     }
 }

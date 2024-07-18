@@ -54,7 +54,7 @@ namespace KinoApiWrapper.Api
                 { "page",$"{page}" },
             });
             if (string.IsNullOrEmpty(result))
-                return Array.Empty<Movie>();
+                return null;
             return converter.ConvertSearchResult(result);
         }
 
@@ -66,7 +66,7 @@ namespace KinoApiWrapper.Api
                 { "page",$"{page}" },
             });
             if (string.IsNullOrEmpty(result))
-                return Array.Empty<Movie>();
+                return null;
             return converter.ConvertSearchByKeywordResult(result);
         }
     }

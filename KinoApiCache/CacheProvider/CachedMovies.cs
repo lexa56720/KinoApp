@@ -31,6 +31,8 @@ namespace KinoApiCache.CacheProvider
                 return cached.FirstOrDefault();
 
             var result = await movies.GetMovieByIdAsync(id);
+            if (result == null)
+                return null;
             await interactor.AddCall<MovieInfo, MovieInfoDB>(new[] { result }, nameof(GetMovieByIdAsync), id.ToString());
             return result;
         }
@@ -42,6 +44,8 @@ namespace KinoApiCache.CacheProvider
                 return cached;
 
             var result = await movies.GetMoviesByKeywordAsync(keyword, page);
+            if (result == null)
+                return Array.Empty<Movie>();
             await interactor.AddCall<Movie, MovieDB>(result, nameof(GetMoviesByKeywordAsync), keyword, page.ToString());
             return result;
         }
@@ -55,6 +59,8 @@ namespace KinoApiCache.CacheProvider
                 return cached;
 
             var result = await movies.GetMovieByYearAsync(year, order, page);
+            if(result==null)
+                return Array.Empty<Movie>();
             await interactor.AddCall<Movie, MovieDB>(result,
                                                      nameof(GetMovieByYearAsync),
                                                      year.ToString(),
@@ -73,6 +79,8 @@ namespace KinoApiCache.CacheProvider
                 return cached;
 
             var result = await movies.GetMovieByGenreAsync(genre, order, page);
+            if (result == null)
+                return Array.Empty<Movie>();
             await interactor.AddCall<Movie, MovieDB>(result,
                                                      nameof(GetMovieByGenreAsync),
                                                      genre.Id.ToString(),

@@ -25,7 +25,7 @@ namespace KinoApiWrapper.Api
         {
             var result = await requester.Request(@"/api/v2.2/films/filters");
             if (string.IsNullOrEmpty(result))
-                return Array.Empty<Genre>();
+                return null;
 
             return converter.ConvertGenres(result);
         }

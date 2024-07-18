@@ -30,6 +30,8 @@ namespace KinoApiCache.CacheProvider
                 return cached;
 
             var result = await genres.GetGenresAsync();
+            if (result == null)
+                return Array.Empty<Genre>();
             await interactor.AddCall<Genre, GenreDB>(result, nameof(GetGenresAsync));
             return result;
         }
