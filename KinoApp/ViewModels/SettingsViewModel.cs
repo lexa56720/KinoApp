@@ -17,13 +17,12 @@ namespace KinoApp.ViewModels
     public class SettingsViewModel : ObservableObject
     {
 
-        private string _versionDescription;
+        private string versionDescription;
 
         public string VersionDescription
         {
-            get { return _versionDescription; }
-
-            set { SetProperty(ref _versionDescription, value); }
+            get { return versionDescription; }
+            set { SetProperty(ref versionDescription, value); }
         }
 
 

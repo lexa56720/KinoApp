@@ -19,8 +19,13 @@ namespace KinoApp.Views
         {
             InitializeComponent();
             DataContext = ViewModel;
-            ViewModel.Initialize(shellFrame, NavigationViewControl, KeyboardAccelerators);
+            ViewModel.Initialize(shellFrame, NavigationViewControl);
 
+            SetCustomTitleBar();
+        }
+
+        private void SetCustomTitleBar()
+        {
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
 
             titleBar.ButtonBackgroundColor = Colors.Transparent;
