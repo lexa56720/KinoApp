@@ -16,14 +16,6 @@ namespace KinoApp.ViewModels
     // TODO: Add other settings as necessary. For help see https://github.com/microsoft/TemplateStudio/blob/main/docs/UWP/pages/settings.md
     public class SettingsViewModel : ObservableObject
     {
-        private ElementTheme _elementTheme = ThemeSelectorService.Theme;
-
-        public ElementTheme ElementTheme
-        {
-            get { return _elementTheme; }
-
-            set { SetProperty(ref _elementTheme, value); }
-        }
 
         private string _versionDescription;
 
@@ -34,25 +26,6 @@ namespace KinoApp.ViewModels
             set { SetProperty(ref _versionDescription, value); }
         }
 
-        private ICommand _switchThemeCommand;
-
-        public ICommand SwitchThemeCommand
-        {
-            get
-            {
-                if (_switchThemeCommand == null)
-                {
-                    _switchThemeCommand = new RelayCommand<ElementTheme>(
-                        async (param) =>
-                        {
-                            ElementTheme = param;
-                            await ThemeSelectorService.SetThemeAsync(param);
-                        });
-                }
-
-                return _switchThemeCommand;
-            }
-        }
 
         public SettingsViewModel()
         {
@@ -66,7 +39,7 @@ namespace KinoApp.ViewModels
 
         private string GetVersionDescription()
         {
-            var appName = "AppDisplayName".GetLocalized();
+            var appName = Package.Current.DisplayName;
             var package = Package.Current;
             var packageId = package.Id;
             var version = packageId.Version;

@@ -32,9 +32,6 @@ namespace KinoApp.Services
         {
             if (IsInteractive(activationArgs))
             {
-                // Initialize services that you need before app activation
-                // take into account that the splash screen is shown while this code runs.
-                await InitializeAsync();
 
                 // Do not repeat app initialization when the Window already has content,
                 // just ensure that the window is active
@@ -54,16 +51,9 @@ namespace KinoApp.Services
             {
                 // Ensure the current window is active
                 Window.Current.Activate();
-
-                // Tasks after activation
-                await StartupAsync();
             }
         }
 
-        private async Task InitializeAsync()
-        {
-            await ThemeSelectorService.InitializeAsync().ConfigureAwait(false);
-        }
 
         private async Task HandleActivationAsync(object activationArgs)
         {
@@ -85,10 +75,6 @@ namespace KinoApp.Services
             }
         }
 
-        private async Task StartupAsync()
-        {
-            await ThemeSelectorService.SetRequestedThemeAsync();
-        }
 
         private IEnumerable<ActivationHandler> GetActivationHandlers()
         {

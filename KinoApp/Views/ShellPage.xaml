@@ -58,7 +58,10 @@
             IsSettingsVisible="True">
             
             <muxc:NavigationView.MenuItems>
-                <muxc:NavigationViewItem x:Uid="Shell_Main" Icon="Document" helpers:NavHelper.NavigateTo="views:MainPage" />
+                <muxc:NavigationViewItem Icon="Home" Content="Домашняя страница" helpers:NavHelper.NavigateTo="views:MainPage" />
+                <muxc:NavigationViewItem Icon="OutlineStar" Content="Избранное" helpers:NavHelper.NavigateTo="views:MainPage" />
+                <muxc:NavigationViewItem Icon="Find" Content="Поиск" helpers:NavHelper.NavigateTo="views:MainPage" />
+
             </muxc:NavigationView.MenuItems>
             <i:Interaction.Behaviors>
                 <ic:EventTriggerBehavior EventName="ItemInvoked">
