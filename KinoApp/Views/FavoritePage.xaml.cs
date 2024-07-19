@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KinoApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,9 +23,15 @@ namespace KinoApp.Views
     /// </summary>
     public sealed partial class FavoritePage : Page
     {
+        public FavoriteViewModel ViewModel { get; } = new FavoriteViewModel();
         public FavoritePage()
         {
             this.InitializeComponent();
+        }
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            await ViewModel.InitAsync();
         }
     }
 }

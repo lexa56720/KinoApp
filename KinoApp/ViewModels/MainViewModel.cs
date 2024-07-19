@@ -14,58 +14,11 @@ using System.Windows.Input;
 
 namespace KinoApp.ViewModels
 {
-    public class MainViewModel : ObservableObject
+    public class MainViewModel : BaseMovieListViewModel<MainModel>
     {
-        public ObservableCollection<MovieViewModel> Movies { get; set; } = new ObservableCollection<MovieViewModel>();
-
-        public ICommand OpenMovieCommand
+        protected override MainModel CreateModel()
         {
-            get
-            {
-                if (openMovieCommand == null)
-                    openMovieCommand = new RelayCommand<MovieViewModel>(OpenMovie);
-                return openMovieCommand;
-            }
-        }
-        private ICommand openMovieCommand;
-
-        public IAsyncRelayCommand LoadMoreCommand
-        {
-            get
-            {
-                if (loadMoreCommand == null)
-                    loadMoreCommand = new AsyncRelayCommand(LoadMore, () => !IsFullyLoaded);
-                return loadMoreCommand;
-            }
-        }
-        private IAsyncRelayCommand loadMoreCommand;
-
-
-        private bool IsFullyLoaded;
-        private readonly MainModel model;
-        public MainViewModel()
-        {
-            model = new MainModel(ApiService.Api);
-        }
-
-        private async Task LoadMore()
-        {
-            var movies = await model.GetMoviesAsync();
-            foreach (var movie in movies)
-                if (!Movies.Any(m => m.Movie.KinopoiskId == movie.KinopoiskId))
-                    Movies.Add(new MovieViewModel(movie));
-            IsFullyLoaded = movies.Length == 0;
-        }
-
-        private void OpenMovie(MovieViewModel movie)
-        {
-            NavigationService.Navigate(typeof(MovieDetailPage), movie);
-        }
-
-        internal async Task InitAsync()
-        {
-            if (!IsFullyLoaded && Movies.Count == 0)
-                await LoadMore();
+            return new MainModel(ApiService.Api);
         }
     }
 }

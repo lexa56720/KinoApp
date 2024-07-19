@@ -144,11 +144,15 @@
     <Compile Include="Helpers\RatingToBrushConverter.cs" />
     <Compile Include="Helpers\SettingsStorageExtensions.cs" />
     <Compile Include="Helpers\TypeToStringConverter.cs" />
+    <Compile Include="Models\BaseMovieListModel.cs" />
+    <Compile Include="Models\FavoriteModel.cs" />
     <Compile Include="Models\MainModel.cs" />
     <Compile Include="Models\MovieDetailModel.cs" />
     <Compile Include="Services\ApiService.cs" />
     <Compile Include="Services\FavoriteService.cs" />
     <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="ViewModels\BaseMovieListViewModel.cs" />
+    <Compile Include="ViewModels\FavoriteViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MovieDetailViewModel.cs" />
     <Compile Include="ViewModels\MovieViewModel.cs" />

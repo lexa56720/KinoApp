@@ -11,6 +11,8 @@ namespace KinoTypes.DataProvider
     {
         Task<MovieInfo> GetMovieByIdAsync(int id);
 
+        Task<MovieInfo[]> GetMovieByIdAsync(int[] ids);
+
         Task<Movie[]> GetMovieByYearAsync(int year, Order order = Order.RATING, int page = 1);
 
         Task<Movie[]> GetMovieByGenreAsync(Genre genre, Order order = Order.RATING, int page = 1);

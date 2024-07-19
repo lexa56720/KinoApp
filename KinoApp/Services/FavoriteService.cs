@@ -23,6 +23,7 @@ namespace KinoApp.Services
     internal static class FavoriteService
     {
         private static List<int> FavoriteIds = new List<int>();
+        public static IReadOnlyList<int> List => FavoriteIds.AsReadOnly();
 
         public static EventHandler<FavoriteChangedEventArgs> FavoriteChanged;
         private static ApplicationDataContainer storage;

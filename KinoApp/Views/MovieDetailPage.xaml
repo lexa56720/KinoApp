@@ -34,13 +34,13 @@
                 <StackPanel Grid.Row="0" Grid.Column="1"  Margin="10">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock FontWeight="Bold" Style="{StaticResource HeaderTextBlockStyle}" Text="{x:Bind ViewModel.Movie.Name ,Mode=OneWay}" />
-                        <Button Command="{x:Bind ViewModel.FavoriteSwitchCommand}" VerticalAlignment="Center">
+                        <Button Margin="0,10,0,0" Command="{x:Bind ViewModel.FavoriteSwitchCommand}" VerticalAlignment="Center">
                             <SymbolIcon x:Name="symbol"  Symbol="OutlineStar">
                                 <i:Interaction.Behaviors>
-                                    <Core:DataTriggerBehavior Binding="{x:Bind ViewModel.IsFavorite}" Value="False">
+                                    <Core:DataTriggerBehavior Binding="{x:Bind ViewModel.IsFavorite,Mode=OneWay}" Value="False">
                                         <Core:ChangePropertyAction TargetObject="{Binding ElementName=symbol}" PropertyName="Symbol" Value="OutlineStar" />
                                     </Core:DataTriggerBehavior>
-                                    <Core:DataTriggerBehavior Binding="{x:Bind ViewModel.IsFavorite}" Value="True">
+                                    <Core:DataTriggerBehavior Binding="{x:Bind ViewModel.IsFavorite,Mode=OneWay}" Value="True">
                                         <Core:ChangePropertyAction TargetObject="{Binding ElementName=symbol}" PropertyName="Symbol" Value="Favorite" />
                                     </Core:DataTriggerBehavior>
                                 </i:Interaction.Behaviors>
