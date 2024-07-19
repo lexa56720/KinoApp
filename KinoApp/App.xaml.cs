@@ -16,6 +16,7 @@ namespace KinoApp
         {
             InitializeComponent();
             UnhandledException += OnAppUnhandledException;
+            Suspending += OnSuspending;
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)

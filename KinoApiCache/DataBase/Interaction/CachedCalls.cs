@@ -70,9 +70,10 @@ namespace KinoApiCache.DataBase.Interaction
                                           .Where(c => c.FuncId == funcId)
                                           .ToArrayAsync();
 
-                return calls.SingleOrDefault(c => c.Arguments.OrderBy(a => a.Index)
-                                                             .Select(a => a.Value)
-                                                             .SequenceEqual(args));
+                return calls.OrderBy(c=>c.Date)
+                            .LastOrDefault(c => c.Arguments.OrderBy(a => a.Index)
+                                                           .Select(a => a.Value)
+                                                           .SequenceEqual(args));
             }
         }
 

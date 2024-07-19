@@ -122,6 +122,7 @@
   <ItemGroup>
     <Compile Include="Api\Genres.cs" />
     <Compile Include="Api\RequestSender\IRequester.cs" />
+    <Compile Include="Api\RequestSender\RequestLimiter.cs" />
     <Compile Include="ResponseTypes\MoviesTypes\Keyword\MovieKeyword.cs" />
     <Compile Include="ResponseTypes\MoviesTypes\Search\MovieSearch.cs" />
     <Compile Include="ResponseTypes\ApiCountry.cs" />

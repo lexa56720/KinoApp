@@ -9,21 +9,15 @@ using System.Threading.Tasks;
 
 namespace KinoApp.Models
 {
-    internal class MainModel
+    public class MainModel:BaseMovieListModel
     {
-        private readonly IDataProvider dataProvider;
-
         private int page = 1;
 
-        private bool IsFullyLoaded = false;
-
-        public MainModel(IDataProvider dataProvider)
+        public MainModel(IDataProvider dataProvider):base(dataProvider) 
         {
-            this.dataProvider = dataProvider;
         }
 
-
-        public async Task<Movie[]> GetMoviesAsync()
+        public override async Task<Movie[]> GetMoviesAsync()
         {
             if(IsFullyLoaded)
                 return Array.Empty<Movie>();

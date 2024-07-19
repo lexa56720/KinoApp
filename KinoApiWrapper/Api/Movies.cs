@@ -30,6 +30,16 @@ namespace KinoApiWrapper.Api
                 return null;
             return converter.ConvertMovie(result);
         }
+        public async Task<MovieInfo[]> GetMovieByIdAsync(int[] ids)
+        {
+            var funcs = new Func<int,Task<MovieInfo>>[ids.Length];
+            for (int i = 0; i < ids.Length; i++)
+            {
+                funcs[i] = (int j) => GetMovieByIdAsync(ids[j]);
+            }
+            var movies = await RequestLimiter.Call(funcs, 10);
+            return movies;
+        }
 
         public async Task<Movie[]> GetMovieByYearAsync(int year, Order order = Order.RATING, int page = 1)
         {
