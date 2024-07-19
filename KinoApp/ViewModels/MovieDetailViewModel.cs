@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using KinoApp.Models;
 using KinoApp.Services;
 using KinoTypes;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace KinoApp.ViewModels
 {
@@ -36,6 +38,40 @@ namespace KinoApp.ViewModels
         }
         private bool isFavorite = false;
 
+        public ICommand FavoriteSwitchCommand
+        {
+            get
+            {
+                if (favoriteSwitchCommand == null)
+                    favoriteSwitchCommand = new RelayCommand(FavoriteSwitch);
+                return favoriteSwitchCommand;
+            }
+        }
+        private ICommand favoriteSwitchCommand;
+
+        public ICommand LoadCommand
+        {
+            get
+            {
+                if (loadCommand == null)
+                    loadCommand = new RelayCommand(Loaded);
+                return loadCommand;
+            }
+        }
+        private ICommand loadCommand;
+
+        public ICommand UnLoadCommand
+        {
+            get
+            {
+                if (unLoadCommand == null)
+                    unLoadCommand = new RelayCommand(UnLoaded);
+                return unLoadCommand;
+            }
+        }
+        private ICommand unLoadCommand;
+
+
         private readonly MovieDetailModel model;
         public MovieDetailViewModel()
         {
@@ -45,9 +81,18 @@ namespace KinoApp.ViewModels
         public async Task InitAsync(MovieViewModel movie)
         {
             BriefMovie = movie.Movie;
+
+            Movie = await model.GetMovieInfo(movie.Movie);
+        }
+        private void UnLoaded()
+        {
+            FavoriteService.FavoriteChanged -= OnFavoriteChanged;
+        }
+
+        private void Loaded()
+        {
             IsFavorite = FavoriteService.IsContains(BriefMovie);
             FavoriteService.FavoriteChanged += OnFavoriteChanged;
-            Movie = await model.GetMovieInfo(movie.Movie);
         }
 
         private void OnFavoriteChanged(object sender, FavoriteChangedEventArgs e)
@@ -56,6 +101,14 @@ namespace KinoApp.ViewModels
                 IsFavorite = true;
             else if (e.Id == BriefMovie.KinopoiskId && !e.IsAdded)
                 IsFavorite = false;
+        }
+
+        private void FavoriteSwitch()
+        {
+            if (IsFavorite)
+                FavoriteService.Remove(Movie);
+            else
+                FavoriteService.Add(Movie);
         }
     }
 }

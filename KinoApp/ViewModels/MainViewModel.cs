@@ -4,8 +4,10 @@ using KinoApp.Models;
 using KinoApp.Services;
 using KinoApp.Views;
 using KinoTypes;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -43,25 +45,26 @@ namespace KinoApp.ViewModels
         private readonly MainModel model;
         public MainViewModel()
         {
-            model = new MainModel(ApiService.Api);          
+            model = new MainModel(ApiService.Api);
         }
 
         private async Task LoadMore()
         {
             var movies = await model.GetMoviesAsync();
             foreach (var movie in movies)
-                Movies.Add(new MovieViewModel(movie));
+                if (!Movies.Any(m => m.Movie.KinopoiskId == movie.KinopoiskId))
+                    Movies.Add(new MovieViewModel(movie));
             IsFullyLoaded = movies.Length == 0;
         }
 
         private void OpenMovie(MovieViewModel movie)
         {
-           NavigationService.Navigate(typeof(MovieDetailPage), movie);
+            NavigationService.Navigate(typeof(MovieDetailPage), movie);
         }
 
         internal async Task InitAsync()
         {
-            if(!IsFullyLoaded && Movies.Count==0)
+            if (!IsFullyLoaded && Movies.Count == 0)
                 await LoadMore();
         }
     }

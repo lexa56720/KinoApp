@@ -21,6 +21,7 @@
                     <helpers:GenresToStringConverter x:Key="GenresToStringConverter" />
                     <helpers:MinutesToTimeConverter x:Key="MinutesToTimeConverter" />
                     <helpers:TypeToStringConverter x:Key="TypeToStringConverter"/>
+                    <helpers:RatingToBrushConverter x:Key="RatingToBrushConverter"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

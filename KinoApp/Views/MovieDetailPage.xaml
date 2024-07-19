@@ -4,10 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:KinoApp.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:i="using:Microsoft.Xaml.Interactivity" xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+    mc:Ignorable="d" 
     Background="Transparent">
-
+    <i:Interaction.Behaviors>
+        <Core:EventTriggerBehavior EventName="Unloaded">
+            <Core:InvokeCommandAction Command="{x:Bind ViewModel.UnLoadCommand}"/>
+        </Core:EventTriggerBehavior>
+        <Core:EventTriggerBehavior EventName="Loaded">
+            <Core:InvokeCommandAction Command="{x:Bind ViewModel.LoadCommand}"/>
+        </Core:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+    
     <StackPanel>
         <Border Margin="5" CornerRadius="10" Background="White">
             <Grid Margin="5">
@@ -24,7 +32,21 @@
                 </Border>
 
                 <StackPanel Grid.Row="0" Grid.Column="1"  Margin="10">
-                    <TextBlock FontWeight="Bold" Style="{StaticResource HeaderTextBlockStyle}" Text="{x:Bind ViewModel.Movie.Name ,Mode=OneWay}" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontWeight="Bold" Style="{StaticResource HeaderTextBlockStyle}" Text="{x:Bind ViewModel.Movie.Name ,Mode=OneWay}" />
+                        <Button Command="{x:Bind ViewModel.FavoriteSwitchCommand}" VerticalAlignment="Center">
+                            <SymbolIcon x:Name="symbol"  Symbol="OutlineStar">
+                                <i:Interaction.Behaviors>
+                                    <Core:DataTriggerBehavior Binding="{x:Bind ViewModel.IsFavorite}" Value="False">
+                                        <Core:ChangePropertyAction TargetObject="{Binding ElementName=symbol}" PropertyName="Symbol" Value="OutlineStar" />
+                                    </Core:DataTriggerBehavior>
+                                    <Core:DataTriggerBehavior Binding="{x:Bind ViewModel.IsFavorite}" Value="True">
+                                        <Core:ChangePropertyAction TargetObject="{Binding ElementName=symbol}" PropertyName="Symbol" Value="Favorite" />
+                                    </Core:DataTriggerBehavior>
+                                </i:Interaction.Behaviors>
+                            </SymbolIcon>
+                        </Button>
+                    </StackPanel>
                     <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.Movie.Description,Mode=OneWay}" />
                 </StackPanel>
             </Grid>
@@ -46,8 +68,6 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource BodyTextBlockStyle}"  Text="Год производства"/>
@@ -61,7 +81,36 @@
 
                     <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource BodyTextBlockStyle}"  Text="Длительность"/>
                     <TextBlock Grid.Row="3" Grid.Column="1"  Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.Movie.FilmLength,Mode=OneWay,Converter={StaticResource MinutesToTimeConverter}}"/>
+                </Grid>
+            </StackPanel>
+        </Border>
 
+        <Border Margin="5" CornerRadius="10" Background="White">
+            <StackPanel Margin="5">
+                <TextBlock Text="Оценки" Style="{StaticResource SubtitleTextBlockStyle}" FontWeight="Bold"/>
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Grid.Row="0" Grid.Column="1" Foreground="{x:Bind ViewModel.Movie.RatingKinopoisk, Converter={StaticResource RatingToBrushConverter},Mode=OneWay}"
+                                   Style="{StaticResource SubheaderTextBlockStyle}" FontWeight="Bold"  Text="{x:Bind ViewModel.Movie.RatingKinopoisk,Mode=OneWay}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource BodyTextBlockStyle}">
+                           <Run Text="{x:Bind ViewModel.Movie.RatingKinopoiskVoteCount,Mode=OneWay}"/>
+                           <Run Text="оценок"/>
+                        </TextBlock>  
+                    </StackPanel>
+
+                    <StackPanel VerticalAlignment="Bottom"  Grid.Column="1">
+                        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource BodyTextBlockStyle}">
+                            <Run Text="IMDB:" FontWeight="Bold" />
+                            <Run Text="{x:Bind ViewModel.Movie.RatingImdb,Mode=OneWay}" FontWeight="Bold" />
+                            <Run Text="{x:Bind ViewModel.Movie.RatingImdbVoteCount,Mode=OneWay}"/>
+                            <Run Text="оценок"/>
+                        </TextBlock>
+                    </StackPanel>
                 </Grid>
             </StackPanel>
         </Border>

@@ -141,6 +141,7 @@
     <Compile Include="Helpers\GenresToStringConverter.cs" />
     <Compile Include="Helpers\MinutesToTimeConverter.cs" />
     <Compile Include="Helpers\NavHelper.cs" />
+    <Compile Include="Helpers\RatingToBrushConverter.cs" />
     <Compile Include="Helpers\SettingsStorageExtensions.cs" />
     <Compile Include="Helpers\TypeToStringConverter.cs" />
     <Compile Include="Models\MainModel.cs" />
