@@ -13,6 +13,6 @@
         <StackPanel x:Name="ContentArea">
 
         </StackPanel>
-        <TextBlock VerticalAlignment="Bottom" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" />
+        <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" />
     </Grid>
 </Page>

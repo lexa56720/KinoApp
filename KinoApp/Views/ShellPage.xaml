@@ -26,10 +26,10 @@
             <StackPanel Orientation="Horizontal">
                 <Image x:Name="AppFontIcon"
                     HorizontalAlignment="Left" 
-                    VerticalAlignment="Center"
-                    Source="Assets/Square44x44Logo.png" 
-                    Width="16" 
-                    Height="16"/>
+                    VerticalAlignment="Bottom"
+                    Source="ms-appx:///Assets/Square44x44Logo.png" 
+                    Width="24" 
+                    Height="24"/>
                 <TextBlock x:Name="AppTitle"
                     Text="KinoApp"
                     VerticalAlignment="Center"
