@@ -30,6 +30,8 @@ namespace KinoApp.Models
             if (IsFullyLoaded)
                 return Array.Empty<Movie>();
 
+            SortDate(ref yearFrom, ref yearTo);
+
             Order? queryOrder = null;
             if (order != null && Orders.TryGetValue(order, out var res))
                 queryOrder = res;
@@ -40,6 +42,12 @@ namespace KinoApp.Models
             else
                 Interlocked.Increment(ref page);
             return movies;
+        }
+
+        public void SortDate(ref int? from, ref int? to)
+        {
+            if (from != null && to != null && from > to)
+                (to, from) = (from, to);
         }
         public async Task<Genre[]> GetGenresAsync()
         {

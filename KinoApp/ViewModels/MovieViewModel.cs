@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace KinoApp.ViewModels
 {
-    public class MovieViewModel : ObservableObject
+    public class MovieViewModel : ObservableObject, IDisposable
     {
         public bool IsFavorite
         {
@@ -21,7 +21,7 @@ namespace KinoApp.ViewModels
         private bool isFavorite = false;
 
         public Movie Movie { get; }
-
+        private bool isDisposed = false;
         public MovieViewModel(Movie movie)
         {
             Movie = movie;
@@ -35,6 +35,15 @@ namespace KinoApp.ViewModels
                 IsFavorite = true;
             else if (e.Id == Movie.KinopoiskId && !e.IsAdded)
                 IsFavorite = false;
+        }
+
+        public void Dispose()
+        {
+            if (isDisposed)
+                return;
+
+            FavoriteService.FavoriteChanged -= OnFavoriteChanged;
+            isDisposed = true;
         }
     }
 }

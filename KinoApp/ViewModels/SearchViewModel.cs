@@ -121,6 +121,8 @@ namespace KinoApp.ViewModels
         }
         private async Task Search()
         {
+            foreach (var movie in Movies)
+                movie.Dispose();
             Movies.Clear();
             model.Reset();
             await LoadMore();

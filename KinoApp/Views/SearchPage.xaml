@@ -14,16 +14,16 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Border Background="White" CornerRadius="10">
-            <StackPanel Spacing="5" Margin="5" Padding="5"  VerticalAlignment="Top" Orientation="Horizontal">
-                <DatePicker  MinYear="{x:Bind ViewModel.MinYear}" SelectedDate="{x:Bind ViewModel.FromDate,Mode=TwoWay}"
+            <StackPanel HorizontalAlignment="Center" Spacing="5" Margin="5" Padding="5"  VerticalAlignment="Top" Orientation="Horizontal">
+                <DatePicker MinYear="{x:Bind ViewModel.MinYear}"  SelectedDate="{x:Bind ViewModel.FromDate,Mode=TwoWay}"
                          DayVisible="False" MonthVisible="False"/>
-                <DatePicker  MinYear="{x:Bind ViewModel.MinYear}"  SelectedDate="{x:Bind ViewModel.ToDate,Mode=TwoWay}"
+                <DatePicker x:Name="To"  MinYear="{x:Bind ViewModel.MinYear}"  SelectedDate="{x:Bind ViewModel.ToDate,Mode=TwoWay}"
                          DayVisible="False" MonthVisible="False"/>
                 <ComboBox PlaceholderText="Жанр" SelectedItem="{x:Bind ViewModel.SelectedGenre,Mode=TwoWay}"
                       ItemsSource="{x:Bind ViewModel.Genres,Converter={StaticResource GenresToItemsConverter},Mode=OneWay}"/>
                 <ComboBox PlaceholderText="Сортировать по"  SelectedItem="{x:Bind ViewModel.SelectedOrder,Mode=TwoWay}"
                       ItemsSource="{x:Bind ViewModel.Orders,Mode=OneWay}"/>
-                <TextBox MaxLength="32" PlaceholderText="Ключевая фраза"/>
+                <TextBox Text="{x:Bind ViewModel.Keyword,Mode=TwoWay}"  MaxLength="32" PlaceholderText="Ключевая фраза"/>
 
                 <Button Command="{x:Bind ViewModel.SearchCommand}" >
                     <StackPanel Orientation="Horizontal">

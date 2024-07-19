@@ -57,7 +57,7 @@ namespace KinoApiCache.CacheProvider
                 yearTo.HasValue ? yearTo.ToString() : "3000",
                 genre != null ? genre.Id.ToString() : "null",
                 order!=null? order.ToString(): "null",
-                keyword ?? "null",
+                string.IsNullOrEmpty(keyword)? "null":keyword,
                 page.ToString()
             };
 
@@ -104,7 +104,5 @@ namespace KinoApiCache.CacheProvider
             }
             return list.ToArray();
         }
-
-
     }
 }

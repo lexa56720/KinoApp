@@ -24,7 +24,9 @@ namespace KinoApp.ViewModels
             }
             else
             {
-                Movies.Remove(Movies.SingleOrDefault(m => m.Movie.KinopoiskId == e.Id));
+                var movie = Movies.SingleOrDefault(m => m.Movie.KinopoiskId == e.Id);
+                movie.Dispose();
+                Movies.Remove(movie);
             }
         }
 
@@ -35,7 +37,7 @@ namespace KinoApp.ViewModels
 
         protected override async Task LoadMore()
         {
-            var movies = await model.GetMoviesAsync(Movies.Select(m=>m.Movie.KinopoiskId).ToArray());
+            var movies = await model.GetMoviesAsync(Movies.Select(m => m.Movie.KinopoiskId).ToArray());
             foreach (var movie in movies)
                 if (!Movies.Any(m => m.Movie.KinopoiskId == movie.KinopoiskId))
                 {
