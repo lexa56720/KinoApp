@@ -13,10 +13,8 @@ namespace KinoTypes.DataProvider
 
         Task<MovieInfo[]> GetMovieByIdAsync(int[] ids);
 
-        Task<Movie[]> GetMovieByYearAsync(int year, Order order = Order.RATING, int page = 1);
+        Task<Movie[]> GetBestMoviesAsync(int page);
 
-        Task<Movie[]> GetMovieByGenreAsync(Genre genre, Order order = Order.RATING, int page = 1);
-
-        Task<Movie[]> GetMoviesByKeywordAsync(string keyword, int page = 1);
+        Task<Movie[]> GetMoviesFilteredAsync(int? yearFrom, int? yearTo, Genre genre, Order? order, string keyword, int page);
     }
 }

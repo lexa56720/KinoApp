@@ -18,26 +18,6 @@ namespace KinoApp.ViewModels
             set => SetProperty(ref genres, value);
         }
         private Genre[] genres = Array.Empty<Genre>();
-
-        public string SelectedGenre
-        {
-            get => selectedGenre;
-            set => SetProperty(ref selectedGenre, value);
-        }
-        private string selectedGenre;
-
-        public string SelectedOrder
-        {
-            get => selectedOrder;
-            set => SetProperty(ref selectedOrder, value);
-        }
-        private string selectedOrder;
-        public string Keyword
-        {
-            get => keyword;
-            set => SetProperty(ref keyword, value);
-        }
-        private string keyword;
         public string[] Orders
         {
             get => orders;
@@ -45,17 +25,57 @@ namespace KinoApp.ViewModels
         }
         private string[] orders;
 
+        public string SelectedGenre
+        {
+            get => selectedGenre;
+            set
+            {
+                SetProperty(ref selectedGenre, value);
+                Clear();
+            }
+        }
+        private string selectedGenre = null;
+
+        public string SelectedOrder
+        {
+            get => selectedOrder;
+            set
+            {
+                SetProperty(ref selectedOrder, value);
+                Clear();
+            }
+        }
+        private string selectedOrder = null;
+        public string Keyword
+        {
+            get => keyword;
+            set
+            {
+                SetProperty(ref keyword, value);
+                Clear();
+            }
+        }
+        private string keyword = null;
+
         public DateTimeOffset FromDate
         {
             get => fromDate;
-            set => SetProperty(ref fromDate, value);
+            set
+            {
+                SetProperty(ref fromDate, value);
+                Clear();
+            }
         }
         private DateTimeOffset fromDate;
 
         public DateTimeOffset ToDate
         {
             get => toDate;
-            set => SetProperty(ref toDate, value);
+            set
+            {
+                SetProperty(ref toDate, value);
+                Clear();
+            }
         }
         private DateTimeOffset toDate;
 
@@ -74,11 +94,23 @@ namespace KinoApp.ViewModels
         }
         protected override async Task LoadMore()
         {
-            await model.GetMoviesAsync(FromDate.Year,
-                                       ToDate.Year,
+            await model.GetMoviesAsync(GetYear(FromDate),
+                                       GetYear(ToDate),
                                        Genres.SingleOrDefault(g => g.Name == SelectedGenre),
                                        SelectedOrder,
                                        Keyword);
+        }
+        private int? GetYear(DateTimeOffset date)
+        {
+            var year = date.Year;
+            if (year == MinYear.Year)
+                return null;
+            return year;
+        }
+        private void Clear()
+        {
+            Movies.Clear();
+            model.Reset();
         }
     }
 }

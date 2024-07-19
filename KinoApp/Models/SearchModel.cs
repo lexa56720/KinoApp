@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace KinoApp.Models
@@ -12,6 +13,8 @@ namespace KinoApp.Models
     {
         private readonly Dictionary<string, Order> Orders = new Dictionary<string, Order>();
         private int page = 1;
+        private bool IsFullyLoaded = false;
+
         public SearchModel(IDataProvider dataProvider) : base(dataProvider)
         {
             var names = Enum.GetNames(typeof(Order));
@@ -19,19 +22,21 @@ namespace KinoApp.Models
                 Orders.Add(names[i], (Order)i);
         }
 
-        public async Task<Movie[]> GetMoviesAsync(int yearFrom, int yearTo, Genre genre, string order, string keyword)
+        public async Task<Movie[]> GetMoviesAsync(int? yearFrom, int? yearTo, Genre genre, string order, string keyword)
         {
-            if (yearTo == 1800)
-                yearTo = 3000;
+            if (IsFullyLoaded)
+                return Array.Empty<Movie>();
 
-            int genreId = -1;
-            if(genre!=null)
-                genreId=genre.Id;
+            Order? queryOrder = null;
+            if (Enum.TryParse(typeof(Order), order, true, out var result))
+                 queryOrder = (Order)result;
 
-            if (!Enum.TryParse(typeof(Order),order,true,out var result) || !(result is Order queryOrder))
-                queryOrder = Order.RATING;
-
-
+            var movies = await dataProvider.Movies.GetMoviesFilteredAsync(yearFrom, yearTo, genre, queryOrder, keyword, page);
+            if (movies.Length < 20)
+                IsFullyLoaded = true;
+            else
+                Interlocked.Increment(ref page);
+            return movies;
         }
         public async Task<Genre[]> GetGenresAsync()
         {
@@ -43,6 +48,7 @@ namespace KinoApp.Models
         }
         public void Reset()
         {
+            IsFullyLoaded = false;
             page = 1;
         }
     }

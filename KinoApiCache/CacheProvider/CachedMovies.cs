@@ -37,55 +37,39 @@ namespace KinoApiCache.CacheProvider
             return result;
         }
 
-        public async Task<Movie[]> GetMoviesByKeywordAsync(string keyword, int page = 1)
+        public async Task<Movie[]> GetBestMoviesAsync(int page)
         {
-            var cached = await interactor.GetResult<Movie, MovieDB>(nameof(GetMoviesByKeywordAsync), keyword, page.ToString());
+            var cached = await interactor.GetResult<Movie, MovieDB>(nameof(GetBestMoviesAsync), page.ToString());
             if (cached != null)
                 return cached;
 
-            var result = await movies.GetMoviesByKeywordAsync(keyword, page);
+            var result = await movies.GetBestMoviesAsync(page);
             if (result == null)
-                return Array.Empty<Movie>();
-            await interactor.AddCall<Movie, MovieDB>(result, nameof(GetMoviesByKeywordAsync), keyword, page.ToString());
+                return null;
+            await interactor.AddCall<Movie, MovieDB>(result, nameof(GetBestMoviesAsync), page.ToString());
             return result;
         }
-        public async Task<Movie[]> GetMovieByYearAsync(int year, Order order = Order.RATING, int page = 1)
+        public async Task<Movie[]> GetMoviesFilteredAsync(int? yearFrom, int? yearTo, Genre genre, Order? order, string keyword, int page)
         {
-            var cached = await interactor.GetResult<Movie, MovieDB>(nameof(GetMovieByYearAsync),
-                                                                     year.ToString(),
-                                                                     order.ToString(),
-                                                                     page.ToString());
+            var args = new string[]
+            {
+                yearFrom.HasValue ? yearFrom.ToString() : "1000",
+                yearTo.HasValue ? yearTo.ToString() : "3000",
+                genre != null ? genre.Id.ToString() : "null",
+                order!=null? order.ToString(): "null",
+                keyword ?? "null",
+                page.ToString()
+            };
+
+            var cached = await interactor.GetResult<Movie, MovieDB>(nameof(GetMoviesFilteredAsync), args);
             if (cached != null)
                 return cached;
 
-            var result = await movies.GetMovieByYearAsync(year, order, page);
+            var result = await movies.GetMoviesFilteredAsync(yearFrom, yearTo, genre, order, keyword, page);
             if (result == null)
                 return Array.Empty<Movie>();
-            await interactor.AddCall<Movie, MovieDB>(result,
-                                                     nameof(GetMovieByYearAsync),
-                                                     year.ToString(),
-                                                     order.ToString(),
-                                                     page.ToString());
-            return result;
-        }
 
-        public async Task<Movie[]> GetMovieByGenreAsync(Genre genre, Order order = Order.RATING, int page = 1)
-        {
-            var cached = await interactor.GetResult<Movie, MovieDB>(nameof(GetMovieByGenreAsync),
-                                                         genre.Id.ToString(),
-                                                         order.ToString(),
-                                                         page.ToString());
-            if (cached != null)
-                return cached;
-
-            var result = await movies.GetMovieByGenreAsync(genre, order, page);
-            if (result == null)
-                return Array.Empty<Movie>();
-            await interactor.AddCall<Movie, MovieDB>(result,
-                                                     nameof(GetMovieByGenreAsync),
-                                                     genre.Id.ToString(),
-                                                     order.ToString(),
-                                                     page.ToString());
+            await interactor.AddCall<Movie, MovieDB>(result, nameof(GetMoviesFilteredAsync), args);
             return result;
         }
 
@@ -103,12 +87,12 @@ namespace KinoApiCache.CacheProvider
 
             var requested = await movies.GetMovieByIdAsync(needToRequest);
             foreach (var movie in requested)
-                await interactor.AddCall<MovieInfo, MovieInfoDB>(new[] { movie }, nameof(GetMovieByIdAsync), movie.KinopoiskId.ToString());
+                if (movie != null)
+                    await interactor.AddCall<MovieInfo, MovieInfoDB>(new[] { movie }, nameof(GetMovieByIdAsync), movie.KinopoiskId.ToString());
 
             var results = dbResult.Concat(requested);
-            return ids.Select(id => results.Single(r => r != null && r.KinopoiskId == id)).ToArray();
+            return ids.Select(id => results.SingleOrDefault(r => r != null && r.KinopoiskId == id)).ToArray();
         }
-
 
         private int[] GetMissed(MovieInfo[] movies, int[] ids)
         {
@@ -120,5 +104,7 @@ namespace KinoApiCache.CacheProvider
             }
             return list.ToArray();
         }
+
+
     }
 }

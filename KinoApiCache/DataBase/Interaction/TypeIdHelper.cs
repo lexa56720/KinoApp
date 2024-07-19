@@ -15,10 +15,9 @@ namespace KinoApiCache.DataBase.Interaction
         private static Dictionary<string, int> FuncsId = new Dictionary<string, int>()
         {
             {nameof(IMovies.GetMovieByIdAsync), 0},
-            {nameof(IMovies.GetMovieByGenreAsync), 1},
-            {nameof(IMovies.GetMoviesByKeywordAsync), 2},
-            {nameof(IMovies.GetMovieByYearAsync), 3},
-            {nameof(IGenres.GetGenresAsync), 4},
+            {nameof(IMovies.GetMoviesFilteredAsync), 1},
+            {nameof(IMovies.GetBestMoviesAsync),2 },
+            {nameof(IGenres.GetGenresAsync), 3},
         };
 
         public static int GetFuncId(string name)
