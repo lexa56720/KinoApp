@@ -16,7 +16,7 @@ namespace KinoApp.Helpers
             {
                 return genres.Select(g => g.Name).ToArray();
             }
-            throw new ArgumentException();
+            return "-";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

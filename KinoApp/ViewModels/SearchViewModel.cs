@@ -1,4 +1,5 @@
-﻿using KinoApp.Models;
+﻿using CommunityToolkit.Mvvm.Input;
+using KinoApp.Models;
 using KinoApp.Services;
 using KinoTypes;
 using System;
@@ -7,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace KinoApp.ViewModels
 {
@@ -31,7 +33,6 @@ namespace KinoApp.ViewModels
             set
             {
                 SetProperty(ref selectedGenre, value);
-                Clear();
             }
         }
         private string selectedGenre = null;
@@ -42,7 +43,6 @@ namespace KinoApp.ViewModels
             set
             {
                 SetProperty(ref selectedOrder, value);
-                Clear();
             }
         }
         private string selectedOrder = null;
@@ -52,7 +52,6 @@ namespace KinoApp.ViewModels
             set
             {
                 SetProperty(ref keyword, value);
-                Clear();
             }
         }
         private string keyword = null;
@@ -63,10 +62,9 @@ namespace KinoApp.ViewModels
             set
             {
                 SetProperty(ref fromDate, value);
-                Clear();
             }
         }
-        private DateTimeOffset fromDate;
+        private DateTimeOffset fromDate = new DateTimeOffset(DateTime.Now);
 
         public DateTimeOffset ToDate
         {
@@ -74,12 +72,24 @@ namespace KinoApp.ViewModels
             set
             {
                 SetProperty(ref toDate, value);
-                Clear();
             }
         }
-        private DateTimeOffset toDate;
+        private DateTimeOffset toDate = new DateTimeOffset(DateTime.Now);
 
         public DateTimeOffset MinYear => new DateTimeOffset(new DateTime(1800, 1, 1));
+
+        public ICommand SearchCommand
+        {
+            get
+            {
+                if (searchCommand == null)
+                    searchCommand = new AsyncRelayCommand(Search);
+                return searchCommand;
+            }
+        }
+        private ICommand searchCommand;
+
+
 
         internal override async Task InitAsync()
         {
@@ -94,23 +104,26 @@ namespace KinoApp.ViewModels
         }
         protected override async Task LoadMore()
         {
-            await model.GetMoviesAsync(GetYear(FromDate),
-                                       GetYear(ToDate),
-                                       Genres.SingleOrDefault(g => g.Name == SelectedGenre),
-                                       SelectedOrder,
-                                       Keyword);
+            var movies = await model.GetMoviesAsync(GetYear(FromDate),
+                                        GetYear(ToDate),
+                                        Genres.SingleOrDefault(g => g.Name == SelectedGenre),
+                                        SelectedOrder,
+                                        Keyword);
+            foreach (var movie in movies)
+                Movies.Add(new MovieViewModel(movie));
         }
         private int? GetYear(DateTimeOffset date)
         {
             var year = date.Year;
-            if (year == MinYear.Year)
+            if (year <= MinYear.Year)
                 return null;
             return year;
         }
-        private void Clear()
+        private async Task Search()
         {
             Movies.Clear();
             model.Reset();
+            await LoadMore();
         }
     }
 }

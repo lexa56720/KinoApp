@@ -21,7 +21,7 @@ namespace KinoApp.Helpers
                     return string.Format("{0:%m} мин", time);
 
             }
-            throw new ArgumentException();
+            return "-";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

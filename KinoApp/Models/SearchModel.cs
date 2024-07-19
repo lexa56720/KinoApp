@@ -11,15 +11,18 @@ namespace KinoApp.Models
 {
     public class SearchModel : BaseMovieListModel
     {
-        private readonly Dictionary<string, Order> Orders = new Dictionary<string, Order>();
+        private readonly Dictionary<string, Order> Orders;
         private int page = 1;
         private bool IsFullyLoaded = false;
 
         public SearchModel(IDataProvider dataProvider) : base(dataProvider)
         {
-            var names = Enum.GetNames(typeof(Order));
-            for (int i = 0; i < names.Length; i++)
-                Orders.Add(names[i], (Order)i);
+            Orders = new Dictionary<string, Order>()
+            {
+                { "Рейтингу",Order.RATING },
+                { "Году",Order.YEAR },
+                { "Кол-ву оценок",Order.NUM_VOTE}
+            };
         }
 
         public async Task<Movie[]> GetMoviesAsync(int? yearFrom, int? yearTo, Genre genre, string order, string keyword)
@@ -28,8 +31,8 @@ namespace KinoApp.Models
                 return Array.Empty<Movie>();
 
             Order? queryOrder = null;
-            if (Enum.TryParse(typeof(Order), order, true, out var result))
-                 queryOrder = (Order)result;
+            if (order != null && Orders.TryGetValue(order, out var res))
+                queryOrder = res;
 
             var movies = await dataProvider.Movies.GetMoviesFilteredAsync(yearFrom, yearTo, genre, queryOrder, keyword, page);
             if (movies.Length < 20)
