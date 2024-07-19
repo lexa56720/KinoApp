@@ -14,7 +14,12 @@ namespace KinoApp.Helpers
         {
             if (value is int minutes)
             {
-                return string.Format("{0:%h}:{0:%m}", TimeSpan.FromMinutes(minutes));
+                var time = TimeSpan.FromMinutes(minutes);
+                if (time.Hours != 0)
+                    return string.Format("{0:%h} ч {0:%m} мин",time);
+                else
+                    return string.Format("{0:%m} мин", time);
+
             }
             throw new ArgumentException();
         }

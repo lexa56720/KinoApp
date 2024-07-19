@@ -3,6 +3,7 @@
 using KinoApp.ViewModels;
 
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 namespace KinoApp.Views
 {
@@ -13,6 +14,11 @@ namespace KinoApp.Views
         public MainPage()
         {
             InitializeComponent();
+        }
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            await ViewModel.InitAsync();
         }
     }
 }

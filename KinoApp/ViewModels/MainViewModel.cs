@@ -43,8 +43,7 @@ namespace KinoApp.ViewModels
         private readonly MainModel model;
         public MainViewModel()
         {
-            model = new MainModel(ApiService.Api);
-            LoadMore();
+            model = new MainModel(ApiService.Api);          
         }
 
         private async Task LoadMore()
@@ -58,6 +57,12 @@ namespace KinoApp.ViewModels
         private void OpenMovie(MovieViewModel movie)
         {
            NavigationService.Navigate(typeof(MovieDetailPage), movie);
+        }
+
+        internal async Task InitAsync()
+        {
+            if(!IsFullyLoaded && Movies.Count==0)
+                await LoadMore();
         }
     }
 }

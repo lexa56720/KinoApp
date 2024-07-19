@@ -12,146 +12,29 @@ namespace KinoApp.ViewModels
 {
     public class MovieDetailViewModel : ObservableObject
     {
-        public string Name
+        public MovieInfo Movie
         {
-            get => name;
-            set
-            {
-                SetProperty(ref name, value);
-            }
+            get => movie;
+            private set => SetProperty(ref movie, value);
         }
-        private string name;
+        private MovieInfo movie;
 
-        public Country[] Countries
+        public Movie BriefMovie
         {
-            get => countries;
+            get => briefMovie;
             set
             {
-                SetProperty(ref countries, value);
+                SetProperty(ref briefMovie, value);
             }
         }
-        private Country[] countries = Array.Empty<Country>();
+        private Movie briefMovie;
 
-        public Genre[] Genres
+        public bool IsFavorite
         {
-            get => genres;
-            set
-            {
-                SetProperty(ref genres, value);
-            }
+            get => isFavorite;
+            private set => SetProperty(ref isFavorite, value);
         }
-        private Genre[] genres=Array.Empty<Genre>();
-
-        public int Year
-        {
-            get => year;
-            set
-            {
-                year = value;
-                OnPropertyChanged(nameof(Year));
-            }
-        }
-        private int year;
-
-        public MovieType Type
-        {
-            get => type;
-            set
-            {
-                SetProperty(ref type, value);
-            }
-        }
-        private MovieType type;
-
-        public string PosterUrl
-        {
-            get => posterUrl;
-            set
-            {
-                SetProperty(ref posterUrl, value);
-            }
-        }
-        private string posterUrl;
-
-        public double RatingKinopoisk
-        {
-            get => ratingKinopoisk;
-            set
-            {
-                SetProperty(ref ratingKinopoisk, value);
-            }
-        }
-        private double ratingKinopoisk;
-
-        public int RatingKinopoiskVoteCount
-        {
-            get => ratingKinopoiskVoteCount;
-            set
-            {
-                SetProperty(ref ratingKinopoiskVoteCount, value);
-            }
-        }
-        private int ratingKinopoiskVoteCount;
-
-        public double RatingImdb
-        {
-            get => ratingImdb;
-            set
-            {
-                SetProperty(ref ratingImdb, value);
-            }
-        }
-        private double ratingImdb;
-
-        public int RatingImdbVoteCount
-        {
-            get => ratingImdbVoteCount;
-            set
-            {
-                SetProperty(ref ratingImdbVoteCount, value);
-            }
-        }
-        private int ratingImdbVoteCount;
-
-        public int FilmLength
-        {
-            get => filmLength;
-            set
-            {
-                SetProperty(ref filmLength, value);
-            }
-        }
-        private int filmLength;
-
-        public string Slogan
-        {
-            get => slogan;
-            set
-            {
-                SetProperty(ref slogan, value);
-            }
-        }
-        private string slogan;
-
-        public string Description
-        {
-            get => description;
-            set
-            {
-                SetProperty(ref description, value);
-            }
-        }
-        private string description;
-
-        public MovieViewModel briefMovie
-        {
-            get => briefMovie1;
-            set
-            {
-                SetProperty(ref briefMovie1, value);
-            }
-        }
-        private MovieViewModel briefMovie1;
+        private bool isFavorite = false;
 
         private readonly MovieDetailModel model;
         public MovieDetailViewModel()
@@ -161,25 +44,18 @@ namespace KinoApp.ViewModels
 
         public async Task InitAsync(MovieViewModel movie)
         {
-            briefMovie = movie;
-            Assign(await model.GetMovieInfo(movie.Movie));
+            BriefMovie = movie.Movie;
+            IsFavorite = FavoriteService.IsContains(BriefMovie);
+            FavoriteService.FavoriteChanged += OnFavoriteChanged;
+            Movie = await model.GetMovieInfo(movie.Movie);
         }
 
-        private void Assign(MovieInfo movie)
+        private void OnFavoriteChanged(object sender, FavoriteChangedEventArgs e)
         {
-            Name = movie.Name;
-            Countries = movie.Countries;
-            Genres = movie.Genres;
-            Year = movie.Year.GetValueOrDefault();
-            Type = movie.Type;
-            PosterUrl = movie.PosterUrl;
-            RatingKinopoisk = movie.RatingKinopoisk.GetValueOrDefault();
-            RatingKinopoiskVoteCount = movie.RatingKinopoiskVoteCount.GetValueOrDefault();
-            RatingImdb = movie.RatingImdb.GetValueOrDefault();
-            RatingImdbVoteCount = movie.RatingImdbVoteCount.GetValueOrDefault();
-            FilmLength = movie.FilmLength.GetValueOrDefault();
-            Slogan = movie.Slogan;
-            Description = movie.Description;
+            if (e.Id == BriefMovie.KinopoiskId && e.IsAdded)
+                IsFavorite = true;
+            else if (e.Id == BriefMovie.KinopoiskId && !e.IsAdded)
+                IsFavorite = false;
         }
     }
 }

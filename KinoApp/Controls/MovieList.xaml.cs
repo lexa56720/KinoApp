@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using KinoApp.Services;
 using KinoApp.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -38,10 +39,10 @@ namespace KinoApp.Controls
         }
 
         public static readonly DependencyProperty TitleProperty =
-    DependencyProperty.Register(nameof(Title),
-                                typeof(string),
-                                typeof(MovieList),
-                                new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(Title),
+                                        typeof(string),
+                                        typeof(MovieList),
+                                        new PropertyMetadata(null));
 
         public string Title
         {
@@ -51,10 +52,10 @@ namespace KinoApp.Controls
 
 
         public static readonly DependencyProperty OpenMovieCommandProperty =
-         DependencyProperty.Register(nameof(OpenMovieCommand),
-                                typeof(ICommand),
-                                typeof(MovieList),
-                                new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(OpenMovieCommand),
+                                        typeof(ICommand),
+                                        typeof(MovieList),
+                                        new PropertyMetadata(null));
 
         public ICommand OpenMovieCommand
         {
@@ -64,10 +65,10 @@ namespace KinoApp.Controls
 
 
         public static readonly DependencyProperty LoadMoreCommandProperty =
-        DependencyProperty.Register(nameof(LoadMoreCommand),
-                                typeof(IAsyncRelayCommand),
-                                typeof(MovieList),
-                                new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(LoadMoreCommand),
+                                        typeof(IAsyncRelayCommand),
+                                        typeof(MovieList),
+                                        new PropertyMetadata(null));
 
         public IAsyncRelayCommand LoadMoreCommand
         {
@@ -83,7 +84,10 @@ namespace KinoApp.Controls
         }
         private void FavoriteSwitch(MovieViewModel model)
         {
-            model.IsFavorite = !model.IsFavorite;
+            if (model.IsFavorite)
+                FavoriteService.Remove(model.Movie);
+            else
+                FavoriteService.Add(model.Movie);
         }
         private void Grid_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
