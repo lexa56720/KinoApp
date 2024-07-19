@@ -1,6 +1,5 @@
 ﻿using KinoApiWrapper.ResponseTypes;
 using KinoApiWrapper.ResponseTypes.MoviesTypes;
-using KinoApiWrapper.ResponseTypes.MoviesTypes.Keyword;
 using KinoApiWrapper.ResponseTypes.MoviesTypes.Search;
 using KinoApiWrapper.Utils.Abstract;
 using KinoTypes;
@@ -74,30 +73,6 @@ namespace KinoApiWrapper.Utils
                 Id = response.Id.GetValueOrDefault(),
                 Name = response.Name
             };
-        }
-
-        public Movie Map(MovieKeyword response)
-        {
-            var movie = new Movie()
-            {
-                KinopoiskId = response.FilmId,
-                Name = GetName(response.NameRu, response.NameEn),
-                PosterUrl = response.PosterUrl,
-                PosterUrlPreview = response.PosterUrlPreview,
-                RatingKinopoisk = TryParseRating(response.Rating),
-                Year = int.Parse(response.Year),
-                Type = ParseType(response.Type),
-                Countries = response.Countries?.Select(c => new Country { Id = c.Id.GetValueOrDefault(), Name = c.Name }).ToArray(),
-                Genres = response.Genres?.Select(g => new Genre { Id = g.Id.GetValueOrDefault(), Name = g.Name }).ToArray(),
-            };
-            return movie;
-        }
-
-        private double? TryParseRating(string value)
-        {
-            if (double.TryParse(value, out var res))
-                return res;
-            return null;
         }
 
         private MovieType ParseType(string type)

@@ -14,13 +14,9 @@ namespace KinoApp.Models
     {
         protected readonly IDataProvider dataProvider;
 
-        protected bool IsFullyLoaded = false;
-
         public BaseMovieListModel(IDataProvider dataProvider)
         {
             this.dataProvider = dataProvider;
         }
-
-        public abstract Task<Movie[]> GetMoviesAsync();
     }
 }

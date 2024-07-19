@@ -8,18 +8,13 @@ using Windows.UI.Xaml.Data;
 
 namespace KinoApp.Helpers
 {
-    internal class MinutesToTimeConverter : IValueConverter
+    public class GenresToItemsConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value is int minutes)
+            if (value is Genre[] genres)
             {
-                var time = TimeSpan.FromMinutes(minutes);
-                if (time.Hours != 0)
-                    return string.Format("{0:%h} ч {0:%m} мин",time);
-                else
-                    return string.Format("{0:%m} мин", time);
-
+                return genres.Select(g => g.Name).ToArray();
             }
             return "-";
         }

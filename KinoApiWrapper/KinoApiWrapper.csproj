@@ -123,13 +123,11 @@
     <Compile Include="Api\Genres.cs" />
     <Compile Include="Api\RequestSender\IRequester.cs" />
     <Compile Include="Api\RequestSender\RequestLimiter.cs" />
-    <Compile Include="ResponseTypes\MoviesTypes\Keyword\MovieKeyword.cs" />
     <Compile Include="ResponseTypes\MoviesTypes\Search\MovieSearch.cs" />
     <Compile Include="ResponseTypes\ApiCountry.cs" />
     <Compile Include="ResponseTypes\ApiGenre.cs" />
     <Compile Include="ResponseTypes\FilterResponse.cs" />
     <Compile Include="ResponseTypes\MoviesTypes\FullMovieInfo.cs" />
-    <Compile Include="ResponseTypes\MoviesTypes\Keyword\MovieSearchByKeywordResponse.cs" />
     <Compile Include="ResponseTypes\MoviesTypes\Search\MovieSearchResponse.cs" />
     <Compile Include="Utils\Converter.cs" />
     <Compile Include="Api\Movies.cs" />

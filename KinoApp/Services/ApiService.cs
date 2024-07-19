@@ -10,7 +10,7 @@ namespace KinoApp.Services
     internal static class ApiService
     {
         public static IDataProvider Api { get; }
-        public static string DefaultApiKey => "7d3e436f-f59c-46dd-989d-dac71211f263";
+        public static string DefaultApiKey => "7bf960ec-a7f8-4d62-839d-c5cd9e59c114";
         public static string DefaultUrl => "https://kinopoiskapiunofficial.tech";
         public static TimeSpan DefaultCacheLifeTime => TimeSpan.FromHours(24);
         public static ApplicationDataContainer Settings => ApplicationData.Current.LocalSettings;

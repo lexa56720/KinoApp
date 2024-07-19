@@ -12,8 +12,26 @@ using System.Threading.Tasks;
 
 namespace KinoApiWrapper.Api
 {
-    public class Movies:IMovies
+    public class Movies : IMovies
     {
+        private enum MovieCollections
+        {
+            TOP_POPULAR_ALL,
+            TOP_POPULAR_MOVIES,
+            TOP_250_TV_SHOWS,
+            TOP_250_MOVIES,
+            VAMPIRE_THEME,
+            COMICS_THEME,
+            CLOSES_RELEASES,
+            FAMILY,
+            OSKAR_WINNERS_2021,
+            LOVE_THEME,
+            ZOMBIE_THEME,
+            CATASTROPHE_THEME,
+            KIDS_ANIMATION_THEME,
+            POPULAR_SERIES
+        }
+
         private readonly IRequester requester;
         private readonly IConverter converter;
 
@@ -32,7 +50,7 @@ namespace KinoApiWrapper.Api
         }
         public async Task<MovieInfo[]> GetMovieByIdAsync(int[] ids)
         {
-            var funcs = new Func<int,Task<MovieInfo>>[ids.Length];
+            var funcs = new Func<int, Task<MovieInfo>>[ids.Length];
             for (int i = 0; i < ids.Length; i++)
             {
                 funcs[i] = (int j) => GetMovieByIdAsync(ids[j]);
@@ -40,44 +58,39 @@ namespace KinoApiWrapper.Api
             var movies = await RequestLimiter.Call(funcs, 10);
             return movies;
         }
-
-        public async Task<Movie[]> GetMovieByYearAsync(int year, Order order = Order.RATING, int page = 1)
+        public async Task<Movie[]> GetBestMoviesAsync(int page)
         {
-            var result = await requester.Request(@"/api/v2.2/films", new Dictionary<string, string>()
-            {
-                { "yearFrom",$"{year}" },
-                { "yearTo",$"{year}" },
-                { "order",$"{order.ToString()}" },
-                { "page",$"{page}" },
-            });
+            return await GetMovieCollectionAsync(MovieCollections.TOP_250_MOVIES, page);
+        }
+
+        private async Task<Movie[]> GetMovieCollectionAsync(MovieCollections collection, int page)
+        {
+            var result = await requester.Request($@"/api/v2.2/films/collections?type={collection}&page={page}");
             if (string.IsNullOrEmpty(result))
                 return null;
             return converter.ConvertSearchResult(result);
         }
 
-        public async Task<Movie[]> GetMovieByGenreAsync(Genre genre, Order order = Order.RATING, int page = 1)
+        public async Task<Movie[]> GetMoviesFilteredAsync(int? yearFrom, int? yearTo, Genre genre, Order? order, string keyword, int page)
         {
-            var result = await requester.Request(@"/api/v2.2/films", new Dictionary<string, string>()
+            var args = new Dictionary<string, string>
             {
-                { "genres",$"{genre.Id}" },
-                { "order",$"{order.ToString()}" },
-                { "page",$"{page}" },
-            });
+                { "page", $"{page}" },
+                { "yearFrom", yearFrom == null ? "1000" : yearFrom.ToString() },
+                { "yearTo", yearTo == null ? "3000" : yearTo.ToString() },
+                { "order", order == null ? Order.RATING.ToString() : order.ToString() }
+            };
+
+            if (genre != null)
+                args.Add("genres", genre.Id.ToString());
+
+            if (!string.IsNullOrEmpty(keyword))
+                args.Add("keyword", keyword);
+
+            var result = await requester.Request(@"/api/v2.2/films", args);
             if (string.IsNullOrEmpty(result))
                 return null;
             return converter.ConvertSearchResult(result);
-        }
-
-        public async Task<Movie[]> GetMoviesByKeywordAsync(string keyword, int page = 1)
-        {
-            var result = await requester.Request(@"/api/v2.1/films/search-by-keyword", new Dictionary<string, string>()
-            {
-                { "keyword",$"{keyword}" },
-                { "page",$"{page}" },
-            });
-            if (string.IsNullOrEmpty(result))
-                return null;
-            return converter.ConvertSearchByKeywordResult(result);
         }
     }
 }

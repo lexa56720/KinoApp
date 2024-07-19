@@ -1,7 +1,6 @@
 ﻿using KinoApiWrapper.Api;
 using KinoApiWrapper.ResponseTypes;
 using KinoApiWrapper.ResponseTypes.MoviesTypes;
-using KinoApiWrapper.ResponseTypes.MoviesTypes.Keyword;
 using KinoApiWrapper.ResponseTypes.MoviesTypes.Search;
 using KinoTypes;
 using System;
@@ -17,8 +16,6 @@ namespace KinoApiWrapper.Utils.Abstract
         Movie Map(MovieSearch response);
 
         MovieInfo Map(FullMovieInfo response);
-
-        Movie Map(MovieKeyword response);
 
         Genre Map(ApiGenre response);
     }

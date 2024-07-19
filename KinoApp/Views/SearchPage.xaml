@@ -4,11 +4,39 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:KinoApp.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:KinoApp.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    Style="{StaticResource PageStyle}">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Background="White" CornerRadius="10">
+            <StackPanel HorizontalAlignment="Center" Spacing="5" Margin="5" Padding="5"  VerticalAlignment="Top" Orientation="Horizontal">
+                <DatePicker MinYear="{x:Bind ViewModel.MinYear}"  SelectedDate="{x:Bind ViewModel.FromDate,Mode=TwoWay}"
+                         DayVisible="False" MonthVisible="False"/>
+                <DatePicker x:Name="To"  MinYear="{x:Bind ViewModel.MinYear}"  SelectedDate="{x:Bind ViewModel.ToDate,Mode=TwoWay}"
+                         DayVisible="False" MonthVisible="False"/>
+                <ComboBox PlaceholderText="Жанр" SelectedItem="{x:Bind ViewModel.SelectedGenre,Mode=TwoWay}"
+                      ItemsSource="{x:Bind ViewModel.Genres,Converter={StaticResource GenresToItemsConverter},Mode=OneWay}"/>
+                <ComboBox PlaceholderText="Сортировать по"  SelectedItem="{x:Bind ViewModel.SelectedOrder,Mode=TwoWay}"
+                      ItemsSource="{x:Bind ViewModel.Orders,Mode=OneWay}"/>
+                <TextBox Text="{x:Bind ViewModel.Keyword,Mode=TwoWay}"  MaxLength="32" PlaceholderText="Ключевая фраза"/>
 
+                <Button Command="{x:Bind ViewModel.SearchCommand}" >
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="Find"/>
+                        <TextBlock Text="Поиск"/>
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>
+        </Border>
+
+
+        <controls:MovieList Grid.Row="1" Movies="{x:Bind ViewModel.Movies}" LoadMoreCommand="{x:Bind ViewModel.LoadMoreCommand}"
+                            Title="Результаты поиска" OpenMovieCommand="{x:Bind ViewModel.OpenMovieCommand}"/>
     </Grid>
 </Page>

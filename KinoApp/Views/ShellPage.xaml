@@ -26,10 +26,10 @@
             <StackPanel Orientation="Horizontal">
                 <Image x:Name="AppFontIcon"
                     HorizontalAlignment="Left" 
-                    VerticalAlignment="Center"
-                    Source="Assets/Square44x44Logo.png" 
-                    Width="16" 
-                    Height="16"/>
+                    VerticalAlignment="Bottom"
+                    Source="ms-appx:///Assets/Square44x44Logo.png" 
+                    Width="24" 
+                    Height="24"/>
                 <TextBlock x:Name="AppTitle"
                     Text="KinoApp"
                     VerticalAlignment="Center"
@@ -51,7 +51,7 @@
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem Icon="Home" Content="Домашняя страница" helpers:NavHelper.NavigateTo="views:MainPage" />
                 <muxc:NavigationViewItem Icon="OutlineStar" Content="Избранное" helpers:NavHelper.NavigateTo="views:FavoritePage" />
-                <muxc:NavigationViewItem Icon="Find" Content="Поиск" helpers:NavHelper.NavigateTo="views:MainPage" />
+                <muxc:NavigationViewItem Icon="Find" Content="Поиск" helpers:NavHelper.NavigateTo="views:SearchPage" />
             </muxc:NavigationView.MenuItems>
 
             <i:Interaction.Behaviors>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KinoApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,9 +23,15 @@ namespace KinoApp.Views
     /// </summary>
     public sealed partial class SearchPage : Page
     {
+        public SearchViewModel ViewModel { get; } = new SearchViewModel();
         public SearchPage()
         {
             this.InitializeComponent();
+        }
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            await ViewModel.InitAsync();
         }
     }
 }
