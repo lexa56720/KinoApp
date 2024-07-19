@@ -48,20 +48,14 @@ namespace KinoApp.ViewModels
 
         protected abstract T CreateModel();
 
-        protected virtual async Task LoadMore()
-        {
-            var movies = await model.GetMoviesAsync();
-            foreach (var movie in movies)
-                if (!Movies.Any(m => m.Movie.KinopoiskId == movie.KinopoiskId))
-                    Movies.Add(new MovieViewModel(movie));
-        }
+        protected abstract Task LoadMore();
 
         private void OpenMovie(MovieViewModel movie)
         {
             NavigationService.Navigate(typeof(MovieDetailPage), movie);
         }
 
-        internal async Task InitAsync()
+        internal virtual async Task InitAsync()
         {
             if (Movies.Count == 0)
                 await LoadMore();

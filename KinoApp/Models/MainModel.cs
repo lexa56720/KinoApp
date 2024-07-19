@@ -12,18 +12,19 @@ namespace KinoApp.Models
     public class MainModel:BaseMovieListModel
     {
         private int page = 1;
+        private bool isFullyLoaded = false;
 
         public MainModel(IDataProvider dataProvider):base(dataProvider) 
         {
         }
 
-        public override async Task<Movie[]> GetMoviesAsync()
+        public async Task<Movie[]> GetMoviesAsync()
         {
-            if(IsFullyLoaded)
+            if(isFullyLoaded)
                 return Array.Empty<Movie>();
             var result = await dataProvider.Movies.GetMovieByYearAsync(1944, Order.RATING, page);
             if (result.Length == 0)
-                IsFullyLoaded = true;
+                isFullyLoaded = true;
             else
                 Interlocked.Increment(ref page);
             return result;

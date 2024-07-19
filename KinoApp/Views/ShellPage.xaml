@@ -51,7 +51,7 @@
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem Icon="Home" Content="Домашняя страница" helpers:NavHelper.NavigateTo="views:MainPage" />
                 <muxc:NavigationViewItem Icon="OutlineStar" Content="Избранное" helpers:NavHelper.NavigateTo="views:FavoritePage" />
-                <muxc:NavigationViewItem Icon="Find" Content="Поиск" helpers:NavHelper.NavigateTo="views:MainPage" />
+                <muxc:NavigationViewItem Icon="Find" Content="Поиск" helpers:NavHelper.NavigateTo="views:SearchPage" />
             </muxc:NavigationView.MenuItems>
 
             <i:Interaction.Behaviors>

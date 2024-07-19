@@ -21,13 +21,10 @@ namespace KinoApp.ViewModels
             if (e.IsAdded)
             {
                 Movies.Insert(0, new MovieViewModel(await model.GetMovieAsync(e.Id)));
-                model.AddLoaded(e.Id);
             }
             else
             {
-                var movie = Movies.SingleOrDefault(m => m.Movie.KinopoiskId == e.Id);
-                Movies.Remove(movie);
-                model.RemoveLoaded(e.Id);
+                Movies.Remove(Movies.SingleOrDefault(m => m.Movie.KinopoiskId == e.Id));
             }
         }
 
@@ -38,12 +35,11 @@ namespace KinoApp.ViewModels
 
         protected override async Task LoadMore()
         {
-            var movies = await model.GetMoviesAsync();
+            var movies = await model.GetMoviesAsync(Movies.Select(m=>m.Movie.KinopoiskId).ToArray());
             foreach (var movie in movies)
                 if (!Movies.Any(m => m.Movie.KinopoiskId == movie.KinopoiskId))
                 {
                     Movies.Add(new MovieViewModel(movie));
-                    model.AddLoaded(movie.KinopoiskId);
                 }
         }
     }

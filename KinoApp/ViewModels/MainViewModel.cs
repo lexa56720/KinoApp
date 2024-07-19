@@ -20,5 +20,13 @@ namespace KinoApp.ViewModels
         {
             return new MainModel(ApiService.Api);
         }
+
+        protected override async Task LoadMore()
+        {
+            var movies = await model.GetMoviesAsync();
+            foreach (var movie in movies)
+                if (!Movies.Any(m => m.Movie.KinopoiskId == movie.KinopoiskId))
+                    Movies.Add(new MovieViewModel(movie));
+        }
     }
 }
