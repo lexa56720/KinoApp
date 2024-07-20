@@ -42,8 +42,14 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Border Grid.Row="0" VerticalAlignment="Center" Grid.Column="0" CornerRadius="10">
-                        <Image x:Name="poster" Source="{x:Bind ViewModel.BriefMovie.PosterUrl}">
+                        <Image x:Name="poster"  Source="{x:Bind ViewModel.BriefMovie.PosterUrl}">
                             <i:Interaction.Behaviors>
+                                <Core:EventTriggerBehavior EventName="PointerEntered">
+                                    <Core:InvokeCommandAction Command="{x:Bind ViewModel.ImagePointerEnteredCommand}" CommandParameter="{x:Bind poster}" />
+                                </Core:EventTriggerBehavior>
+                                <Core:EventTriggerBehavior EventName="PointerExited">
+                                    <Core:InvokeCommandAction Command="{x:Bind ViewModel.ImagePointerExitedCommand}" CommandParameter="{x:Bind poster}" />
+                                </Core:EventTriggerBehavior>
                                 <Core:EventTriggerBehavior EventName="Tapped">
                                     <Core:InvokeCommandAction Command="{x:Bind ViewModel.ImageTappedCommand}" CommandParameter="{x:Bind poster}" />
                                 </Core:EventTriggerBehavior>

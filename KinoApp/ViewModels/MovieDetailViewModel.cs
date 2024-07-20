@@ -80,6 +80,34 @@ namespace KinoApp.ViewModels
         }
         private ICommand imageTappedCommand;
 
+        public ICommand ImagePointerEnteredCommand
+        {
+            get
+            {
+                if (imagePointerEnteredCommand == null)
+                    imagePointerEnteredCommand = new RelayCommand(() =>
+                    {
+                        Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Hand, 1);
+                    });
+                return imagePointerEnteredCommand;
+            }
+        }
+        private ICommand imagePointerEnteredCommand;
+
+        public ICommand ImagePointerExitedCommand
+        {
+            get
+            {
+                if (imagePointerExitedCommand == null)
+                    imagePointerExitedCommand = new RelayCommand(() =>
+                    {
+                        Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 1);
+                    });
+                return imagePointerExitedCommand;
+            }
+        }
+        private ICommand imagePointerExitedCommand;
+
 
         private readonly MovieDetailModel model;
         public MovieDetailViewModel()

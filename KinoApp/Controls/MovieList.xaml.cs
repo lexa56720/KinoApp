@@ -77,12 +77,12 @@ namespace KinoApp.Controls
         }
         private void Grid_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
-            Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Hand, 1);
+            Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Hand, 1);
         }
 
         private void Grid_PointerExited(object sender, PointerRoutedEventArgs e)
         {
-            Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 1);
+            Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 1);
         }
 
         private void Grid_PointerPressed(object sender, PointerRoutedEventArgs e)
