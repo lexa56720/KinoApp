@@ -28,59 +28,70 @@ namespace KinoApiCache.DataBase.Interaction
         {
             cacheLife = lifetime;
         }
+
+        //Массив результатов вызова функции с соответсвующими аргументами
         public async Task<TKino[]> GetResult<TKino, TDb>(string funcName, params string[] args)
             where TKino : class
             where TDb : class, ICachedEntity
         {
+            //Получение вызова
             var call = await GetCall(funcName, args);
             if (call == null)
                 return null;
 
+            //Проверка свежести кэша
             if (call.Date + cacheLife < DateTime.UtcNow)
             {
                 await RemoveCall<TDb>(call);
                 return default;
             }
 
+            //Возврат массива результатов кэшированного вызова
             return await GetResultsFromDB<TKino, TDb>(call.Results.OrderBy(r => r.IndexId)
                                                                   .Select(r => r.ValueId));
         }
-
-        private async Task<TKino[]> GetResultsFromDB<TKino, TDb>(IEnumerable<int> ids)
-            where TKino : class
-            where TDb : class, ICachedEntity
+        private async Task<CallDB> GetCall(string funcName, params string[] args)
         {
-            using (var db = factory.Create())
-            {
-                var set = db.Set<TDb>();
-                var result = await set.Where(e => ids.Contains(e.Id)).ToArrayAsync();
-                if (!result.Any())
-                    return Array.Empty<TKino>();
-
-                return ids.Select(id => mapper.Map<TKino, TDb>(result.Single(e => e.Id == id)))
-                          .ToArray();
-            }
-        }
-
-        public async Task<CallDB> GetCall(string funcName, params string[] args)
-        {
+            //Получаем id нужной функции
             var funcId = TypeIdHelper.GetFuncId(funcName);
             if (funcId < 0)
                 return null;
+
             using (var db = factory.Create())
             {
+                //Получаем все вызовы этой функции
                 var calls = await db.Calls.Include(c => c.Arguments)
                                           .Include(c => c.Results)
                                           .Where(c => c.FuncId == funcId)
                                           .ToArrayAsync();
 
-                return calls.OrderBy(c=>c.Date)
+                //Получаем самый свежий вызов с подходящими аргументами
+                return calls.OrderBy(c => c.Date)
                             .LastOrDefault(c => c.Arguments.OrderBy(a => a.Index)
                                                            .Select(a => a.Value)
                                                            .SequenceEqual(args));
             }
         }
 
+        //Получаем результаты заданного типа TDb по массиву ids
+        private async Task<TKino[]> GetResultsFromDB<TKino, TDb>(IEnumerable<int> ids)
+            where TKino : class
+            where TDb : class, ICachedEntity
+        {
+            using (var db = factory.Create())
+            {
+                var set = db.Set<TDb>(); //Набор результатов нужного типа
+                var result = await set.Where(e => ids.Contains(e.Id)).ToArrayAsync();
+                if (!result.Any())
+                    return Array.Empty<TKino>();
+
+                //Конвертируем подходящие результаты в тип TKino и возвращаем их в виде массива 
+                return ids.Select(id => mapper.Map<TKino, TDb>(result.Single(e => e.Id == id)))
+                          .ToArray();
+            }
+        }
+
+        //Удаление вызова вместе со всеми параметрами и результатами
         public async Task<bool> RemoveCall<TDb>(CallDB call) where TDb : class, ICachedEntity
         {
             using (var db = factory.Create())
@@ -100,17 +111,21 @@ namespace KinoApiCache.DataBase.Interaction
             }
         }
 
+        //Добавление вызова и его результатов в бд
         public async Task<bool> AddCall<TKino, TDb>(TKino[] result, string funcName, params string[] args)
             where TKino : class
             where TDb : class, ICachedEntity
         {
+            //Получаем айди функции
             var funcId = TypeIdHelper.GetFuncId(funcName);
             if (funcId < 0)
                 return false;
 
+            //Добавляем результаты в таблицу, которая соответствует их типу
             var resultIds = await AddResults<TKino, TDb>(result);
             using (var db = factory.Create())
             {
+                //Добавляем вызов функции в бд
                 var call = new CallDB()
                 {
                     FuncId = funcId,
@@ -118,13 +133,14 @@ namespace KinoApiCache.DataBase.Interaction
                 };
                 await db.Calls.AddAsync(call);
 
+                //Добавляет информацию об аргументах вызова
                 for (var i = 0; i < args.Length; i++)
                     call.Arguments.Add(new ArgumentDB()
                     {
                         Index = i,
                         Value = args[i],
                     });
-
+                //Добавляем информацию о результатах вызова
                 for (int i = 0; i < result.Length; i++)
                     call.Results.Add(new ResultDB()
                     {
@@ -135,6 +151,7 @@ namespace KinoApiCache.DataBase.Interaction
             }
         }
 
+        //Сохранение результатов в бд
         private async Task<int[]> AddResults<TKino, TDb>(TKino[] result)
             where TKino : class
             where TDb : class, ICachedEntity
@@ -142,9 +159,10 @@ namespace KinoApiCache.DataBase.Interaction
             var dbItems = new TDb[result.Length];
             using (var db = factory.Create())
             {
-                var set = db.Set<TDb>();
+                var set = db.Set<TDb>();//Получаем набор с нужным типом данных
                 for (int i = 0; i < result.Length; i++)
                 {
+                    //Конвертируем объекты из типа TKino в TDb
                     dbItems[i] = mapper.ReverseMap<TKino, TDb>(result[i]);
 
                     await set.AddAsync(dbItems[i]);
@@ -153,7 +171,5 @@ namespace KinoApiCache.DataBase.Interaction
             }
             return dbItems.Select(i => i.Id).ToArray();
         }
-
-
     }
 }

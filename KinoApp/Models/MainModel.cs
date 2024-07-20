@@ -22,11 +22,13 @@ namespace KinoApp.Models
         {
             if(isFullyLoaded)
                 return Array.Empty<Movie>();
+
             var result = await dataProvider.Movies.GetBestMoviesAsync(page);
             if (result.Length == 0)
                 isFullyLoaded = true;
             else
                 Interlocked.Increment(ref page);
+
             return result;
         }
     }

@@ -21,7 +21,7 @@ namespace KinoApiWrapper
 
         private readonly Requester requester;
         private readonly IConverter converter;
-
+        private bool isDisposed;
         public KinoApi(string apiKey, string url)
         {
             requester = new Requester(apiKey, url);
@@ -39,7 +39,10 @@ namespace KinoApiWrapper
 
         public void Dispose()
         {
+            if (isDisposed)
+                return;
             ((IDisposable)requester).Dispose();
+            isDisposed = true;
         }
     }
 }

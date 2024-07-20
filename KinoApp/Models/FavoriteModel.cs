@@ -17,6 +17,7 @@ namespace KinoApp.Models
             this.ids = ids;
         }
 
+        //Подгрузака фильмов, айди которых не содержатся в массиве
         public async Task<Movie[]> GetMoviesAsync(int[] alreadyLoaded)
         {
             var filmsToLoad = ids.Where(id => !alreadyLoaded.Contains(id));

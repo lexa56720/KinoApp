@@ -28,6 +28,23 @@ namespace KinoApiCache.Utils
             }
             return null;
         }
+        public TDb ReverseMap<TKino, TDb>(TKino item)
+                     where TDb : class, ICachedEntity
+                     where TKino : class
+        {
+            switch (item)
+            {
+                case MovieInfo movieInfo:
+                    return Map(movieInfo) as TDb;
+
+                case Movie movie:
+                    return Map(movie) as TDb;
+
+                case Genre genre:
+                    return Map(genre) as TDb;
+            }
+            return null;
+        }
 
         private Movie Map(MovieDB movieDB)
         {
@@ -59,7 +76,6 @@ namespace KinoApiCache.Utils
                 PosterUrlPreview = movie.PosterUrlPreview
             };
         }
-
 
         private MovieInfo Map(MovieInfoDB movieDB)
         {
@@ -126,7 +142,6 @@ namespace KinoApiCache.Utils
             };
         }
 
-
         private Genre Map(GenreDB genreDB)
         {
             return new Genre()
@@ -135,7 +150,6 @@ namespace KinoApiCache.Utils
                 Name = genreDB.Name,
             };
         }
-
         private GenreDB Map(Genre genre)
         {
             return new GenreDB()
@@ -210,24 +224,6 @@ namespace KinoApiCache.Utils
         private CachedMovieType Map(MovieType movieType)
         {
             return (CachedMovieType)movieType;
-        }
-
-        public TDb ReverseMap<TKino, TDb>(TKino item)
-             where TDb : class, ICachedEntity
-             where TKino : class
-        {
-            switch (item)
-            {
-                case MovieInfo movieInfo:
-                    return Map(movieInfo) as TDb;
-
-                case Movie movie:
-                    return Map(movie) as TDb;
-
-                case Genre genre:
-                    return Map(genre) as TDb;
-            }
-            return null;
         }
     }
 }

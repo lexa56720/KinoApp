@@ -11,12 +11,14 @@ namespace KinoApp.Models
 {
     public class SearchModel : BaseMovieListModel
     {
+        //Словарь соответствия названий сортировок и их типов
         private readonly Dictionary<string, Order> Orders;
         private int page = 1;
         private bool IsFullyLoaded = false;
 
         public SearchModel(IDataProvider dataProvider) : base(dataProvider)
         {
+           
             Orders = new Dictionary<string, Order>()
             {
                 { "Рейтингу",Order.RATING },
@@ -44,6 +46,7 @@ namespace KinoApp.Models
             return movies;
         }
 
+        //Свап дат, если дата from больше даты to
         public void SortDate(ref int? from, ref int? to)
         {
             if (from != null && to != null && from > to)

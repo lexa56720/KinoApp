@@ -21,6 +21,7 @@ namespace KinoApiWrapper.Api
             this.converter = converter;
         }
 
+        //Получение списка жанров
         public async Task<Genre[]> GetGenresAsync()
         {
             var result = await requester.Request(@"/api/v2.2/films/filters");

@@ -41,6 +41,7 @@ namespace KinoApiWrapper.Api
             this.converter = converter;
         }
 
+        //Получение фильма по ID
         public async Task<MovieInfo> GetMovieByIdAsync(int id)
         {
             var result = await requester.Request($@"/api/v2.2/films/{id}");
@@ -48,6 +49,8 @@ namespace KinoApiWrapper.Api
                 return null;
             return converter.ConvertMovie(result);
         }
+
+        //Получение фильмов по ID
         public async Task<MovieInfo[]> GetMovieByIdAsync(int[] ids)
         {
             var funcs = new Func<int, Task<MovieInfo>>[ids.Length];
@@ -55,14 +58,18 @@ namespace KinoApiWrapper.Api
             {
                 funcs[i] = (int j) => GetMovieByIdAsync(ids[j]);
             }
-            var movies = await RequestLimiter.Call(funcs, 10);
+            //Ограничение на количество запросов в секунду
+            var movies = await RequestLimiter.Call(funcs, 15);
             return movies;
         }
+
+        //Получение топа лучших фильмов
         public async Task<Movie[]> GetBestMoviesAsync(int page)
         {
             return await GetMovieCollectionAsync(MovieCollections.TOP_250_MOVIES, page);
         }
 
+        //Получение колекции фильмов
         private async Task<Movie[]> GetMovieCollectionAsync(MovieCollections collection, int page)
         {
             var result = await requester.Request($@"/api/v2.2/films/collections?type={collection}&page={page}");
@@ -71,8 +78,10 @@ namespace KinoApiWrapper.Api
             return converter.ConvertSearchResult(result);
         }
 
+        //Получение фильмов в соответсвии с параметрами
         public async Task<Movie[]> GetMoviesFilteredAsync(int? yearFrom, int? yearTo, Genre genre, Order? order, string keyword, int page)
         {
+            //Аргументы запроса
             var args = new Dictionary<string, string>
             {
                 { "page", $"{page}" },

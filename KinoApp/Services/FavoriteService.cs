@@ -68,6 +68,7 @@ namespace KinoApp.Services
             storage.Save("favorite", FavoriteIds.ToArray());
         }
 
+        //Уведомление об изменении списка избранных фильмов
         private static void Notify(int id, bool isAdded)
         {
             FavoriteChanged?.Invoke(null, new FavoriteChangedEventArgs(id, isAdded));

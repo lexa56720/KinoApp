@@ -17,6 +17,7 @@ namespace KinoApiWrapper.Api
             this.requester = requester;
         }
 
+        //Проверка валидности ключа API
         public async Task<bool> IsKeyValid(string key)
         {
             var result = await requester.Request($"/api/v1/api_keys/{key}");

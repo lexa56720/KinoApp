@@ -74,7 +74,6 @@ namespace KinoApiWrapper.Utils
                 Name = response.Name
             };
         }
-
         private MovieType ParseType(string type)
         {
             switch (type)

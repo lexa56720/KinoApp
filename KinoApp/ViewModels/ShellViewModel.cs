@@ -67,7 +67,6 @@ namespace KinoApp.ViewModels
                 return;
             }
 
-
             if (args.InvokedItemContainer is WinUI.NavigationViewItem selectedItem &&
                 selectedItem?.GetValue(NavHelper.NavigateToProperty) is Type pageType)
             {
@@ -85,6 +84,7 @@ namespace KinoApp.ViewModels
             throw e.Exception;
         }
 
+        //Изменение выбранного элемента в меню навигации при навигации
         private void FrameNavigated(object sender, NavigationEventArgs e)
         {
             IsBackEnabled = NavigationService.CanGoBack;
@@ -101,6 +101,7 @@ namespace KinoApp.ViewModels
             }
         }
 
+        //Получение элемента из меню навигации с соответсвующим типом страницы
         private WinUI.NavigationViewItem GetSelectedItem(IEnumerable<object> menuItems, Type pageType)
         {
             foreach (var item in menuItems.OfType<WinUI.NavigationViewItem>())
@@ -121,6 +122,7 @@ namespace KinoApp.ViewModels
 
         private bool IsMenuItemForPageType(WinUI.NavigationViewItem menuItem, Type sourcePageType)
         {
+            //Проверка ссылается ли menuItem на страницу типа sourcePageType
             var pageType = menuItem.GetValue(NavHelper.NavigateToProperty) as Type;
             return pageType == sourcePageType;
         }

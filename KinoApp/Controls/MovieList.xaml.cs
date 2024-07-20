@@ -20,8 +20,6 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// Документацию по шаблону элемента "Пользовательский элемент управления" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234236
-
 namespace KinoApp.Controls
 {
     public sealed partial class MovieList : UserControl
@@ -117,6 +115,7 @@ namespace KinoApp.Controls
 
         private async void ScrollViewer_ViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
         {
+            //Подгрузка новых элементов по необходимости
             if (sender is ScrollViewer sv && IsLoading == false &&
                 IsBottomReached(sv.ExtentHeight, e.NextView.VerticalOffset, sv.ViewportHeight))
             {
@@ -126,6 +125,7 @@ namespace KinoApp.Controls
             }
         }
 
+        //Определение необходимости подгрузки новых элементо
         private bool IsBottomReached(double extentHeight, double verticalOffset, double viewportHeight)
         {
             var diff = extentHeight - (verticalOffset + viewportHeight);

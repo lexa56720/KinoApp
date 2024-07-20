@@ -15,6 +15,7 @@ namespace KinoApiWrapper.Api.RequestSender
         private readonly HttpClient client;
         private readonly string url;
 
+        private bool isDisposed;
         public Requester(string apiKey, string url)
         {
             client = new HttpClient();
@@ -25,7 +26,10 @@ namespace KinoApiWrapper.Api.RequestSender
 
         public void Dispose()
         {
+            if (isDisposed)
+                return;
             ((IDisposable)client).Dispose();
+            isDisposed = true;
         }
         public async Task<string> Request(string apiUrl, Dictionary<string, string> args)
         {
@@ -37,14 +41,20 @@ namespace KinoApiWrapper.Api.RequestSender
             return await SendRequest(url + apiUrl);
         }
 
-        public void UpdateApiKey(string apiKey) 
+        public void UpdateApiKey(string apiKey)
         {
+            if (isDisposed)
+                return;
+
             client.DefaultRequestHeaders.Remove("X-API-KEY");
             client.DefaultRequestHeaders.Add("X-API-KEY", apiKey);
         }
 
         private async Task<string> SendRequest(string request)
         {
+            if (isDisposed)
+                return string.Empty;
+
             var response = await client.GetAsync(request);
 
             if (response.IsSuccessStatusCode != true)

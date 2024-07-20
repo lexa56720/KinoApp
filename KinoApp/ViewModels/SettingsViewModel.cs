@@ -112,6 +112,7 @@ namespace KinoApp.ViewModels
                 FavoriteService.Clear();
             }
         }
+
         private string GetVersionDescription()
         {
             var appName = Package.Current.DisplayName;
@@ -121,7 +122,6 @@ namespace KinoApp.ViewModels
 
             return $"{appName} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
         }
-
         private async Task UpdateApiKey(string value)
         {
             var currentKey = ApiService.GetApiKey();
@@ -142,7 +142,6 @@ namespace KinoApp.ViewModels
                 });
             }
         }
-
         private void UpdateCacheLife(int value)
         {
             if (value < 0)

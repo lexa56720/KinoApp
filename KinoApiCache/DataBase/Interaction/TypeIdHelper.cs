@@ -12,6 +12,7 @@ namespace KinoApiCache.DataBase.Interaction
 {
     internal static class TypeIdHelper
     {
+        //Идентификаторы кэшируемых функций
         private static Dictionary<string, int> FuncsId = new Dictionary<string, int>()
         {
             {nameof(IMovies.GetMovieByIdAsync), 0},
