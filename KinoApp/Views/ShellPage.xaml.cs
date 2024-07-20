@@ -1,9 +1,7 @@
-﻿using System;
-
-using KinoApp.ViewModels;
+﻿using KinoApp.ViewModels;
 using Windows.ApplicationModel.Core;
-using Windows.UI.ViewManagement;
 using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;

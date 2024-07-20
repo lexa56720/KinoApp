@@ -1,14 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using KinoApp.Helpers;
 using KinoApp.Models;
 using KinoApp.Services;
+using System;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace KinoApp.ViewModels
@@ -138,7 +136,7 @@ namespace KinoApp.ViewModels
                 apiKey = string.Empty;
                 await CoreApplication.MainView.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
-                    SetProperty(ref apiKey, currentKey,nameof(ApiKey));
+                    SetProperty(ref apiKey, currentKey, nameof(ApiKey));
                 });
             }
         }

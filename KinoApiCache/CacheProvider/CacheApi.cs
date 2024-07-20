@@ -3,10 +3,6 @@ using KinoApiCache.DataBase.Interaction;
 using KinoApiCache.Utils;
 using KinoTypes.DataProvider;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KinoApiCache.CacheProvider
 {

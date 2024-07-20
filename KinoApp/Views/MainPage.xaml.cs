@@ -1,6 +1,4 @@
-﻿using System;
-
-using KinoApp.ViewModels;
+﻿using KinoApp.ViewModels;
 
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;

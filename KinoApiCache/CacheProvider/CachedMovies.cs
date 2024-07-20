@@ -1,13 +1,10 @@
-﻿using KinoApiCache.DataBase;
-using KinoApiCache.DataBase.Interaction;
+﻿using KinoApiCache.DataBase.Interaction;
 using KinoApiCache.DataBase.Tables;
-using KinoApiCache.Utils;
 using KinoTypes;
 using KinoTypes.DataProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace KinoApiCache.CacheProvider

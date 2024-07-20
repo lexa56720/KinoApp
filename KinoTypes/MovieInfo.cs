@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KinoTypes
+﻿namespace KinoTypes
 {
-    public class MovieInfo:Movie
+    public class MovieInfo : Movie
     {
         public string KinopoiskHDId { get; set; }
 
@@ -14,7 +8,7 @@ namespace KinoTypes
 
         public int? RatingKinopoiskVoteCount { get; set; }
 
-        public double? RatingImdb {get; set; }
+        public double? RatingImdb { get; set; }
 
         public int? RatingImdbVoteCount { get; set; }
 

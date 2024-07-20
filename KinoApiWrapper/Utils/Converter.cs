@@ -1,19 +1,14 @@
 ﻿using KinoApiWrapper.ResponseTypes;
 using KinoApiWrapper.ResponseTypes.MoviesTypes;
 using KinoApiWrapper.ResponseTypes.MoviesTypes.Search;
-using KinoApiWrapper.Utils;
 using KinoApiWrapper.Utils.Abstract;
 using KinoTypes;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace KinoApiWrapper.Api
 {
-    internal class Converter: IConverter
+    internal class Converter : IConverter
     {
         private readonly IMapper mapper;
 

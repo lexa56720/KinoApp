@@ -2,10 +2,7 @@
 using KinoApiCache.DataBase.Tables.CachedType;
 using KinoTypes;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace KinoApiCache.Utils
 {
@@ -173,7 +170,7 @@ namespace KinoApiCache.Utils
         }
         private Country[] MapCounries(string countries)
         {
-            var pairs = countries.Split("|",StringSplitOptions.RemoveEmptyEntries);
+            var pairs = countries.Split("|", StringSplitOptions.RemoveEmptyEntries);
             var result = new Country[pairs.Length];
 
             for (int i = 0; i < pairs.Length; i++)

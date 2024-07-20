@@ -62,8 +62,8 @@ namespace KinoApp.Services
             public IMovies Movies { get; }
             public IApiInfo ApiInfo { get; }
 
-            private KinoApi actualDataProvider;
-            private CacheApi cachedDataProvider;
+            private readonly KinoApi actualDataProvider;
+            private readonly CacheApi cachedDataProvider;
 
             public DataProvider(string apiKey, string url, string connectionString, TimeSpan cacheLife)
             {

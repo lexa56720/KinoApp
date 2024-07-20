@@ -1,9 +1,4 @@
-﻿using KinoTypes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using Windows.UI.Xaml.Data;
 
 namespace KinoApp.Helpers
@@ -16,7 +11,7 @@ namespace KinoApp.Helpers
             {
                 var time = TimeSpan.FromMinutes(minutes);
                 if (time.Hours != 0)
-                    return string.Format("{0:%h} ч {0:%m} мин",time);
+                    return string.Format("{0:%h} ч {0:%m} мин", time);
                 else
                     return string.Format("{0:%m} мин", time);
 

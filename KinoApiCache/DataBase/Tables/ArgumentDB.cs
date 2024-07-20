@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KinoApiCache.DataBase.Tables
+﻿namespace KinoApiCache.DataBase.Tables
 {
     internal class ArgumentDB
     {

@@ -3,7 +3,6 @@ using KinoTypes.DataProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,7 +17,7 @@ namespace KinoApp.Models
 
         public SearchModel(IDataProvider dataProvider) : base(dataProvider)
         {
-           
+
             Orders = new Dictionary<string, Order>()
             {
                 { "Рейтингу",Order.RATING },

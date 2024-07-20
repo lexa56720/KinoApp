@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-
-namespace KinoTypes
+﻿namespace KinoTypes
 {
     public enum MovieType
     {
-        FILM, 
-        VIDEO, 
-        TV_SERIES, 
-        MINI_SERIES, 
+        FILM,
+        VIDEO,
+        TV_SERIES,
+        MINI_SERIES,
         TV_SHOW,
     }
 
     public enum Order
     {
         RATING,
-        NUM_VOTE, 
+        NUM_VOTE,
         YEAR
     }
     public class Movie

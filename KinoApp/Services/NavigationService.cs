@@ -85,7 +85,7 @@ namespace KinoApp.Services
         {
             if (frame == null)
                 return;
-     
+
             frame.Navigated += Frame_Navigated;
             frame.NavigationFailed += Frame_NavigationFailed;
         }

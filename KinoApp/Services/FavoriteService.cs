@@ -3,8 +3,6 @@ using KinoTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace KinoApp.Services
@@ -22,11 +20,11 @@ namespace KinoApp.Services
     }
     internal static class FavoriteService
     {
-        private static List<int> FavoriteIds = new List<int>();
+        private static readonly List<int> FavoriteIds = new List<int>();
         public static IReadOnlyList<int> List => FavoriteIds.AsReadOnly();
 
         public static EventHandler<FavoriteChangedEventArgs> FavoriteChanged;
-        private static ApplicationDataContainer storage;
+        private static readonly ApplicationDataContainer storage;
 
         static FavoriteService()
         {
@@ -76,9 +74,9 @@ namespace KinoApp.Services
 
         internal static void Clear()
         {
-            while(FavoriteIds.Count > 0) 
+            while (FavoriteIds.Count > 0)
             {
-                var movie= FavoriteIds.First();
+                var movie = FavoriteIds.First();
                 FavoriteIds.Remove(movie);
                 Notify(movie, false);
             }

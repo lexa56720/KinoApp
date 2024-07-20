@@ -1,13 +1,8 @@
-﻿using KinoApiCache.DataBase;
-using KinoApiCache.DataBase.Interaction;
+﻿using KinoApiCache.DataBase.Interaction;
 using KinoApiCache.DataBase.Tables;
-using KinoApiCache.Utils;
 using KinoTypes;
 using KinoTypes.DataProvider;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace KinoApiCache.CacheProvider
@@ -25,7 +20,7 @@ namespace KinoApiCache.CacheProvider
         }
         public async Task<Genre[]> GetGenresAsync()
         {
-            var cached = await interactor.GetResult<Genre,GenreDB>(nameof(GetGenresAsync));
+            var cached = await interactor.GetResult<Genre, GenreDB>(nameof(GetGenresAsync));
             if (cached != null)
                 return cached;
 

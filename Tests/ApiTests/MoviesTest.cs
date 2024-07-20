@@ -1,11 +1,7 @@
 ﻿using KinoApiWrapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Tests.ApiTests
 {
@@ -34,7 +30,7 @@ namespace Tests.ApiTests
             var result = await api.Movies.GetMovieByIdAsync(ids);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(ids.Length,result.Length);
+            Assert.AreEqual(ids.Length, result.Length);
         }
 
         [TestMethod]
