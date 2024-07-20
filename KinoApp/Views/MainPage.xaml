@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:KinoApp.Controls"
     Style="{StaticResource PageStyle}"
-    mc:Ignorable="d">
+    mc:Ignorable="d" NavigationCacheMode="Required">
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
 
         <controls:MovieList Movies="{x:Bind ViewModel.Movies}" LoadMoreCommand="{x:Bind ViewModel.LoadMoreCommand}"

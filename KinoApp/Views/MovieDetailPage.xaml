@@ -57,7 +57,7 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" FontWeight="Bold" Style="{StaticResource HeaderTextBlockStyle}"
+                            <TextBlock Grid.Column="0" LineStackingStrategy="BlockLineHeight" LineHeight="40" FontWeight="Bold" Style="{StaticResource HeaderTextBlockStyle}"
                                        Text="{x:Bind ViewModel.Movie.Name ,Mode=OneWay}" TextWrapping="Wrap"  />
                             <Button Grid.Column="1" HorizontalAlignment="Left"  Margin="0,10,0,0" Command="{x:Bind ViewModel.FavoriteSwitchCommand}" VerticalAlignment="Center">
                                 <SymbolIcon x:Name="symbol"  Symbol="OutlineStar">
