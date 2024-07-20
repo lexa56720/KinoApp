@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace KinoApp.ViewModels
 {
@@ -71,6 +73,17 @@ namespace KinoApp.ViewModels
         }
         private ICommand unLoadCommand;
 
+        public ICommand ImageTappedCommand
+        {
+            get
+            {
+                if (imageTappedCommand == null)
+                    imageTappedCommand = new RelayCommand<UIElement>(OpenImage);
+                return imageTappedCommand;
+            }
+        }
+        private ICommand imageTappedCommand;
+
 
         private readonly MovieDetailModel model;
         public MovieDetailViewModel()
@@ -83,6 +96,10 @@ namespace KinoApp.ViewModels
             BriefMovie = movie.Movie;
 
             Movie = await model.GetMovieInfo(movie.Movie);
+        }
+        private void OpenImage(UIElement element)
+        {
+            FlyoutBase.ShowAttachedFlyout(NavigationService.Frame.Content as FrameworkElement);
         }
         private void UnLoaded()
         {
