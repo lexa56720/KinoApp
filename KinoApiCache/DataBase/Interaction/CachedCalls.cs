@@ -118,8 +118,7 @@ namespace KinoApiCache.DataBase.Interaction
             if (funcId < 0)
                 return false;
 
-            //Добавляем результаты в таблицу, которая соответствует их типу
-            var resultIds = await AddResults<TKino, TDb>(result);
+
             using (var db = factory.Create())
             {
                 //Добавляем вызов функции в бд
@@ -129,6 +128,11 @@ namespace KinoApiCache.DataBase.Interaction
                     Date = DateTime.UtcNow,
                 };
                 await db.Calls.AddAsync(call);
+                await db.SaveChangesAsync();
+
+
+                //Добавляем результаты в таблицу, которая соответствует их типу
+                var resultIds = await AddResults<TKino, TDb>(db, call, result);
 
                 //Добавляет информацию об аргументах вызова
                 for (var i = 0; i < args.Length; i++)
@@ -149,24 +153,52 @@ namespace KinoApiCache.DataBase.Interaction
         }
 
         //Сохранение результатов в бд
-        private async Task<int[]> AddResults<TKino, TDb>(TKino[] result)
+        private async Task<int[]> AddResults<TKino, TDb>(CacheDbContext db, CallDB call, TKino[] result)
             where TKino : class
             where TDb : class, ICachedEntity
         {
             var dbItems = new TDb[result.Length];
+
+            var set = db.Set<TDb>();//Получаем набор с нужным типом данных
+            for (int i = 0; i < result.Length; i++)
+            {
+                //Конвертируем объекты из типа TKino в TDb
+                dbItems[i] = mapper.ReverseMap<TKino, TDb>(result[i]);
+                dbItems[i].CallId = call.Id;
+                await set.AddAsync(dbItems[i]);
+            }
+            await db.SaveChangesAsync();
+
+            return dbItems.Select(i => i.Id).ToArray();
+        }
+
+        //Удаление устаревшего кэша
+        public async Task RemoveObsolete()
+        {
+            if (cacheLife == TimeSpan.MaxValue)
+                return;
+
             using (var db = factory.Create())
             {
-                var set = db.Set<TDb>();//Получаем набор с нужным типом данных
-                for (int i = 0; i < result.Length; i++)
-                {
-                    //Конвертируем объекты из типа TKino в TDb
-                    dbItems[i] = mapper.ReverseMap<TKino, TDb>(result[i]);
+                var minCacheTime = DateTime.UtcNow;
+                var obosoleteCalls = await db.Calls.Include(c => c.Arguments)
+                                                   .Include(c => c.Results)
+                                                   .Where(c => c.Date < minCacheTime)
+                                                   .ToArrayAsync();
+                var ids = obosoleteCalls.Select(c => c.Id);
 
-                    await set.AddAsync(dbItems[i]);
-                }
+                db.Arguments.RemoveRange(db.Arguments.Where(a => ids.Contains(a.CallId)));
+                db.Results.RemoveRange(db.Results.Where(r => ids.Contains(r.CallId)));
+
+
+                db.Movies.RemoveRange(db.Movies.Where(m => ids.Contains(m.CallId)));
+                db.MovieInfos.RemoveRange(db.MovieInfos.Where(m => ids.Contains(m.CallId)));
+                db.Genres.RemoveRange(db.Genres.Where(m => ids.Contains(m.CallId)));
+
+                db.Calls.RemoveRange(obosoleteCalls);
+
                 await db.SaveChangesAsync();
             }
-            return dbItems.Select(i => i.Id).ToArray();
         }
     }
 }

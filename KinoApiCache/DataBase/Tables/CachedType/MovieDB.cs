@@ -31,5 +31,9 @@ namespace KinoApiCache.DataBase.Tables
         public string PosterUrl { get; set; }
 
         public string PosterUrlPreview { get; set; }
+
+        public int CallId { get; set; }
+
+        public CallDB Call { get; set; }
     }
 }

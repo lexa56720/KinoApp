@@ -87,6 +87,8 @@ namespace KinoApiCache
 
                 entity.HasKey(p => p.Id).HasName("movies_pkey");
                 entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.HasOne(e => e.Call).WithMany().HasForeignKey(e => e.CallId);
             });
 
             modelBuilder.Entity<MovieInfoDB>(entity =>
@@ -95,6 +97,8 @@ namespace KinoApiCache
 
                 entity.HasKey(p => p.Id).HasName("movie_infos_pkey");
                 entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.HasOne(e => e.Call).WithMany().HasForeignKey(e => e.CallId);
             });
 
             modelBuilder.Entity<GenreDB>(entity =>
@@ -103,6 +107,8 @@ namespace KinoApiCache
 
                 entity.HasKey(p => p.Id).HasName("genres_pkey");
                 entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.HasOne(e => e.Call).WithMany().HasForeignKey(e => e.CallId);
             });
         }
     }

@@ -3,6 +3,7 @@ using KinoApiCache.DataBase.Interaction;
 using KinoApiCache.Utils;
 using KinoTypes.DataProvider;
 using System;
+using System.Threading.Tasks;
 
 namespace KinoApiCache.CacheProvider
 {
@@ -29,6 +30,11 @@ namespace KinoApiCache.CacheProvider
         public void UpdateCacheLife(TimeSpan lifeTime)
         {
             interactor.UpdateLifeTime(lifeTime);
+        }
+
+        public async Task CleanupCache()
+        {
+            await interactor.RemoveObsolete();
         }
         public void Dispose()
         {

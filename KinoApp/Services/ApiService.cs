@@ -3,6 +3,7 @@ using KinoApiWrapper;
 using KinoApp.Helpers;
 using KinoTypes.DataProvider;
 using System;
+using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace KinoApp.Services
@@ -50,6 +51,12 @@ namespace KinoApp.Services
             Settings.Save("cacheLifeTime", lifetime);
             ((DataProvider)Api).UpdateCacheLifeTime(lifetime);
         }
+
+        public static async Task CleanUpCache()
+        {
+            await ((DataProvider)Api).CleanUpCache();
+        }
+
         private static string GetConnectionString()
         {
             var path = ApplicationData.Current.LocalCacheFolder.Path + "\\cache.db";
@@ -90,6 +97,11 @@ namespace KinoApp.Services
             public void UpdateCacheLifeTime(TimeSpan lifeTime)
             {
                 cachedDataProvider.UpdateCacheLife(lifeTime);
+            }
+
+            public async Task CleanUpCache()
+            {
+                await cachedDataProvider.CleanupCache();
             }
         }
     }

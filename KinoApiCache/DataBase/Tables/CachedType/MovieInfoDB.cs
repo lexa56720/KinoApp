@@ -6,7 +6,6 @@ namespace KinoApiCache.DataBase.Tables
     {
         public int Id { get; set; }
 
-
         public int KinopoiskId { get; set; }
         public string Name { get; set; }
 
@@ -57,5 +56,9 @@ namespace KinoApiCache.DataBase.Tables
         public bool? ShortFilm { get; set; }
 
         public bool? Completed { get; set; }
+
+        public int CallId { get; set; }
+
+        public CallDB Call { get; set; }
     }
 }
