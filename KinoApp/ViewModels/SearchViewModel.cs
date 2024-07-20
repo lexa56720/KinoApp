@@ -89,7 +89,16 @@ namespace KinoApp.ViewModels
         }
         private ICommand searchCommand;
 
-
+        public ICommand ResetCommand
+        {
+            get
+            {
+                if (resetCommand == null)
+                    resetCommand = new AsyncRelayCommand(Reset);
+                return resetCommand;
+            }
+        }
+        private ICommand resetCommand;
 
         internal override async Task InitAsync()
         {
@@ -126,6 +135,15 @@ namespace KinoApp.ViewModels
             Movies.Clear();
             model.Reset();
             await LoadMore();
+        }
+        private async Task Reset()
+        {
+            SelectedGenre = null;
+            SelectedOrder = null;
+            Keyword = null;
+            FromDate = new DateTimeOffset(DateTime.Now);
+            ToDate = new DateTimeOffset(DateTime.Now);
+            await Search();
         }
     }
 }
