@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace KinoTypes.DataProvider
 {
-    public interface IDataProvider:IDisposable
+    public interface IApiInfo
     {
-        IGenres Genres { get; }
-        IMovies Movies { get; }
-
-        IApiInfo ApiInfo { get; }
+        Task<bool> IsKeyValid(string key);
     }
 }

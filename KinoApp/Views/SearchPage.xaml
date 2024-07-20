@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:KinoApp.Controls"
     mc:Ignorable="d"
     Style="{StaticResource PageStyle}">
-    <Grid>
+    <Grid Margin="{StaticResource MediumLeftRightMargin}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>

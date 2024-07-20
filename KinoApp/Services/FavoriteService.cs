@@ -72,5 +72,16 @@ namespace KinoApp.Services
         {
             FavoriteChanged?.Invoke(null, new FavoriteChangedEventArgs(id, isAdded));
         }
+
+        internal static void Clear()
+        {
+            while(FavoriteIds.Count > 0) 
+            {
+                var movie= FavoriteIds.First();
+                FavoriteIds.Remove(movie);
+                Notify(movie, false);
+            }
+            Save();
+        }
     }
 }

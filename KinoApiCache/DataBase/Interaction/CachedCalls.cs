@@ -15,14 +15,18 @@ namespace KinoApiCache.DataBase.Interaction
     internal class CachedCalls
     {
         private readonly DbContextFactory factory;
-        private readonly TimeSpan cacheLife;
         private readonly IMapper mapper;
+        private TimeSpan cacheLife;
 
         public CachedCalls(DbContextFactory factory, TimeSpan cacheLife, IMapper mapper)
         {
             this.factory = factory;
             this.cacheLife = cacheLife;
             this.mapper = mapper;
+        }
+        public void UpdateLifeTime(TimeSpan lifetime)
+        {
+            cacheLife = lifetime;
         }
         public async Task<TKino[]> GetResult<TKino, TDb>(string funcName, params string[] args)
             where TKino : class
@@ -149,5 +153,7 @@ namespace KinoApiCache.DataBase.Interaction
             }
             return dbItems.Select(i => i.Id).ToArray();
         }
+
+
     }
 }
