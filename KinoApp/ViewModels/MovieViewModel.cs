@@ -2,6 +2,7 @@
 using KinoApp.Services;
 using KinoTypes;
 using System;
+using Windows.UI.Xaml.Controls;
 
 namespace KinoApp.ViewModels
 {
@@ -10,9 +11,24 @@ namespace KinoApp.ViewModels
         public bool IsFavorite
         {
             get => isFavorite;
-            private set => SetProperty(ref isFavorite, value);
+            private set
+            {
+                SetProperty(ref isFavorite, value);
+                if (value)
+                    Symbol = Symbol.Favorite;
+                else
+                    Symbol = Symbol.OutlineStar;
+            }
+
         }
         private bool isFavorite = false;
+
+        public Symbol Symbol
+        {
+            get => symbol;
+            private set => SetProperty(ref symbol, value);
+        }
+        private Symbol symbol = Symbol.OutlineStar;
 
         public Movie Movie { get; }
         private bool isDisposed = false;
@@ -29,6 +45,11 @@ namespace KinoApp.ViewModels
                 IsFavorite = true;
             else if (e.Id == Movie.KinopoiskId && !e.IsAdded)
                 IsFavorite = false;
+        }
+
+        public void Update()
+        {
+            OnPropertyChanged(nameof(IsFavorite));
         }
 
         public void Dispose()

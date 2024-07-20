@@ -119,5 +119,11 @@ namespace KinoApp.Controls
             var diff = extentHeight - (verticalOffset + viewportHeight);
             return Math.Abs(diff) < viewportHeight / 2;
         }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            foreach (var movie in Movies)
+                movie.Update();
+        }
     }
 }
