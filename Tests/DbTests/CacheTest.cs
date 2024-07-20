@@ -22,9 +22,7 @@ namespace Tests.DbTests
             var path = Windows.Storage.ApplicationData.Current.LocalCacheFolder.Path + "\\test.db";
             var cachePath = $"Data Source={path}";
             var actualDataProvider = new KinoApi(ApiConfig.ApiKey, ApiConfig.Url);
-            var cachedDataProvider = new CacheApi(actualDataProvider.Genres,
-                                               actualDataProvider.Movies,
-                                               cachePath, TimeSpan.FromHours(24));
+            var cachedDataProvider = new CacheApi(actualDataProvider, cachePath, TimeSpan.FromHours(24));
 
 
             File.Delete(path);
@@ -43,9 +41,8 @@ namespace Tests.DbTests
             var path = Windows.Storage.ApplicationData.Current.LocalCacheFolder.Path + "\\test.db";
             var cachePath = $"Data Source={path}";
             var actualDataProvider = new KinoApi(ApiConfig.ApiKey, ApiConfig.Url);
-            var cachedDataProvider = new CacheApi(actualDataProvider.Genres,
-                                               actualDataProvider.Movies,
-                                               cachePath, TimeSpan.FromHours(24));
+            var cachedDataProvider = new CacheApi(actualDataProvider, cachePath, TimeSpan.FromHours(24));
+
             var rand = new Random();
             var ids = new int[10];
             for (int i = 0; i < ids.Length; i++)
@@ -67,9 +64,8 @@ namespace Tests.DbTests
             var path = Windows.Storage.ApplicationData.Current.LocalCacheFolder.Path + "\\test.db";
             var cachePath = $"Data Source={path}";
             var actualDataProvider = new KinoApi(ApiConfig.ApiKey, ApiConfig.Url);
-            var cachedDataProvider = new CacheApi(actualDataProvider.Genres,
-                                               actualDataProvider.Movies,
-                                               cachePath, TimeSpan.FromHours(24));
+            var cachedDataProvider = new CacheApi(actualDataProvider,cachePath, TimeSpan.FromHours(24));
+
             File.Delete(path);
             var ApiMovie = await actualDataProvider.Movies.GetMoviesFilteredAsync(1944,1944,null, KinoTypes.Order.NUM_VOTE,null, 2);
             var CacheMovie = await cachedDataProvider.Movies.GetMoviesFilteredAsync(1944, 1944, null, KinoTypes.Order.NUM_VOTE, null, 2);

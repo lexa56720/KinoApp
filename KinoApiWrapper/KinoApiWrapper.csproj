@@ -120,6 +120,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Api\ApiInfo.cs" />
     <Compile Include="Api\Genres.cs" />
     <Compile Include="Api\RequestSender\IRequester.cs" />
     <Compile Include="Api\RequestSender\RequestLimiter.cs" />

@@ -16,6 +16,8 @@ namespace KinoApiWrapper
     {
         public IMovies Movies { get; }
         public IGenres Genres { get; }
+        public IApiInfo ApiInfo { get; }
+
 
         private readonly Requester requester;
         private readonly IConverter converter;
@@ -27,6 +29,7 @@ namespace KinoApiWrapper
 
             Movies = new Movies(requester, converter);
             Genres = new Genres(requester, converter);
+            ApiInfo = new ApiInfo(requester);
         }
 
         public void UpdateApiKey(string key)

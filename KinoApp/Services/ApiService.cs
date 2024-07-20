@@ -42,10 +42,12 @@ namespace KinoApp.Services
 
         public static void SetApiKey(string key)
         {
+            Settings.SaveString("apiKey", key);
             ((DataProvider)Api).UpdateApiKey(key);
         }
         public static void SetCacheLifeTime(TimeSpan lifetime)
         {
+            Settings.Save("cacheLifeTime", lifetime);
             ((DataProvider)Api).UpdateCacheLifeTime(lifetime);
         }
         private static string GetConnectionString()
@@ -58,6 +60,7 @@ namespace KinoApp.Services
         {
             public IGenres Genres { get; }
             public IMovies Movies { get; }
+            public IApiInfo ApiInfo { get; }
 
             private KinoApi actualDataProvider;
             private CacheApi cachedDataProvider;
@@ -66,13 +69,13 @@ namespace KinoApp.Services
             {
                 actualDataProvider = new KinoApi(apiKey, url);
 
-                cachedDataProvider = new CacheApi(actualDataProvider.Genres,
-                                                  actualDataProvider.Movies,
+                cachedDataProvider = new CacheApi(actualDataProvider,
                                                   connectionString,
                                                   cacheLife);
 
                 Genres = cachedDataProvider.Genres;
                 Movies = cachedDataProvider.Movies;
+                ApiInfo = cachedDataProvider.ApiInfo;
             }
             public void Dispose()
             {

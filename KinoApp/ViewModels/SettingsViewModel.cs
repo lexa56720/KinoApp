@@ -4,12 +4,12 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using KinoApp.Helpers;
+using KinoApp.Models;
 using KinoApp.Services;
-
-
-
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace KinoApp.ViewModels
 {
@@ -20,11 +20,10 @@ namespace KinoApp.ViewModels
             get { return apiKey; }
             set
             {
-                if (UpdateApiKey(value))
-                    SetProperty(ref apiKey, value);
+                Task.Run(async () => { await UpdateApiKey(value); });
             }
         }
-        private string apiKey;
+        private string apiKey = ApiService.GetApiKey();
 
         public int CacheLife
         {
@@ -42,7 +41,7 @@ namespace KinoApp.ViewModels
             get
             {
                 if (resetCommand == null)
-                    resetCommand = new RelayCommand(Reset);
+                    resetCommand = new AsyncRelayCommand(Reset);
                 return resetCommand;
             }
         }
@@ -53,7 +52,7 @@ namespace KinoApp.ViewModels
             get
             {
                 if (clearCommand == null)
-                    clearCommand = new RelayCommand(Clear);
+                    clearCommand = new AsyncRelayCommand(Clear);
                 return clearCommand;
             }
         }
@@ -65,8 +64,11 @@ namespace KinoApp.ViewModels
             set { SetProperty(ref versionDescription, value); }
         }
         private string versionDescription;
+
+        private readonly SettingsModel model;
         public SettingsViewModel()
         {
+            model = new SettingsModel(ApiService.Api);
         }
 
         public void Initialize()
@@ -75,14 +77,40 @@ namespace KinoApp.ViewModels
             ApiKey = ApiService.GetApiKey();
             CacheLife = (int)ApiService.GetCacheLifeTime().TotalHours;
         }
-        private void Reset()
+        private async Task Reset()
         {
-            ApiKey = ApiService.DefaultApiKey;
-            CacheLife = (int)ApiService.DefaultCacheLifeTime.TotalHours;
+            ContentDialog resetDialog = new ContentDialog
+            {
+                Title = "Вы уверены что хотите сбросить настройки?",
+                Content = "Это приведёт к потере установленного ключа API и других параметров",
+                CloseButtonText = "Отмена",
+                PrimaryButtonText = "Подтвердить",
+                DefaultButton = ContentDialogButton.Primary
+            };
+
+            ContentDialogResult result = await resetDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                ApiKey = ApiService.DefaultApiKey;
+                CacheLife = (int)ApiService.DefaultCacheLifeTime.TotalHours;
+            }
         }
-        private void Clear()
+        private async Task Clear()
         {
-            throw new NotImplementedException();
+            ContentDialog clearDialog = new ContentDialog
+            {
+                Title = "Вы уверены что хотите удалить все данные пользователя?",
+                Content = "Это приведёт к потере списка избранных фильмов и других данных",
+                CloseButtonText = "Отмена",
+                PrimaryButtonText = "Подтвердить",
+                DefaultButton = ContentDialogButton.Primary
+            };
+
+            ContentDialogResult result = await clearDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                FavoriteService.Clear();
+            }
         }
         private string GetVersionDescription()
         {
@@ -94,9 +122,25 @@ namespace KinoApp.ViewModels
             return $"{appName} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
         }
 
-        private bool UpdateApiKey(string value)
+        private async Task UpdateApiKey(string value)
         {
-            throw new NotImplementedException();
+            var currentKey = ApiService.GetApiKey();
+            if (value != currentKey && await model.IsKeyValid(value))
+            {
+                ApiService.SetApiKey(value);
+                await CoreApplication.MainView.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    SetProperty(ref apiKey, value, nameof(ApiKey));
+                });
+            }
+            else
+            {
+                apiKey = string.Empty;
+                await CoreApplication.MainView.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    SetProperty(ref apiKey, currentKey,nameof(ApiKey));
+                });
+            }
         }
 
         private void UpdateCacheLife(int value)

@@ -31,14 +31,14 @@
                 <Border Grid.Row="0" Padding="5" Background="White" CornerRadius="10">
                     <StackPanel >
                         <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Api ключ"/>
-                        <TextBox Grid.Row="1" HorizontalAlignment="Left" Grid.Column="0" Text="{x:Bind ViewModel.ApiKey,Mode=TwoWay}" PlaceholderText="Введите api ключ"/>
+                        <TextBox Grid.Row="1" HorizontalAlignment="Left" Grid.Column="0" Text="{x:Bind ViewModel.ApiKey,Mode=TwoWay, UpdateSourceTrigger=Default}" PlaceholderText="Введите api ключ"/>
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="1" Padding="5" Background="White" CornerRadius="10">
                     <StackPanel >
                         <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Время жизни кэша"/>
-                        <muxc:NumberBox Grid.Row="1" Value="{x:Bind ViewModel.CacheLife,Mode=TwoWay}" SmallChange="10" LargeChange="100"
+                        <muxc:NumberBox Grid.Row="1" Value="{x:Bind ViewModel.CacheLife,Mode=TwoWay}" SmallChange="6" LargeChange="24"
                                         SpinButtonPlacementMode="Compact" HorizontalAlignment="Left"    Grid.Column="0" PlaceholderText="Введите количество часов, которое будет храниться кэш"/>
                     </StackPanel>
                 </Border>
