@@ -13,29 +13,77 @@ using Windows.UI.Xaml;
 
 namespace KinoApp.ViewModels
 {
-    // TODO: Add other settings as necessary. For help see https://github.com/microsoft/TemplateStudio/blob/main/docs/UWP/pages/settings.md
     public class SettingsViewModel : ObservableObject
     {
+        public string ApiKey
+        {
+            get { return apiKey; }
+            set
+            {
+                if (UpdateApiKey(value))
+                    SetProperty(ref apiKey, value);
+            }
+        }
+        private string apiKey;
 
-        private string versionDescription;
+        public int CacheLife
+        {
+            get => cacheLife;
+            set
+            {
+                SetProperty(ref cacheLife, value);
+                UpdateCacheLife(value);
+            }
+        }
+        private int cacheLife;
+
+        public ICommand ResetCommand
+        {
+            get
+            {
+                if (resetCommand == null)
+                    resetCommand = new RelayCommand(Reset);
+                return resetCommand;
+            }
+        }
+        private ICommand resetCommand;
+
+        public ICommand ClearCommand
+        {
+            get
+            {
+                if (clearCommand == null)
+                    clearCommand = new RelayCommand(Clear);
+                return clearCommand;
+            }
+        }
+        private ICommand clearCommand;
 
         public string VersionDescription
         {
             get { return versionDescription; }
             set { SetProperty(ref versionDescription, value); }
         }
-
-
+        private string versionDescription;
         public SettingsViewModel()
         {
         }
 
-        public async Task InitializeAsync()
+        public void Initialize()
         {
             VersionDescription = GetVersionDescription();
-            await Task.CompletedTask;
+            ApiKey = ApiService.GetApiKey();
+            CacheLife = (int)ApiService.GetCacheLifeTime().TotalHours;
         }
-
+        private void Reset()
+        {
+            ApiKey = ApiService.DefaultApiKey;
+            CacheLife = (int)ApiService.DefaultCacheLifeTime.TotalHours;
+        }
+        private void Clear()
+        {
+            throw new NotImplementedException();
+        }
         private string GetVersionDescription()
         {
             var appName = Package.Current.DisplayName;
@@ -44,6 +92,19 @@ namespace KinoApp.ViewModels
             var version = packageId.Version;
 
             return $"{appName} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+        }
+
+        private bool UpdateApiKey(string value)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void UpdateCacheLife(int value)
+        {
+            if (value < 0)
+                ApiService.SetCacheLifeTime(TimeSpan.MaxValue);
+            else
+                ApiService.SetCacheLifeTime(TimeSpan.FromHours(value));
         }
     }
 }

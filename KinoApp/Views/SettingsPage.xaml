@@ -24,29 +24,32 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
 
                 <Border Grid.Row="0" Padding="5" Background="White" CornerRadius="10">
                     <StackPanel >
                         <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Api ключ"/>
-                        <TextBox Grid.Row="1" Grid.Column="0" PlaceholderText="Введите api ключ"/>
+                        <TextBox Grid.Row="1" HorizontalAlignment="Left" Grid.Column="0" Text="{x:Bind ViewModel.ApiKey,Mode=TwoWay}" PlaceholderText="Введите api ключ"/>
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Row="1" Padding="5" Background="White" CornerRadius="10">
                     <StackPanel >
                         <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Время жизни кэша"/>
-                        <muxc:NumberBox Grid.Row="1" Grid.Column="0" PlaceholderText="Введите количество часов, которое будет храниться кэш"/>
+                        <muxc:NumberBox Grid.Row="1" Value="{x:Bind ViewModel.CacheLife,Mode=TwoWay}" SmallChange="10" LargeChange="100"
+                                        SpinButtonPlacementMode="Compact" HorizontalAlignment="Left"    Grid.Column="0" PlaceholderText="Введите количество часов, которое будет храниться кэш"/>
                     </StackPanel>
                 </Border>
 
-                <Button Grid.Row="2" Content="Удалить все данные пользователя" Style="{ThemeResource AccentButtonStyle}" />
+                <StackPanel  Grid.Row="2" Spacing="10"  Orientation="Horizontal">
+                    <Button Content="Сбросить настройки" Command="{x:Bind ViewModel.ResetCommand}" Style="{ThemeResource AccentButtonStyle}" />
+                    <Button Content="Удалить все данные пользователя"  Command="{x:Bind ViewModel.ClearCommand}" Style="{ThemeResource AccentButtonStyle}" />
+                </StackPanel>
                 <TextBlock Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" />
             </Grid>
         </ScrollViewer>
-        
+
     </Grid>
 </Page>

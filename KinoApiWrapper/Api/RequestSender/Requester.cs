@@ -36,6 +36,13 @@ namespace KinoApiWrapper.Api.RequestSender
         {
             return await SendRequest(url + apiUrl);
         }
+
+        public void UpdateApiKey(string apiKey) 
+        {
+            client.DefaultRequestHeaders.Remove("X-API-KEY");
+            client.DefaultRequestHeaders.Add("X-API-KEY", apiKey);
+        }
+
         private async Task<string> SendRequest(string request)
         {
             var response = await client.GetAsync(request);

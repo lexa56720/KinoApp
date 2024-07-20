@@ -23,20 +23,13 @@ namespace KinoApp.Services
         public static string GetApiKey()
         {
             var key = Settings.Values["apiKey"] as string;
-            if (!string.IsNullOrEmpty(key)) 
+            if (!string.IsNullOrEmpty(key))
             {
                 return key;
             }
             Settings.SaveString("apiKey", DefaultApiKey);
             return DefaultApiKey;
         }
-
-        public static string GetConnectionString()
-        {
-            var path = ApplicationData.Current.LocalCacheFolder.Path + "\\cache.db";
-            return $"Data Source={path}";
-        }
-
         public static TimeSpan GetCacheLifeTime()
         {
             var cacheLifetime = Settings.Read<TimeSpan>("cacheLifeTime");
@@ -45,6 +38,20 @@ namespace KinoApp.Services
 
             Settings.Save("cacheLifeTime", DefaultCacheLifeTime);
             return DefaultCacheLifeTime;
+        }
+
+        public static void SetApiKey(string key)
+        {
+            ((DataProvider)Api).UpdateApiKey(key);
+        }
+        public static void SetCacheLifeTime(TimeSpan lifetime)
+        {
+            ((DataProvider)Api).UpdateCacheLifeTime(lifetime);
+        }
+        private static string GetConnectionString()
+        {
+            var path = ApplicationData.Current.LocalCacheFolder.Path + "\\cache.db";
+            return $"Data Source={path}";
         }
 
         private class DataProvider : IDataProvider
@@ -71,6 +78,15 @@ namespace KinoApp.Services
             {
                 cachedDataProvider.Dispose();
                 actualDataProvider.Dispose();
+            }
+
+            public void UpdateApiKey(string apiKey)
+            {
+                actualDataProvider.UpdateApiKey(apiKey);
+            }
+            public void UpdateCacheLifeTime(TimeSpan lifeTime)
+            {
+                cachedDataProvider.UpdateCacheLife(lifeTime);
             }
         }
     }

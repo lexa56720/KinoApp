@@ -13,18 +13,24 @@ namespace KinoApiCache.CacheProvider
     public class CacheApi : IDataProvider
     {
         public IGenres Genres { get; }
-
         public IMovies Movies { get; }
+
+
+        private readonly CachedCalls interactor;
 
         public CacheApi(IGenres genresProvider, IMovies moviesProvider, string connectionString, TimeSpan cacheLife)
         {
             var mapper = new Mapper();
 
             var contextFactory = new DbContextFactory(connectionString);
-            var interactor = new CachedCalls(contextFactory, cacheLife, mapper);
-         
+            interactor = new CachedCalls(contextFactory, cacheLife, mapper);
+
             Genres = new CachedGenres(genresProvider, interactor);
             Movies = new CachedMovies(moviesProvider, interactor);
+        }
+        public void UpdateCacheLife(TimeSpan lifeTime)
+        {
+            interactor.UpdateLifeTime(lifeTime);
         }
         public void Dispose()
         {
