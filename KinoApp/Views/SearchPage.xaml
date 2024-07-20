@@ -1,0 +1,66 @@
+﻿<Page
+    x:Class="KinoApp.Views.SearchPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:KinoApp.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:KinoApp.Controls"
+    mc:Ignorable="d" NavigationCacheMode="Required"
+    Style="{StaticResource PageStyle}">
+    <Grid Margin="{StaticResource MediumLeftRightMargin}" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Background="White" CornerRadius="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" HorizontalAlignment="Center" Spacing="5" Margin="5" Padding="5"  VerticalAlignment="Top" Orientation="Horizontal">
+
+                    <StackPanel Spacing="5">
+                        <DatePicker MinYear="{x:Bind ViewModel.MinYear}"  SelectedDate="{x:Bind ViewModel.FromDate,Mode=TwoWay}"
+                                    DayVisible="False" MonthVisible="False"/>
+                        <DatePicker x:Name="To"  MinYear="{x:Bind ViewModel.MinYear}"  SelectedDate="{x:Bind ViewModel.ToDate,Mode=TwoWay}"
+                                    DayVisible="False" MonthVisible="False"/>
+                    </StackPanel>
+
+                    <StackPanel Spacing="5">
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox PlaceholderText="Жанр" Margin="0,0,5,0" Height="30" SelectedItem="{x:Bind ViewModel.SelectedGenre,Mode=TwoWay}"
+                                      ItemsSource="{x:Bind ViewModel.Genres,Converter={StaticResource GenresToItemsConverter},Mode=OneWay}"/>
+
+                            <ComboBox PlaceholderText="Сортировать по"  Height="30"   SelectedItem="{x:Bind ViewModel.SelectedOrder,Mode=TwoWay}"
+                                      ItemsSource="{x:Bind ViewModel.Orders,Mode=OneWay}"/>
+                        </StackPanel>
+                        <TextBox Text="{x:Bind ViewModel.Keyword,Mode=TwoWay}" Height="10"  MaxLength="32" PlaceholderText="Ключевая фраза"/>
+                    </StackPanel>
+
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Spacing="5" Margin="-10,5,5,5" Padding="5"  VerticalAlignment="Top" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource AccentButtonStyle}" Height="30" Command="{x:Bind ViewModel.SearchCommand}" >
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Symbol="Find"/>
+                            <TextBlock Text="Поиск"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Height="33" Command="{x:Bind ViewModel.ResetCommand}" >
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Symbol="Undo"/>
+                            <TextBlock Text="Сбросить"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+
+        <controls:MovieList Grid.Row="1" Movies="{x:Bind ViewModel.Movies}" LoadMoreCommand="{x:Bind ViewModel.LoadMoreCommand}"
+                            Title="Результаты поиска" OpenMovieCommand="{x:Bind ViewModel.OpenMovieCommand}"/>
+    </Grid>
+</Page>

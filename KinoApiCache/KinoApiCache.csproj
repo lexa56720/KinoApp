@@ -120,11 +120,29 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="CacheProvider\CacheApi.cs" />
+    <Compile Include="CacheProvider\CachedGenres.cs" />
+    <Compile Include="CacheProvider\CachedMovies.cs" />
+    <Compile Include="DataBase\CacheDbContext.cs" />
+    <Compile Include="DataBase\DbContextFactory.cs" />
+    <Compile Include="DataBase\Interaction\CachedCalls.cs" />
+    <Compile Include="DataBase\Interaction\TypeIdHelper.cs" />
+    <Compile Include="DataBase\Tables\ArgumentDB.cs" />
+    <Compile Include="DataBase\Tables\CachedType\ICachedEntity.cs" />
+    <Compile Include="DataBase\Tables\CallDB.cs" />
+    <Compile Include="DataBase\Tables\CachedType\GenreDB.cs" />
+    <Compile Include="DataBase\Tables\CachedType\MovieDB.cs" />
+    <Compile Include="DataBase\Tables\CachedType\MovieInfoDB.cs" />
+    <Compile Include="DataBase\Tables\ResultDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\IMapper.cs" />
+    <Compile Include="Utils\Mapper.cs" />
     <EmbeddedResource Include="Properties\KinoApiCache.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
+      <Version>3.1.32</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
     </PackageReference>
@@ -135,6 +153,7 @@
       <Name>KinoTypes</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
