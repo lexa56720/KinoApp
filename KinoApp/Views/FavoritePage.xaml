@@ -9,7 +9,7 @@
     mc:Ignorable="d" NavigationCacheMode="Required"
     Style="{StaticResource PageStyle}">
     <Grid Margin="{StaticResource MediumLeftRightMargin}">
-        <controls:MovieList Movies="{x:Bind ViewModel.Movies}" LoadMoreCommand="{x:Bind ViewModel.LoadMoreCommand}"
+        <controls:MovieList Movies="{x:Bind ViewModel.Movies}" LoadMoreCommand="{x:Bind ViewModel.LoadMoreCommand}" 
                             Title="Избранные фильмы" OpenMovieCommand="{x:Bind ViewModel.OpenMovieCommand}"/>
     </Grid>
 </Page>
