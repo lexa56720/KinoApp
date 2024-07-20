@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:KinoApp.Controls"
     mc:Ignorable="d" NavigationCacheMode="Required"
     Style="{StaticResource PageStyle}">
-    <Grid Margin="{StaticResource MediumLeftRightMargin}">
+    <Grid Margin="{StaticResource MediumLeftRightMargin}" >
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -17,29 +17,39 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="0" HorizontalAlignment="Center" Spacing="5" Margin="5" Padding="5"  VerticalAlignment="Top" Orientation="Horizontal">
-                    <DatePicker MinYear="{x:Bind ViewModel.MinYear}"  SelectedDate="{x:Bind ViewModel.FromDate,Mode=TwoWay}"
-                         DayVisible="False" MonthVisible="False"/>
-                    <DatePicker x:Name="To"  MinYear="{x:Bind ViewModel.MinYear}"  SelectedDate="{x:Bind ViewModel.ToDate,Mode=TwoWay}"
-                         DayVisible="False" MonthVisible="False"/>
-                    <ComboBox PlaceholderText="Жанр" SelectedItem="{x:Bind ViewModel.SelectedGenre,Mode=TwoWay}"
-                      ItemsSource="{x:Bind ViewModel.Genres,Converter={StaticResource GenresToItemsConverter},Mode=OneWay}"/>
-                    <ComboBox PlaceholderText="Сортировать по"  SelectedItem="{x:Bind ViewModel.SelectedOrder,Mode=TwoWay}"
-                      ItemsSource="{x:Bind ViewModel.Orders,Mode=OneWay}"/>
-                    <TextBox Text="{x:Bind ViewModel.Keyword,Mode=TwoWay}"  MaxLength="32" PlaceholderText="Ключевая фраза"/>
+
+                    <StackPanel Spacing="5">
+                        <DatePicker MinYear="{x:Bind ViewModel.MinYear}"  SelectedDate="{x:Bind ViewModel.FromDate,Mode=TwoWay}"
+                                    DayVisible="False" MonthVisible="False"/>
+                        <DatePicker x:Name="To"  MinYear="{x:Bind ViewModel.MinYear}"  SelectedDate="{x:Bind ViewModel.ToDate,Mode=TwoWay}"
+                                    DayVisible="False" MonthVisible="False"/>
+                    </StackPanel>
+
+                    <StackPanel Spacing="5">
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox PlaceholderText="Жанр" Margin="0,0,5,0" Height="30" SelectedItem="{x:Bind ViewModel.SelectedGenre,Mode=TwoWay}"
+                                      ItemsSource="{x:Bind ViewModel.Genres,Converter={StaticResource GenresToItemsConverter},Mode=OneWay}"/>
+
+                            <ComboBox PlaceholderText="Сортировать по"  Height="30"   SelectedItem="{x:Bind ViewModel.SelectedOrder,Mode=TwoWay}"
+                                      ItemsSource="{x:Bind ViewModel.Orders,Mode=OneWay}"/>
+                        </StackPanel>
+                        <TextBox Text="{x:Bind ViewModel.Keyword,Mode=TwoWay}" Height="10"  MaxLength="32" PlaceholderText="Ключевая фраза"/>
+                    </StackPanel>
+
                 </StackPanel>
 
-                <StackPanel Grid.Column="1" Spacing="5" Margin="5" Padding="5"  VerticalAlignment="Top" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Style="{StaticResource AccentButtonStyle}" Command="{x:Bind ViewModel.SearchCommand}" >
+                <StackPanel Grid.Column="1" Spacing="5" Margin="-10,5,5,5" Padding="5"  VerticalAlignment="Top" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource AccentButtonStyle}" Height="30" Command="{x:Bind ViewModel.SearchCommand}" >
                         <StackPanel Orientation="Horizontal">
                             <SymbolIcon Symbol="Find"/>
                             <TextBlock Text="Поиск"/>
                         </StackPanel>
                     </Button>
-                    <Button Command="{x:Bind ViewModel.ResetCommand}" >
+                    <Button Height="33" Command="{x:Bind ViewModel.ResetCommand}" >
                         <StackPanel Orientation="Horizontal">
                             <SymbolIcon Symbol="Undo"/>
                             <TextBlock Text="Сбросить"/>
