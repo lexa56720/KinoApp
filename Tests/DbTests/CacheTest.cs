@@ -16,16 +16,18 @@ namespace Tests.DbTests
         [TestMethod]
         public async Task TestGetMovieByIdCache()
         {
+            //arrange
             var path = Windows.Storage.ApplicationData.Current.LocalCacheFolder.Path + "\\test.db";
             var cachePath = $"Data Source={path}";
             var actualDataProvider = new KinoApi(ApiConfig.ApiKey, ApiConfig.Url);
             var cachedDataProvider = new CacheApi(actualDataProvider, cachePath, TimeSpan.FromHours(24));
-
-
             File.Delete(path);
-            var ApiMovie = await actualDataProvider.Movies.GetMovieByIdAsync(1001);
+
+            //act
+            var ApiMovie = await cachedDataProvider.Movies.GetMovieByIdAsync(1001);
             var CacheMovie = await cachedDataProvider.Movies.GetMovieByIdAsync(1001);
 
+            //assert
             Assert.IsNotNull(ApiMovie);
             Assert.IsNotNull(CacheMovie);
             Assert.AreEqual(JsonSerializer.Serialize(ApiMovie), JsonSerializer.Serialize(CacheMovie));
@@ -34,22 +36,24 @@ namespace Tests.DbTests
 
         [TestMethod]
         public async Task TestGetMovieByIdManyCache()
-        {
+        { 
+            //arrange
             var path = Windows.Storage.ApplicationData.Current.LocalCacheFolder.Path + "\\test.db";
             var cachePath = $"Data Source={path}";
             var actualDataProvider = new KinoApi(ApiConfig.ApiKey, ApiConfig.Url);
             var cachedDataProvider = new CacheApi(actualDataProvider, cachePath, TimeSpan.FromHours(24));
-
             var rand = new Random();
             var ids = new int[10];
             for (int i = 0; i < ids.Length; i++)
                 ids[i] = rand.Next(10000, 50000);
-
             File.Delete(path);
+
+            //act
             var ApiMovie = await actualDataProvider.Movies.GetMovieByIdAsync(ids);
             await cachedDataProvider.Movies.GetMovieByIdAsync(ids.Take(5).ToArray());
             var CacheMovie = await cachedDataProvider.Movies.GetMovieByIdAsync(ids.ToArray());
 
+            //assert
             Assert.IsNotNull(ApiMovie);
             Assert.IsNotNull(CacheMovie);
             Assert.AreEqual(JsonSerializer.Serialize(ApiMovie), JsonSerializer.Serialize(CacheMovie));
@@ -57,16 +61,19 @@ namespace Tests.DbTests
 
         [TestMethod]
         public async Task TestGetMovieByYear()
-        {
+        {           
+            //arrange
             var path = Windows.Storage.ApplicationData.Current.LocalCacheFolder.Path + "\\test.db";
             var cachePath = $"Data Source={path}";
             var actualDataProvider = new KinoApi(ApiConfig.ApiKey, ApiConfig.Url);
             var cachedDataProvider = new CacheApi(actualDataProvider, cachePath, TimeSpan.FromHours(24));
-
             File.Delete(path);
-            var ApiMovie = await actualDataProvider.Movies.GetMoviesFilteredAsync(1944, 1944, null, KinoTypes.Order.NUM_VOTE, null, 2);
-            var CacheMovie = await cachedDataProvider.Movies.GetMoviesFilteredAsync(1944, 1944, null, KinoTypes.Order.NUM_VOTE, null, 2);
 
+            //act
+            var ApiMovie = await cachedDataProvider.Movies.GetMoviesFilteredAsync(1944, 1944, null, KinoTypes.Order.NUM_VOTE, null, 2);
+            var CacheMovie = await cachedDataProvider.Movies.GetMoviesFilteredAsync(1944, 1944, null, KinoTypes.Order.NUM_VOTE, null, 2);
+            
+            //assert
             Assert.IsNotNull(ApiMovie);
             Assert.IsNotNull(CacheMovie);
             Assert.AreEqual(JsonSerializer.Serialize(ApiMovie), JsonSerializer.Serialize(CacheMovie));
